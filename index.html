@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>oFruto · Serviços</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* minimal monocromático — preto e branco, sem cor */
+  --bg:#000000;
+  --surface:#0f0f11;
+  --surface-2:#161618;
+  --surface-3:#202024;
+  --hero:linear-gradient(155deg,#1a1a1d 0%,#141416 55%,#0e0e10 100%);
+  --ink:#f5f5f3;
+  --ink-2:rgba(245,245,243,.55);
+  --ink-3:rgba(245,245,243,.34);
+  --brd:rgba(255,255,255,.08);
+  --brd-2:rgba(255,255,255,.16);
+  --shadow:0 30px 70px -30px rgba(0,0,0,.95);
+  --relevo:inset 0 1px 0 rgba(255,255,255,.10), inset 0 -1px 0 rgba(0,0,0,.6), 0 8px 24px -10px rgba(0,0,0,.8);
+  /* acentos = branco (sem cor) */
+  --leaf:#f5f5f3;
+  --leaf-deep:#cfcfcd;
+  --amber:#9a9a98;
+  --terra:#f5f5f3;
+  --plum:#f5f5f3;
+  --r:18px; --r-lg:24px; --r-xl:30px;
+  --sans:'Plus Jakarta Sans','Helvetica Neue',Arial,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --appw:440px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  font-family:var(--sans);background:var(--bg);color:var(--ink);
+  min-height:100dvh;line-height:1.5;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;
+  position:relative;
+}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(60% 40% at 50% -5%, rgba(255,255,255,.05), transparent 60%);}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+input{font-family:inherit;}
+::selection{background:var(--ink);color:var(--bg);}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:20px}::-webkit-scrollbar-track{background:transparent}
+
+/* container do app (vira moldura de celular no desktop) */
+.app{max-width:var(--appw);margin:0 auto;padding:0 18px 130px;min-height:100dvh;position:relative;}
+
+@media(min-width:900px){
+  .app{max-width:1000px;padding:0 40px 90px;margin:0 auto;}
+  .hdr{padding-top:30px;position:relative;justify-content:center;}
+  .hdr .logo{position:absolute;left:2px;}
+  .hdr .search{max-width:560px;width:100%;}
+
+  /* grade larga no desktop */
+  .home-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:start;}
+  .home-grid .left,.home-grid .right{display:flex;flex-direction:column;gap:12px;}
+  .grid.two{gap:16px;}
+  #serviceCards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  #serviceCards .hero-card{margin-bottom:0!important;}
+  .grid2-methods{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+
+}
+
+/* ---------- HEADER ---------- */
+.hdr{display:flex;align-items:center;gap:12px;padding:22px 2px 16px;position:sticky;top:0;z-index:20;background:var(--bg);}
+.hdr .logo{width:56px;height:56px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:1px solid var(--brd);overflow:hidden;box-shadow:var(--relevo);}
+.hdr .logo svg{width:34px;height:34px;}
+.hdr .search{flex:1;display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:100px;background:var(--surface);border:1px solid var(--brd);}
+.hdr .search svg{width:17px;height:17px;stroke:var(--ink-3);fill:none;stroke-width:2;flex:none;}
+.hdr .search input{border:none;background:none;outline:none;color:var(--ink);font-size:14.5px;width:100%;}
+.hdr .search input::placeholder{color:var(--ink-3);}
+
+.view{display:none;}
+.view.on{display:block;animation:fade .4s var(--ease);}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+.eye{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);margin:6px 2px 10px;}
+.sec-h{font-weight:700;font-size:14.5px;color:var(--ink-2);margin:24px 2px 12px;}
+
+
+/* ---------- CAPA DE RECEPÇÃO ---------- */
+.welcome{padding:30px 2px 4px;text-align:center;position:relative;}
+.welcome .w-logo{width:64px;height:64px;margin:0 auto 22px;border-radius:20px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--brd);box-shadow:var(--relevo);}
+.welcome .w-logo svg{width:36px;height:36px;}
+.welcome h1{font-weight:800;font-size:clamp(28px,7vw,36px);letter-spacing:-.035em;margin-bottom:14px;}
+.welcome p{font-size:14.5px;color:var(--ink-2);line-height:1.6;max-width:44ch;margin:0 auto;}
+@media(min-width:900px){.welcome{padding-top:40px;} .welcome h1{font-size:42px;}}
+
+/* ---------- HERO CARD ---------- */
+
+.hero-card{background:var(--hero);border:1px solid var(--brd-2);border-radius:var(--r-xl);padding:24px 22px;cursor:pointer;transition:transform .25s var(--ease);position:relative;overflow:hidden;box-shadow:inset 0 1px 0 rgba(190,220,150,.10), var(--shadow);}
+.hero-card:active{transform:scale(.99);}
+.hero-card .top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;}
+.hero-card .lbl{font-size:12.5px;color:var(--ink-2);margin-bottom:6px;}
+.hero-card h2{font-weight:800;font-size:32px;letter-spacing:-.04em;}
+.hero-card::after{content:"";position:absolute;top:-40%;right:-12%;width:60%;height:80%;background:radial-gradient(closest-side,rgba(255,255,255,.06),transparent);filter:blur(20px);pointer-events:none;}
+.hero-card>*{position:relative;}
+.hero-card .go{width:34px;height:34px;border-radius:50%;background:var(--surface-3);border:1px solid var(--brd-2);display:grid;place-items:center;font-size:17px;color:var(--ink-2);flex:none;box-shadow:var(--relevo);}
+.hero-card .foot{display:flex;align-items:flex-end;justify-content:space-between;}
+.hero-card .k{font-size:11px;color:var(--ink-3);display:block;margin-bottom:3px;}
+.hero-card .v{font-weight:700;font-size:15px;letter-spacing:-.02em;}
+
+/* ---------- GRIDS ---------- */
+.grid{display:grid;gap:12px;margin-top:12px;}
+.grid.two{grid-template-columns:1fr 1fr;}
+.grid.split{grid-template-columns:.72fr 1.28fr;}
+
+.card{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r-lg);padding:18px;cursor:pointer;transition:transform .22s var(--ease),background .2s;}
+.card:active{transform:scale(.98);}
+.card:hover{background:var(--surface-2);}
+
+.svc{min-height:128px;display:flex;flex-direction:column;justify-content:space-between;}
+.svc .badge{align-self:flex-start;font-size:11px;font-weight:600;padding:5px 11px;border-radius:100px;background:var(--surface-3);color:var(--ink-2);}
+.svc h4{font-weight:700;font-size:18px;letter-spacing:-.03em;margin-bottom:3px;}
+.svc .sub{font-size:12px;color:var(--ink-2);}
+
+.tool{min-height:150px;display:flex;flex-direction:column;justify-content:space-between;}
+.tool .ico{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;}
+.tool .ico svg{width:21px;height:21px;fill:none;stroke-width:1.8;}
+.tool h4{font-weight:700;font-size:17px;letter-spacing:-.02em;}
+.tool .sub{font-size:12px;color:var(--ink-2);margin-top:3px;}
+
+/* cores de fruto nos ícones das ferramentas */
+.ico.leaf{background:var(--surface-3);}   .ico.leaf svg{stroke:var(--ink);}
+.ico.amber{background:var(--surface-3);}  .ico.amber svg{stroke:var(--ink);}
+.ico.terra{background:var(--surface-3);}  .ico.terra svg{stroke:var(--ink);}
+.ico.plum{background:var(--surface-3);}   .ico.plum svg{stroke:var(--ink);}
+
+.tool-wide{min-height:0;flex-direction:row;align-items:center;gap:14px;}
+.tool-wide h4{font-size:16px;}
+.tool-wide .sub{margin-top:2px;}
+
+/* banner */
+.banner{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r-lg);padding:20px 22px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:12px;transition:transform .22s var(--ease);}
+.banner:active{transform:scale(.99);}
+.banner h4{font-weight:700;font-size:16px;letter-spacing:-.02em;margin-bottom:5px;}
+.banner p{font-size:12.5px;color:var(--ink-2);line-height:1.45;max-width:32ch;}
+.banner .go{font-size:12.5px;font-weight:600;padding:10px 18px;border-radius:100px;background:var(--surface-3);color:var(--ink);border:1px solid var(--brd-2);box-shadow:var(--relevo);margin-top:12px;display:inline-block;}
+.banner .orb{width:70px;height:70px;flex:none;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.18),#141416 72%);border:1px solid var(--brd);}
+
+/* phase */
+.phase{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:18px;cursor:pointer;transition:transform .22s var(--ease),background .2s;}
+.phase:active{transform:scale(.97);}.phase:hover{background:var(--surface-2);}
+.phase .n{font-size:12px;letter-spacing:.1em;margin-bottom:20px;font-weight:700;}
+.phase h4{font-weight:700;font-size:18px;letter-spacing:-.03em;margin-bottom:4px;}
+.phase p{font-size:12px;color:var(--ink-2);line-height:1.4;}
+/* cada fase um tom de fruto no número */
+.phase:nth-child(1) .n{color:var(--ink-3);}
+.phase:nth-child(2) .n{color:var(--ink-3);}
+.phase:nth-child(3) .n{color:var(--ink-3);}
+.phase:nth-child(4) .n{color:var(--ink-3);}
+
+/* row */
+.trow{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:16px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:10px;transition:.2s var(--ease);}
+.trow:hover{background:var(--surface-2);}
+.trow h4{font-weight:700;font-size:15.5px;letter-spacing:-.02em;margin-bottom:3px;}
+.trow p{font-size:12.5px;color:var(--ink-2);}
+.trow .arrow{color:var(--ink-3);font-size:20px;flex:none;}
+
+.empty{text-align:center;padding:50px 20px;color:var(--ink-3);}
+.empty .big{font-weight:700;font-size:19px;color:var(--ink-2);margin-bottom:8px;letter-spacing:-.02em;}
+
+.phead{padding:8px 2px 4px;}
+.phead h1{font-weight:800;font-size:clamp(26px,7vw,34px);letter-spacing:-.035em;}
+.phead p{color:var(--ink-2);font-size:14px;margin-top:8px;}
+
+/* ---------- TAB BAR ---------- */
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));z-index:40;
+  display:flex;gap:2px;padding:6px;border-radius:100px;background:rgba(22,22,24,.92);border:1px solid var(--brd-2);
+  box-shadow:var(--shadow);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);}
+.tab{display:flex;align-items:center;gap:7px;padding:11px 15px;border-radius:100px;color:var(--ink-3);font-size:12.5px;font-weight:500;transition:.25s var(--ease);}
+.tab svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;}
+.tab .lbl{display:none;}
+.tab.on{background:var(--surface-3);color:var(--ink);box-shadow:var(--relevo);}
+.tab.on .lbl{display:inline;}
+.tab.on svg{stroke:var(--ink);}
+@media(min-width:520px){.tab .lbl{display:inline;}}
+
+
+/* ---------- SHEET ---------- */
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.68);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .3s;}
+.scrim.on{opacity:1;pointer-events:auto;}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;max-width:var(--appw);margin:0 auto;max-height:90dvh;overflow-y:auto;
+  background:var(--surface);border:1px solid var(--brd-2);border-bottom:none;border-radius:var(--r-xl) var(--r-xl) 0 0;
+  transform:translateY(101%);transition:transform .38s var(--ease);padding:8px 22px calc(38px + env(safe-area-inset-bottom));}
+.sheet.on{transform:translateY(0);}
+@media(min-width:900px){
+  .sheet{max-width:640px!important;left:50%!important;right:auto!important;top:50%!important;bottom:auto!important;
+    border-radius:var(--r-xl)!important;max-height:84dvh!important;
+    transform:translate(-50%,-46%) scale(.97)!important;opacity:0;}
+  .sheet.on{transform:translate(-50%,-50%) scale(1)!important;opacity:1;}
+  .sheet .grip{display:none;}
+}
+.sheet .grip{width:38px;height:4px;border-radius:4px;background:var(--surface-3);margin:8px auto 20px;}
+.sheet .s-kind{font-size:12px;color:var(--ink-3);margin-bottom:8px;}
+.sheet h2{font-weight:800;font-size:32px;letter-spacing:-.035em;margin-bottom:10px;}
+.sheet .s-resume{font-size:15px;color:var(--ink-2);line-height:1.6;margin-bottom:18px;}
+.sheet .s-meta{display:flex;gap:24px;flex-wrap:wrap;padding:16px 0;border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);margin-bottom:18px;}
+.sheet .s-meta .k{font-size:11px;color:var(--ink-3);display:block;margin-bottom:3px;}
+.sheet .s-meta .v{font-weight:700;font-size:16px;letter-spacing:-.02em;}
+.sheet h5{font-weight:700;font-size:15px;margin:22px 0 8px;}
+.sheet p,.sheet li{font-size:14px;color:var(--ink-2);line-height:1.62;}
+.sheet ul{margin:6px 0;padding-left:18px;}.sheet li{margin-bottom:5px;}.sheet li b{color:var(--ink);}
+.upsell{margin-top:12px;border:1px solid var(--brd-2);border-radius:var(--r);padding:16px 18px;background:var(--surface-2);}
+.upsell .u-head{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);margin-bottom:12px;}
+.upsell .badge{font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:4px 10px;border-radius:100px;background:var(--ink);color:#000;}
+.upsell ul{list-style:none;margin:0;padding:0;}
+.upsell li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--brd);color:var(--ink);font-size:13.5px;}
+.upsell li:first-child{border-top:none;}
+.upsell li .tag{font-size:11px;color:var(--ink-3);white-space:nowrap;align-self:center;}
+.internal{margin-top:22px;border:1px dashed var(--brd-2);border-radius:var(--r);padding:16px 18px;background:var(--surface-2);}
+.internal .tag{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;}
+
+
+
+/* ---------- DOCUMENTO VIVO ---------- */
+.doc-seg{display:flex;gap:6px;background:var(--surface);border:1px solid var(--brd);border-radius:100px;padding:5px;margin:16px 0 6px;width:fit-content;}
+.doc-seg button{padding:9px 18px;border-radius:100px;font-size:13.5px;font-weight:600;color:var(--ink-3);white-space:nowrap;transition:.2s var(--ease);}
+.doc-seg button.on{background:var(--surface-3);color:var(--ink);box-shadow:var(--relevo);}
+.doc-nav{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 22px;}
+.doc-nav button{padding:8px 15px;border-radius:100px;font-size:13px;font-weight:500;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--brd);transition:.18s var(--ease);}
+.doc-nav button:hover{color:var(--ink);border-color:var(--brd-2);}
+.doc-nav button.on{background:var(--ink);color:#000;border-color:var(--ink);}
+.doc-body{padding-bottom:40px;max-width:720px;}
+.doc-body .doc-item{margin-bottom:44px;scroll-margin-top:20px;}
+.doc-body h1{font-weight:800;font-size:30px;letter-spacing:-.035em;margin:0 0 8px;}
+.doc-body h2{font-weight:700;font-size:21px;letter-spacing:-.02em;margin:30px 0 10px;padding-top:20px;border-top:1px solid var(--brd);}
+.doc-body h2:first-of-type{border-top:none;padding-top:0;}
+.doc-body h3{font-weight:700;font-size:16px;margin:20px 0 8px;}
+.doc-body p{font-size:14.5px;color:var(--ink-2);line-height:1.65;margin:0 0 12px;}
+.doc-body ul{margin:8px 0 16px;padding-left:20px;}
+.doc-body li{font-size:14px;color:var(--ink-2);line-height:1.6;margin-bottom:7px;}
+.doc-body li b, .doc-body p b, .doc-body strong{color:var(--ink);font-weight:600;}
+.doc-body blockquote{border-left:2px solid var(--brd-2);padding:4px 0 4px 16px;margin:12px 0;color:var(--ink-3);font-style:italic;}
+.doc-body .doc-internal{border:1px dashed var(--brd-2);border-radius:var(--r);padding:2px 18px 12px;margin-top:16px;background:var(--surface);}
+.doc-body code{font-size:13px;background:var(--surface-2);padding:2px 6px;border-radius:6px;}
+
+
+/* ---------- GERADOR DE PROPOSTAS ---------- */
+.prop-form{max-width:640px;}
+.pf-block{margin-bottom:20px;}
+.pf-label{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;}
+.pf-input{width:100%;background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:14px 16px;color:var(--ink);font-size:14.5px;margin-bottom:10px;transition:border-color .2s;font-family:var(--sans);}
+.pf-input:focus{outline:none;border-color:var(--brd-2);}
+.pf-input::placeholder{color:var(--ink-3);}
+textarea.pf-input{resize:vertical;line-height:1.5;}
+.pf-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pf-svcs{display:flex;flex-direction:column;gap:10px;}
+.pf-svc{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:.18s var(--ease);}
+.pf-svc.on{border-color:var(--brd-2);background:var(--surface-2);}
+.pf-svc .chk{width:22px;height:22px;border-radius:7px;border:1px solid var(--brd-2);flex:none;display:grid;place-items:center;transition:.18s;}
+.pf-svc.on .chk{background:var(--ink);}
+.pf-svc.on .chk svg{stroke:#000;}
+.pf-svc .chk svg{width:14px;height:14px;fill:none;stroke:transparent;stroke-width:2.5;}
+.pf-svc h4{font-weight:700;font-size:15px;letter-spacing:-.02em;}
+.pf-svc .sub{font-size:12.5px;color:var(--ink-2);}
+.pf-scope{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.pf-scope .sc-nome{font-weight:700;font-size:16px;margin-bottom:12px;}
+.pf-scope textarea{min-height:120px;}
+.pf-actions{display:flex;gap:10px;margin-top:8px;}
+.pf-btn{flex:1;padding:15px;border-radius:100px;font-weight:600;font-size:14.5px;background:var(--surface-2);border:1px solid var(--brd-2);color:var(--ink);transition:.18s var(--ease);}
+.pf-btn.primary{background:var(--ink);color:#000;border-color:var(--ink);}
+.pf-btn:active{transform:scale(.98);}
+
+.prop-list{display:flex;flex-direction:column;gap:10px;max-width:640px;}
+.prop-empty{color:var(--ink-3);font-size:13.5px;padding:20px 2px;}
+.prop-card{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:16px 18px;display:flex;align-items:center;gap:14px;}
+.prop-card.done{opacity:.6;}
+.prop-card.arch{opacity:.45;}
+.prop-card .pc-main{flex:1;min-width:0;cursor:pointer;}
+.prop-card h4{font-weight:700;font-size:15px;letter-spacing:-.02em;margin-bottom:3px;}
+.prop-card .pc-sub{font-size:12.5px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.prop-card .pc-status{font-size:11px;font-weight:600;padding:4px 10px;border-radius:100px;background:var(--surface-3);color:var(--ink-2);white-space:nowrap;}
+.prop-card .pc-acts{display:flex;gap:6px;flex:none;}
+.prop-card .pc-acts button{width:34px;height:34px;border-radius:50%;background:var(--surface-2);border:1px solid var(--brd);display:grid;place-items:center;color:var(--ink-2);transition:.18s;}
+.prop-card .pc-acts button:hover{color:var(--ink);border-color:var(--brd-2);}
+.prop-card .pc-acts svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;}
+
+
+
+
+/* ===== textura/atmosfera verde (placeholder p/ imagem real do Supabase) ===== */
+.prop-view{--tex-green:radial-gradient(120% 90% at 80% 100%, rgba(60,110,40,.28), rgba(30,55,20,.10) 42%, transparent 70%);}
+.pp-cover{position:relative;overflow:hidden;}
+.pp-cover::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:var(--tex-green);
+  /* IMG-SUPABASE: trocar por background-image da textura verde hospedada */
+}
+.pp-cover::after{content:"";position:absolute;left:-10%;bottom:-30%;width:70%;height:70%;pointer-events:none;
+  background:radial-gradient(closest-side, rgba(90,150,60,.16), transparent 72%);filter:blur(30px);}
+/* número grande de fundo por seção (marca a etapa, estilo ref) */
+.pp-sec{position:relative;overflow:hidden;width:100%;}
+.pp-sec .pp-bignum{position:absolute;right:-2%;top:50%;transform:translateY(-50%);
+  font-weight:800;font-size:min(38vw,300px);line-height:.8;letter-spacing:-.06em;
+  color:rgba(255,255,255,.035);pointer-events:none;z-index:0;user-select:none;}
+.pp-sec > *{position:relative;z-index:1;}
+.pp-sec .pp-eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;font-weight:600;display:flex;align-items:center;gap:10px;}
+.pp-sec .pp-eyebrow::before{content:"";width:24px;height:1px;background:var(--ink-3);}
+
+/* ===== PROPOSTA NAVEGADA (snap + animação) ===== */
+.prop-view.on{scroll-snap-type:y proximity;}
+.pv-body.on{padding-top:0!important;}
+/* cada seção vira uma "página" que encaixa e respira */
+.pp-sec, .pp-cover{
+  scroll-snap-align:start;scroll-snap-stop:normal;
+  min-height:88vh;display:flex;flex-direction:column;justify-content:center;
+  padding:60px 0;margin-bottom:0!important;
+  opacity:0;transform:translateY(40px);
+  transition:opacity .7s var(--ease), transform .7s var(--ease);
+}
+.pp-cover{min-height:92vh;width:100%;}
+.pp-sec.in, .pp-cover.in{opacity:1;transform:translateY(0);}
+/* stagger interno: filhos entram em cascata */
+.pp-sec.in > *{animation:ppRise .6s var(--ease) both;}
+.pp-sec.in > *:nth-child(1){animation-delay:.05s}
+.pp-sec.in > *:nth-child(2){animation-delay:.13s}
+.pp-sec.in > *:nth-child(3){animation-delay:.21s}
+.pp-sec.in > *:nth-child(4){animation-delay:.29s}
+.pp-sec.in > *:nth-child(5){animation-delay:.37s}
+@keyframes ppRise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+/* títulos maiores, mais deck */
+.pp-sec h3{font-size:clamp(24px,6vw,34px);margin-bottom:22px;}
+.pp-sec > p:first-of-type{font-size:clamp(16px,2.4vw,19px);}
+.pp-eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;font-weight:600;}
+/* barra de progresso lateral (pontinhos) */
+.pp-progress{position:fixed;right:22px;top:14vh;bottom:14vh;z-index:83;width:2px;background:rgba(255,255,255,.14);border-radius:2px;}
+.pp-progress .track-fill{position:absolute;top:0;left:0;right:0;background:rgba(255,255,255,.35);border-radius:2px;height:0;transition:height .3s var(--ease);}
+.pp-progress .thumb{position:absolute;left:50%;top:0;width:11px;height:11px;border-radius:50%;background:var(--ink);transform:translate(-50%,-50%);box-shadow:0 0 12px rgba(255,255,255,.5);transition:top .35s var(--ease);}
+.pp-progress .tick{position:absolute;left:50%;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);transform:translate(-50%,-50%);cursor:pointer;}
+/* hint de scroll na capa */
+.pp-scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:var(--ink-3);font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px;animation:hintBob 2s ease-in-out infinite;}
+.pp-scroll-hint svg{width:18px;height:18px;stroke:var(--ink-3);fill:none;stroke-width:2;}
+@keyframes hintBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+@media(max-width:600px){.pp-progress{right:10px;} .pp-sec,.pp-cover{min-height:82vh;}}
+
+/* ===== PROPOSTA GUIADA (pp-) ===== */
+.pv-body{padding-top:0!important;}
+.pp-cover{min-height:78vh;display:flex;flex-direction:column;justify-content:center;text-align:center;border-bottom:1px solid var(--brd);margin-bottom:44px;position:relative;}
+.pp-cover .pp-logo{width:54px;height:54px;margin:0 auto 30px;}
+.pp-cover .pp-logo svg{width:100%;height:100%;}
+.pp-cover .pp-c-name{font-weight:800;font-size:clamp(30px,7vw,52px);letter-spacing:-.04em;line-height:1.08;}
+
+.pp-cover .pp-c-meta{font-size:12.5px;color:var(--ink-3);letter-spacing:.02em;margin-top:34px;}
+.pp-sec{margin-bottom:44px;scroll-margin-top:20px;}
+.pp-sec h3{font-weight:800;font-size:22px;letter-spacing:-.03em;margin-bottom:16px;}
+.pp-sec p{font-size:15px;color:var(--ink-2);line-height:1.7;margin-bottom:12px;}
+.pp-conceito{display:inline-block;font-weight:700;font-size:15px;letter-spacing:-.01em;padding:12px 22px;border:1px solid var(--brd-2);border-radius:100px;margin-top:8px;}
+.pp-flow{display:flex;flex-direction:column;gap:0;}
+.pp-flow-step{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:18px 20px;}
+.pp-fs-when{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px;}
+.pp-fs-what{font-weight:700;font-size:17px;letter-spacing:-.02em;margin-bottom:4px;}
+.pp-fs-d{font-size:13.5px;color:var(--ink-2);line-height:1.5;}
+.pp-flow-arrow{text-align:center;color:var(--ink-3);font-size:18px;padding:8px 0;}
+.pp-eg{margin-bottom:20px;}
+.pp-eg-t{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--brd);}
+.pp-eg ul,.pp-neg,.pp-resp ul{list-style:none;padding:0;margin:0;}
+.pp-eg li{font-size:14px;color:var(--ink-2);padding:5px 0 5px 18px;position:relative;line-height:1.5;}
+.pp-eg li::before{content:"";position:absolute;left:0;top:12px;width:5px;height:5px;border-radius:50%;background:var(--ink-3);}
+.pp-neg li{font-size:14px;color:var(--ink-3);padding:6px 0 6px 22px;position:relative;line-height:1.5;}
+.pp-neg li::before{content:"✕";position:absolute;left:0;color:var(--ink-3);font-size:12px;}
+.pp-nota{font-size:13px;color:var(--ink-3);font-style:italic;margin-top:12px;}
+.pp-resp{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.pp-r-t{font-weight:700;font-size:14px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--brd);}
+.pp-resp li{font-size:13.5px;color:var(--ink-2);padding:5px 0 5px 16px;position:relative;line-height:1.45;}
+.pp-resp li::before{content:"";position:absolute;left:0;top:11px;width:4px;height:4px;border-radius:50%;background:var(--ink-3);}
+.pp-cron{display:flex;flex-direction:column;}
+.pp-cron-row{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--brd);font-size:14px;color:var(--ink-2);}
+.pp-cron-p{color:var(--ink);font-weight:600;}
+.pp-inv{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:6px 20px;}
+.pp-inv-row{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--brd);font-size:14.5px;color:var(--ink-2);}
+.pp-inv-v{color:var(--ink);font-weight:600;}
+.pp-inv-total{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;}
+.pp-inv-total>span:first-child{font-size:13px;color:var(--ink-3);}
+.pp-inv-tv{font-weight:800;font-size:26px;letter-spacing:-.03em;}
+.pp-cond-row{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--brd);font-size:14px;}
+.pp-cond-row .k{color:var(--ink-3);}
+.pp-cond-row .v{color:var(--ink);font-weight:600;text-align:right;}
+.pp-provas{display:flex;flex-direction:column;gap:14px;}
+.pp-prova{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:16px 18px;}
+.pp-pr-t{font-weight:700;font-size:15px;margin-bottom:5px;}
+.pp-pr-d{font-size:13.5px;color:var(--ink-2);line-height:1.55;}
+.pp-depois .pp-ad{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+.pp-ad>div{border:1px solid var(--brd);border-radius:var(--r);padding:16px 18px;font-size:13.5px;line-height:1.55;}
+.pp-ad-b{color:var(--ink-3);}
+.pp-ad-d{color:var(--ink-2);background:var(--surface);}
+.pp-ad>div span{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;color:var(--ink-3);font-weight:700;}
+.pp-fecho{font-size:16px;color:var(--ink);font-weight:600;line-height:1.5;letter-spacing:-.01em;}
+.pp-steps{display:flex;flex-direction:column;gap:10px;}
+.pp-step{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:14px 18px;}
+.pp-st-n{font-weight:800;font-size:14px;color:var(--ink-3);}
+.pp-step>span:last-child{font-size:14.5px;font-weight:600;}
+@media(min-width:900px){.pp-resp,.pp-depois .pp-ad{gap:24px;}}
+
+/* ===== PREVIEW DA PROPOSTA (o que o cliente vê) ===== */
+.prop-view{position:fixed;inset:0;z-index:80;background:#000;overflow-y:auto;overflow-x:hidden;display:none;}
+.prop-view.on{display:block;animation:fade .4s var(--ease);}
+.pv-close{position:fixed;top:20px;right:20px;z-index:82;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid var(--brd-2);backdrop-filter:blur(20px);display:grid;place-items:center;color:var(--ink);font-size:20px;}
+.pv-wrap{max-width:680px;margin:0 auto;padding:0 26px 80px;width:100%;}
+@media(min-width:900px){.pv-wrap{max-width:720px;}}
+/* boas-vindas */
+.pv-welcome{position:relative;min-height:100dvh;display:flex;flex-direction:column;justify-content:space-between;text-align:left;padding:0;margin:0 -26px;}
+.pv-welcome::before{content:"";position:absolute;top:0;left:0;right:0;height:62%;pointer-events:none;
+  background:
+    radial-gradient(120% 80% at 78% 8%, rgba(255,255,255,.22), rgba(255,255,255,.05) 34%, transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,.06), transparent 55%);}
+.pv-welcome::after{content:"";position:absolute;top:8%;right:-6%;width:60%;height:44%;pointer-events:none;opacity:.5;
+  background:radial-gradient(closest-side, rgba(255,255,255,.14), transparent 70%);filter:blur(30px);}
+.pv-w-top{position:relative;padding:30px 30px 0;display:flex;align-items:center;gap:10px;}
+.pv-w-top .pv-logo{width:34px;height:34px;}
+.pv-w-top .pv-logo svg{width:100%;height:100%;}
+.pv-w-top .pv-brand{font-weight:600;font-size:15px;letter-spacing:.01em;}
+.pv-w-btm{position:relative;padding:0 30px 42px;}
+.pv-w-btm .pv-hi{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px;}
+.pv-w-btm h1{font-weight:800;font-size:clamp(34px,10vw,52px);letter-spacing:-.045em;line-height:1.02;margin-bottom:8px;}
+.pv-w-btm h1 .emp{display:block;font-size:.5em;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-top:6px;}
+.pv-w-btm p{font-size:15px;color:var(--ink-2);line-height:1.6;max-width:40ch;margin:18px 0 30px;}
+.pv-enter{width:100%;padding:17px;border-radius:100px;background:var(--ink);color:#000;font-weight:600;font-size:15.5px;border:none;cursor:pointer;transition:transform .18s;}
+.pv-enter:active{transform:scale(.98);}
+/* corpo */
+.pv-body{display:none;padding-top:60px;}
+.pv-body.on{display:block;animation:fade .5s var(--ease);}
+.pv-head{text-align:center;margin-bottom:50px;}
+.pv-head .pv-logo-sm{width:52px;height:52px;margin:0 auto 24px;}
+.pv-head .pv-logo-sm svg{width:100%;height:100%;}
+.pv-head .pv-for{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px;}
+.pv-head h2{font-weight:800;font-size:32px;letter-spacing:-.035em;}
+.pv-head .pv-emp{font-size:15px;color:var(--ink-2);margin-top:6px;}
+.pv-msg{font-size:15px;color:var(--ink-2);line-height:1.7;text-align:center;max-width:48ch;margin:0 auto 50px;padding-bottom:40px;border-bottom:1px solid var(--brd);}
+.pv-svc{margin-bottom:40px;}
+.pv-svc .pv-s-eye{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;}
+.pv-svc h3{font-weight:800;font-size:28px;letter-spacing:-.03em;margin-bottom:8px;}
+.pv-svc .pv-s-resume{font-size:15px;color:var(--ink-2);line-height:1.6;margin-bottom:20px;}
+.pv-svc .pv-scope{font-size:14.5px;color:var(--ink-2);line-height:1.7;white-space:pre-wrap;margin-bottom:20px;}
+.pv-invest{display:flex;align-items:baseline;justify-content:space-between;padding:20px 22px;background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);margin-bottom:12px;}
+.pv-invest .k{font-size:13px;color:var(--ink-3);}
+.pv-invest .v{font-weight:800;font-size:24px;letter-spacing:-.03em;}
+.pv-jornada{margin:44px 0;padding:30px 0;border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);}
+.pv-jornada .pv-j-t{font-weight:700;font-size:18px;margin-bottom:20px;text-align:center;}
+.pv-jornada .pv-j-steps{display:flex;flex-direction:column;gap:14px;}
+.pv-jstep{display:flex;gap:14px;align-items:flex-start;}
+.pv-jstep .pv-j-n{width:30px;height:30px;border-radius:50%;background:var(--surface-2);border:1px solid var(--brd-2);display:grid;place-items:center;font-size:13px;font-weight:700;flex:none;}
+.pv-jstep h4{font-weight:700;font-size:15px;margin-bottom:2px;}
+.pv-jstep p{font-size:13px;color:var(--ink-2);line-height:1.5;}
+.pv-cond{display:flex;flex-direction:column;gap:12px;margin-top:30px;}
+.pv-cond .pv-c-row{display:flex;justify-content:space-between;gap:16px;font-size:14px;padding:12px 0;border-bottom:1px solid var(--brd);}
+.pv-cond .pv-c-row .k{color:var(--ink-3);}
+.pv-cond .pv-c-row .v{color:var(--ink);font-weight:600;text-align:right;}
+.pv-video{display:block;text-align:center;margin-top:30px;padding:15px;border-radius:100px;background:var(--surface-2);border:1px solid var(--brd-2);color:var(--ink);font-weight:600;font-size:14px;text-decoration:none;}
+
+/* ===== seção quem sou (final) ===== */
+.pp-quem{align-items:flex-start;}
+.pp-quem-foto{width:100%;max-width:340px;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;margin-bottom:28px;
+  background:linear-gradient(160deg,#1e1e22,#141416);border:1px solid var(--brd);
+  display:grid;place-items:center;position:relative;}
+.pp-quem-foto::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 70% 0%, rgba(90,150,60,.14), transparent 60%);}
+.pp-quem-foto img{width:100%;height:100%;object-fit:cover;}
+.pp-foto-ph{font-weight:800;font-size:40px;letter-spacing:-.03em;color:var(--ink-3);position:relative;}
+.pp-quem-p{font-size:clamp(17px,2.6vw,21px);color:var(--ink);line-height:1.55;font-weight:500;letter-spacing:-.01em;margin-bottom:18px;max-width:30ch;}
+.pp-quem-fecho{font-size:clamp(20px,3.4vw,28px);font-weight:800;letter-spacing:-.03em;color:var(--ink);}
+@media(min-width:760px){
+  .pp-quem{flex-direction:row;gap:44px;align-items:center;}
+  .pp-quem-foto{margin-bottom:0;flex:none;}
+}
+
+.pv-foot{text-align:center;margin-top:50px;color:var(--ink-3);font-size:13px;}
+.pv-foot .pv-f-logo{width:36px;height:36px;margin:0 auto 12px;opacity:.6;}
+.pv-foot .pv-f-logo svg{width:100%;height:100%;}
+
+/* ---------- CALCULADORA ---------- */
+.calc-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
+.calc-row label{font-size:13px;color:var(--ink-2);font-weight:600;}
+.seg{display:flex;gap:4px;background:var(--surface-2);border:1px solid var(--brd);border-radius:100px;padding:4px;}
+.seg button{padding:8px 14px;border-radius:100px;font-size:12.5px;font-weight:600;color:var(--ink-3);white-space:nowrap;transition:.2s var(--ease);}
+.seg button.on{background:var(--surface-3);color:var(--ink);box-shadow:var(--relevo);}
+.calc-field{padding:16px 0;border-top:1px solid var(--brd);}
+.calc-field:first-of-type{border-top:none;}
+.cf-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.cf-head span{font-size:13.5px;color:var(--ink-2);}
+.cf-head b{font-size:16px;font-weight:700;letter-spacing:-.02em;}
+.cf-hint{font-size:11.5px;color:var(--ink-3);margin-top:8px;}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:5px;background:var(--surface-3);outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--ink);border:3px solid var(--surface);box-shadow:0 2px 8px rgba(0,0,0,.5);cursor:pointer;}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--ink);border:3px solid var(--surface);cursor:pointer;}
+.calc-out .big-hour{font-size:44px;font-weight:800;letter-spacing:-.04em;line-height:1;}
+.calc-out .verdict{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;font-size:13.5px;font-weight:700;margin:14px 0 18px;}
+.calc-out .verdict .pip{width:9px;height:9px;border-radius:50%;background:currentColor;}
+.v-green{background:var(--surface-3);color:var(--ink);border:1px solid var(--brd-2);}
+.v-amber{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--brd);}
+.v-red{background:transparent;color:var(--ink-3);border:1px solid var(--brd);}
+.calc-out .lines{display:flex;flex-direction:column;gap:0;}
+.calc-out .ln{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--brd);font-size:13.5px;}
+.calc-out .ln:first-child{border-top:none;}
+.calc-out .ln .k{color:var(--ink-2);}
+.calc-out .ln .v{font-weight:700;letter-spacing:-.02em;}
+.calc-out .note{font-size:12px;color:var(--ink-3);margin-top:16px;line-height:1.5;}
+@media(min-width:900px){.calc{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;} .calc-out{margin-top:0!important;}}
+
+
+/* ---------- FUNIL DE QUALIFICAÇÃO ---------- */
+.fpick{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.fp-ic{width:46px;height:46px;border-radius:13px;flex:none;display:grid;place-items:center;}
+.fp-ic svg{width:22px;height:22px;}
+.fpick h4{font-weight:700;font-size:16px;letter-spacing:-.02em;margin-bottom:3px;}
+.fpick p{font-size:12.5px;color:var(--ink-2);}
+.fpick .arrow{margin-left:auto;color:var(--ink-3);font-size:20px;}
+.fp-ic.leaf{background:var(--surface-3);color:var(--ink);}
+.fp-ic.terra{background:var(--surface-3);color:var(--ink);}
+
+.fun-top{display:flex;align-items:center;gap:14px;padding:20px 2px 8px;}
+.fun-back{width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--brd);display:grid;place-items:center;font-size:18px;color:var(--ink-2);flex:none;}
+.fun-top .ft-t{font-weight:700;font-size:17px;letter-spacing:-.02em;}
+.fun-top .ft-s{font-size:12px;color:var(--ink-3);}
+.fun-prog{display:flex;gap:6px;margin:14px 2px 20px;}
+.fun-prog .seg{flex:1;height:5px;border-radius:5px;background:var(--surface-3);overflow:hidden;transition:.3s var(--ease);}
+.fun-prog .seg.done-g{background:var(--ink);}
+.fun-prog .seg.done-a{background:var(--ink-2);}
+.fun-prog .seg.done-r{background:var(--ink-3);}
+.fun-prog .seg.cur{background:var(--brd-2);}
+
+.gate{animation:fade .35s var(--ease);}
+.gate .g-n{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;}
+.gate .g-q{font-weight:700;font-size:23px;letter-spacing:-.03em;line-height:1.2;margin-bottom:22px;}
+.g-opt{width:100%;text-align:left;background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:16px 18px;margin-bottom:12px;cursor:pointer;transition:.18s var(--ease);display:flex;align-items:center;gap:14px;}
+.g-opt:hover{background:var(--surface-2);border-color:var(--brd-2);}
+.g-opt .dot{width:11px;height:11px;border-radius:50%;flex:none;}
+.g-opt.g .dot{background:var(--ink);} .g-opt.a .dot{background:var(--ink-2);} .g-opt.r .dot{background:var(--ink-3);}
+.g-opt .g-o-t{display:block;font-weight:600;font-size:15px;margin-bottom:4px;}
+.g-opt .g-o-s{display:block;font-size:12.5px;color:var(--ink-2);line-height:1.45;}
+
+/* veredito */
+.verd{animation:fade .4s var(--ease);text-align:center;padding:20px 0;}
+.verd .v-ic{width:74px;height:74px;border-radius:50%;margin:0 auto 20px;display:grid;place-items:center;}
+.verd .v-ic svg{width:34px;height:34px;fill:none;stroke-width:2;}
+.verd.ok .v-ic{background:var(--surface-3);box-shadow:var(--relevo);}.verd.ok .v-ic svg{stroke:var(--ink);}
+.verd.no .v-ic{background:var(--surface-2);border:1px solid var(--brd);}.verd.no .v-ic svg{stroke:var(--ink-3);}
+.verd h2{font-weight:800;font-size:28px;letter-spacing:-.03em;margin-bottom:10px;}
+.verd .v-sub{font-size:15px;color:var(--ink-2);line-height:1.55;max-width:38ch;margin:0 auto 20px;}
+.verd .v-plan{display:inline-block;font-weight:700;font-size:15px;padding:11px 24px;border-radius:100px;background:var(--surface-3);color:var(--ink);border:1px solid var(--brd-2);box-shadow:var(--relevo);margin-bottom:8px;}
+.verd .warn{margin-top:20px;text-align:left;border:1px solid var(--brd);background:var(--surface);border-radius:var(--r);padding:16px 18px;}
+.verd .warn .wh{font-size:12px;font-weight:700;color:var(--ink-2);letter-spacing:.04em;margin-bottom:10px;text-transform:uppercase;}
+.verd .warn ul{margin:0;padding-left:18px;}
+.verd .warn li{font-size:13px;color:var(--ink-2);line-height:1.5;margin-bottom:5px;text-align:left;}
+.verd .redo{margin-top:22px;font-size:13.5px;font-weight:600;color:var(--ink-2);padding:12px 24px;border-radius:100px;border:1px solid var(--brd-2);background:var(--surface);}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="hdr">
+    <span class="logo" id="logo"></span>
+    <label class="search">
+      <svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="q" placeholder="Buscar serviço, fase, filtro…" autocomplete="off">
+    </label>
+  </div>
+
+  <!-- INÍCIO -->
+  <section class="view on" id="v-inicio">
+    <div id="searchResults"></div>
+    <div id="home">
+      <div class="welcome">
+        <h1>Painel de Serviços oFruto</h1>
+        <p>Tudo o que a gente planta, num lugar só. Os serviços, a metodologia, os filtros de qualificação e a matriz de margem. Navegue pela barra.</p>
+      </div>
+      <div class="eye" style="margin-top:34px">Serviço em foco</div>
+      <div class="hero-card" id="heroCard"></div>
+      <div class="grid two" id="miniServices" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <!-- SERVIÇOS -->
+  <section class="view" id="v-servicos">
+    <div class="phead"><h1>Serviços</h1><p>Toque num cartão pra abrir a ficha.</p></div>
+    <div id="serviceCards" style="margin-top:14px"></div>
+  </section>
+
+  <!-- METODOLOGIA -->
+  <section class="view" id="v-metodo">
+    <div class="phead"><h1>Metodologia</h1><p>Solo, Semeadura, Cultivo, Colheita.</p></div>
+    <div class="grid two" id="methodGrid" style="margin-top:14px"></div>
+    <div class="sec-h">Como cada serviço percorre</div>
+    <div id="methodMap"></div>
+  </section>
+
+  <!-- FILTRO -->
+  <section class="view" id="v-filtro">
+    <!-- seleção -->
+    <div id="filtroPick">
+      <div class="phead"><h1>Filtros</h1><p>Responda porta por porta. No fim, o veredito.</p></div>
+      <div style="margin-top:16px">
+        <div class="card fpick" data-funil="ofruto">
+          <div class="fp-ic leaf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg></div>
+          <div><h4>Filtro oFruto</h4><p>Plantio e Pomar · pessoa cuja marca é o rosto</p></div>
+          <span class="arrow">›</span>
+        </div>
+        <div class="card fpick" data-funil="marca-viva">
+          <div class="fp-ic terra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg></div>
+          <div><h4>Filtro Marca Viva</h4><p>Sociedade com a Brenda · marca sem rosto</p></div>
+          <span class="arrow">›</span>
+        </div>
+      </div>
+    </div>
+    <!-- funil ativo -->
+    <div id="filtroRun" style="display:none"></div>
+  </section>
+
+  <!-- MATRIZ -->
+  <section class="view" id="v-matriz">
+    <div class="phead"><h1>Matriz</h1><p>Ajuste as variáveis e veja se o projeto compensa.</p></div>
+
+    <div class="calc" style="margin-top:16px">
+      <!-- controles -->
+      <div class="card" style="padding:20px">
+        <div class="calc-row">
+          <label>Serviço</label>
+          <div class="seg" id="cSvc"></div>
+        </div>
+
+        <div class="calc-field">
+          <div class="cf-head"><span>Vídeos por mês</span><b id="vVid">8</b></div>
+          <input type="range" id="rVid" min="4" max="20" step="1" value="8">
+          <div class="cf-hint" id="hVid">2 por semana</div>
+        </div>
+
+        <div class="calc-field">
+          <div class="cf-head"><span>Edição por vídeo</span><b id="vEdit">2 h</b></div>
+          <input type="range" id="rEdit" min="1" max="5" step="0.5" value="2">
+          <div class="cf-hint">tempo de relógio por vídeo bem feito</div>
+        </div>
+
+        <div class="calc-field">
+          <div class="cf-head"><span>Diárias de gravação / mês</span><b id="vDia">2</b></div>
+          <input type="range" id="rDia" min="1" max="4" step="1" value="2">
+        </div>
+
+        <div class="calc-field">
+          <div class="cf-head"><span>Horas por diária</span><b id="vHd">8 h</b></div>
+          <input type="range" id="rHd" min="4" max="10" step="1" value="8">
+        </div>
+
+        <div class="calc-field">
+          <div class="cf-head"><span>Sua hora (piso)</span><b id="vHora">R$50</b></div>
+          <input type="range" id="rHora" min="40" max="120" step="5" value="50">
+        </div>
+      </div>
+
+      <!-- resultado -->
+      <div class="card calc-out" id="cOut" style="padding:22px;margin-top:14px"></div>
+    </div>
+  </section>
+
+  <!-- DOC (documento vivo) -->
+  <section class="view" id="v-doc">
+    <div class="phead"><h1>Documento vivo</h1><p>Tudo que a gente construiu, na íntegra.</p></div>
+    <div class="doc-seg" id="docSeg"></div>
+    <div class="doc-nav" id="docNav"></div>
+    <article class="doc-body" id="docBody"></article>
+  </section>
+
+  <!-- PROPOSTAS -->
+  <section class="view" id="v-propostas">
+    <div class="phead"><h1>Propostas</h1><p>Monte, personalize e gere. Preenchimento automático, tudo editável.</p></div>
+
+    <div class="prop-form" id="propForm">
+      <!-- 1. serviços -->
+      <div class="pf-block">
+        <div class="pf-label">Serviços na proposta</div>
+        <div class="pf-svcs" id="pfSvcs"></div>
+      </div>
+
+      <!-- 2. cliente -->
+      <div class="pf-block">
+        <div class="pf-label">Cliente</div>
+        <input class="pf-input" id="pfNome" placeholder="Nome do cliente">
+        <input class="pf-input" id="pfEmpresa" placeholder="Empresa (opcional)">
+        <input class="pf-input" id="pfArea" placeholder="Área / especialidade do cliente (ex: nutrição, advocacia)">
+      </div>
+
+      <!-- 3. boas-vindas -->
+      <div class="pf-block">
+        <div class="pf-label">Mensagem de boas-vindas</div>
+        <textarea class="pf-input" id="pfWelcome" rows="3" placeholder="A primeira coisa que o cliente vê. Ex: Olá, [nome]. Preparei essa proposta pensando na sua marca…"></textarea>
+      </div>
+
+      <!-- 3b. textos comerciais editáveis (personalizar) -->
+      <div class="pf-block">
+        <div class="pf-label">Leitura do cliente (personalize)</div>
+        <textarea class="pf-input" id="pfContexto" rows="4" placeholder="Contexto: por que esse cliente está recebendo a proposta. Deixe em branco pra usar o texto padrão do molde."></textarea>
+        <textarea class="pf-input" id="pfObjetivo" rows="3" placeholder="Objetivo específico deste cliente. Em branco = texto padrão."></textarea>
+        <input class="pf-input" id="pfInicio" placeholder="Início previsto (ex: próxima semana, 01/03)">
+      </div>
+
+      <!-- 4. escopo editável por serviço -->
+      <div class="pf-block" id="pfScopeBlock">
+        <div class="pf-label">Escopo e investimento (editável)</div>
+        <div id="pfScopes"></div>
+      </div>
+
+      <!-- 5. extras -->
+      <div class="pf-block">
+        <div class="pf-label">Condições</div>
+        <div class="pf-grid2">
+          <input class="pf-input" id="pfValidade" placeholder="Validade (ex: 15 dias)">
+          <input class="pf-input" id="pfPagamento" placeholder="Forma de pagamento">
+        </div>
+        <input class="pf-input" id="pfVideo" placeholder="Link de vídeo ou material (opcional)">
+        <textarea class="pf-input" id="pfObs" rows="2" placeholder="Observações (opcional)"></textarea>
+      </div>
+
+      <div class="pf-actions">
+        <button class="pf-btn primary" id="pfGerar">Gerar proposta</button>
+        <button class="pf-btn" id="pfPreview">Ver preview</button>
+      </div>
+    </div>
+
+    <!-- lista de propostas geradas -->
+    <div class="sec-h" style="margin-top:34px">Propostas geradas</div>
+    <div class="prop-list" id="propList"></div>
+    <div class="prop-empty" id="propEmpty">Nenhuma proposta ainda. Preencha acima e gere a primeira.</div>
+  </section>
+
+</div>
+
+<nav class="tabbar">
+  <button class="tab on" data-view="inicio"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span class="lbl">Início</span></button>
+  <button class="tab" data-view="servicos"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/></svg><span class="lbl">Serviços</span></button>
+  <button class="tab" data-view="filtro"><svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg><span class="lbl">Filtro</span></button>
+  <button class="tab" data-view="matriz"><svg viewBox="0 0 24 24"><path d="M4 19V5m5 14V9m5 10V4m5 15v-7"/></svg><span class="lbl">Matriz</span></button>
+  <button class="tab" data-view="doc"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg><span class="lbl">Doc</span></button>
+  <button class="tab" data-view="propostas"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h5"/><path d="M15 3v4"/></svg><span class="lbl">Propostas</span></button>
+</nav>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet"><div class="grip"></div><div id="sheetBody"></div></div>
+
+<div class="prop-view" id="propView">
+  <button class="pv-close" id="pvClose">✕</button>
+  <div class="pv-wrap">
+    <div class="pv-welcome" id="pvWelcome"></div>
+    <div class="pv-body" id="pvBody"></div>
+  </div>
+</div>
+
+<script id="logosvg" type="text/plain"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1080" zoomAndPan="magnify" viewBox="0 0 810 1012.49997" height="1350" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><g/><clipPath id="25db0e4602"><path d="M 578.292969 453.359375 L 591.789062 453.359375 L 591.789062 466.855469 L 578.292969 466.855469 Z M 578.292969 453.359375 " clip-rule="nonzero"/></clipPath></defs><path fill="#ffffff" d="M 581.722656 460.085938 C 581.722656 458.164062 583.160156 456.589844 585.207031 456.589844 C 586.453125 456.589844 587.207031 457.023438 587.855469 457.640625 L 587.09375 458.519531 C 586.550781 458.019531 585.972656 457.679688 585.199219 457.679688 C 583.90625 457.679688 582.96875 458.742188 582.96875 460.085938 C 582.96875 461.410156 583.90625 462.488281 585.199219 462.488281 C 586.03125 462.488281 586.5625 462.152344 587.140625 461.609375 L 587.902344 462.382812 C 587.199219 463.117188 586.425781 463.582031 585.160156 463.582031 C 583.191406 463.582031 581.722656 462.046875 581.722656 460.085938 " fill-opacity="1" fill-rule="nonzero"/><g clip-path="url(#25db0e4602)"><path fill="#ffffff" d="M 585.117188 454.53125 C 584.351562 454.53125 583.613281 454.679688 582.917969 454.976562 C 582.242188 455.261719 581.640625 455.667969 581.121094 456.1875 C 580.601562 456.707031 580.191406 457.3125 579.910156 457.984375 C 579.613281 458.679688 579.464844 459.421875 579.464844 460.183594 C 579.464844 460.945312 579.613281 461.6875 579.910156 462.382812 C 580.191406 463.058594 580.601562 463.660156 581.121094 464.179688 C 581.640625 464.699219 582.242188 465.105469 582.917969 465.390625 C 583.613281 465.6875 584.351562 465.835938 585.117188 465.835938 C 585.878906 465.835938 586.621094 465.6875 587.316406 465.390625 C 587.988281 465.105469 588.59375 464.699219 589.113281 464.179688 C 589.632812 463.660156 590.039062 463.058594 590.324219 462.382812 C 590.621094 461.6875 590.769531 460.945312 590.769531 460.183594 C 590.769531 459.421875 590.621094 458.679688 590.324219 457.984375 C 590.039062 457.3125 589.632812 456.707031 589.113281 456.1875 C 588.59375 455.667969 587.988281 455.261719 587.316406 454.976562 C 586.621094 454.679688 585.878906 454.53125 585.117188 454.53125 Z M 585.117188 467.007812 C 584.195312 467.007812 583.300781 466.828125 582.460938 466.472656 C 581.648438 466.128906 580.917969 465.636719 580.292969 465.007812 C 579.664062 464.382812 579.171875 463.652344 578.828125 462.839844 C 578.472656 462 578.292969 461.105469 578.292969 460.183594 C 578.292969 459.261719 578.472656 458.371094 578.828125 457.527344 C 579.171875 456.714844 579.664062 455.984375 580.292969 455.359375 C 580.917969 454.734375 581.648438 454.242188 582.460938 453.898438 C 583.300781 453.542969 584.195312 453.359375 585.117188 453.359375 C 586.039062 453.359375 586.929688 453.542969 587.773438 453.898438 C 588.585938 454.242188 589.316406 454.734375 589.941406 455.359375 C 590.566406 455.984375 591.058594 456.714844 591.402344 457.527344 C 591.757812 458.371094 591.941406 459.261719 591.941406 460.183594 C 591.941406 461.105469 591.757812 462 591.402344 462.839844 C 591.058594 463.652344 590.566406 464.382812 589.941406 465.007812 C 589.316406 465.636719 588.585938 466.128906 587.773438 466.472656 C 586.929688 466.828125 586.039062 467.007812 585.117188 467.007812 " fill-opacity="1" fill-rule="nonzero"/></g><g fill="#ffffff" fill-opacity="1"><g transform="translate(240.740787, 527.215377)"><g><path d="M 37.625 1.140625 C 32.914062 1.140625 28.5 0.257812 24.375 -1.5 C 20.25 -3.269531 16.625 -5.710938 13.5 -8.828125 C 10.382812 -11.953125 7.941406 -15.570312 6.171875 -19.6875 C 4.410156 -23.8125 3.53125 -28.226562 3.53125 -32.9375 C 3.53125 -37.644531 4.410156 -42.046875 6.171875 -46.140625 C 7.941406 -50.234375 10.382812 -53.835938 13.5 -56.953125 C 16.625 -60.078125 20.234375 -62.519531 24.328125 -64.28125 C 28.421875 -66.050781 32.820312 -66.9375 37.53125 -66.9375 C 42.238281 -66.9375 46.65625 -66.050781 50.78125 -64.28125 C 54.90625 -62.519531 58.523438 -60.078125 61.640625 -56.953125 C 64.765625 -53.835938 67.207031 -50.234375 68.96875 -46.140625 C 70.738281 -42.046875 71.625 -37.644531 71.625 -32.9375 C 71.625 -28.226562 70.738281 -23.8125 68.96875 -19.6875 C 67.207031 -15.570312 64.765625 -11.953125 61.640625 -8.828125 C 58.523438 -5.710938 54.921875 -3.269531 50.828125 -1.5 C 46.734375 0.257812 42.332031 1.140625 37.625 1.140625 Z M 37.53125 -53.875 C 33.820312 -53.875 30.453125 -52.929688 27.421875 -51.046875 C 24.390625 -49.160156 21.988281 -46.640625 20.21875 -43.484375 C 18.457031 -40.335938 17.578125 -36.820312 17.578125 -32.9375 C 17.578125 -29.050781 18.457031 -25.519531 20.21875 -22.34375 C 21.988281 -19.164062 24.390625 -16.648438 27.421875 -14.796875 C 30.453125 -12.941406 33.851562 -12.015625 37.625 -12.015625 C 41.332031 -12.015625 44.703125 -12.941406 47.734375 -14.796875 C 50.765625 -16.648438 53.160156 -19.164062 54.921875 -22.34375 C 56.691406 -25.519531 57.578125 -29.050781 57.578125 -32.9375 C 57.578125 -36.820312 56.675781 -40.335938 54.875 -43.484375 C 53.082031 -46.640625 50.671875 -49.160156 47.640625 -51.046875 C 44.609375 -52.929688 41.238281 -53.875 37.53125 -53.875 Z M 37.53125 -53.875 "/></g></g></g><g fill="#ffffff" fill-opacity="1"><g transform="translate(306.438682, 527.215377)"><g><path d="M 19.953125 0 L 6.265625 0 L 6.265625 -65.796875 L 41.234375 -65.796875 L 41.234375 -53.421875 L 19.953125 -53.421875 L 19.953125 -41.15625 L 44.6875 -41.15625 L 44.6875 -28.875 L 19.953125 -28.875 Z M 19.953125 0 "/></g></g></g><g fill="#ffffff" fill-opacity="1"><g transform="translate(344.320801, 527.215377)"><g><path d="M 26.84375 -11.390625 L 19.953125 -11.390625 L 19.953125 0 L 6.265625 0 L 6.265625 -65.796875 L 29.140625 -65.796875 C 33.023438 -65.796875 36.613281 -65.128906 39.90625 -63.796875 C 43.207031 -62.472656 46.09375 -60.617188 48.5625 -58.234375 C 51.039062 -55.859375 52.972656 -53.109375 54.359375 -49.984375 C 55.742188 -46.859375 56.4375 -43.503906 56.4375 -39.921875 C 56.4375 -34.035156 55.109375 -28.972656 52.453125 -24.734375 C 49.804688 -20.492188 46.1875 -17.3125 41.59375 -15.1875 L 55.8125 0 L 37.625 0 Z M 19.953125 -23.75 L 25.609375 -23.75 C 31.023438 -23.75 35.175781 -25.046875 38.0625 -27.640625 C 40.945312 -30.234375 42.390625 -33.972656 42.390625 -38.859375 C 42.390625 -41.566406 41.859375 -44.007812 40.796875 -46.1875 C 39.734375 -48.363281 38.15625 -50.113281 36.0625 -51.4375 C 33.976562 -52.757812 31.378906 -53.421875 28.265625 -53.421875 L 19.953125 -53.421875 Z M 19.953125 -23.75 "/></g></g></g><g fill="#ffffff" fill-opacity="1"><g transform="translate(394.477181, 527.215377)"><g><path d="M 34.09375 1.140625 C 27.675781 1.140625 22.359375 -0.222656 18.140625 -2.953125 C 13.929688 -5.691406 10.796875 -9.445312 8.734375 -14.21875 C 6.679688 -18.988281 5.65625 -24.40625 5.65625 -30.46875 L 5.65625 -65.796875 L 19.34375 -65.796875 L 19.34375 -28.171875 C 19.34375 -22.992188 20.59375 -19.003906 23.09375 -16.203125 C 25.59375 -13.410156 29.257812 -12.015625 34.09375 -12.015625 C 39.207031 -12.015625 42.925781 -13.46875 45.25 -16.375 C 47.582031 -19.289062 48.75 -23.222656 48.75 -28.171875 L 48.75 -65.796875 L 62.265625 -65.796875 L 62.265625 -29.3125 C 62.265625 -22.957031 61.128906 -17.5 58.859375 -12.9375 C 56.585938 -8.375 53.347656 -4.882812 49.140625 -2.46875 C 44.929688 -0.0625 39.914062 1.140625 34.09375 1.140625 Z M 34.09375 1.140625 "/></g></g></g><g fill="#ffffff" fill-opacity="1"><g transform="translate(452.934142, 527.215377)"><g><path d="M 31.609375 0 L 17.921875 0 L 17.921875 -53.421875 L 1.671875 -53.421875 L 1.671875 -65.796875 L 48.921875 -65.796875 L 48.921875 -53.421875 L 31.609375 -53.421875 Z M 31.609375 0 "/></g></g></g><g fill="#ffffff" fill-opacity="1"><g transform="translate(494.083504, 527.215377)"><g><path d="M 37.625 1.140625 C 32.914062 1.140625 28.5 0.257812 24.375 -1.5 C 20.25 -3.269531 16.625 -5.710938 13.5 -8.828125 C 10.382812 -11.953125 7.941406 -15.570312 6.171875 -19.6875 C 4.410156 -23.8125 3.53125 -28.226562 3.53125 -32.9375 C 3.53125 -37.644531 4.410156 -42.046875 6.171875 -46.140625 C 7.941406 -50.234375 10.382812 -53.835938 13.5 -56.953125 C 16.625 -60.078125 20.234375 -62.519531 24.328125 -64.28125 C 28.421875 -66.050781 32.820312 -66.9375 37.53125 -66.9375 C 42.238281 -66.9375 46.65625 -66.050781 50.78125 -64.28125 C 54.90625 -62.519531 58.523438 -60.078125 61.640625 -56.953125 C 64.765625 -53.835938 67.207031 -50.234375 68.96875 -46.140625 C 70.738281 -42.046875 71.625 -37.644531 71.625 -32.9375 C 71.625 -28.226562 70.738281 -23.8125 68.96875 -19.6875 C 67.207031 -15.570312 64.765625 -11.953125 61.640625 -8.828125 C 58.523438 -5.710938 54.921875 -3.269531 50.828125 -1.5 C 46.734375 0.257812 42.332031 1.140625 37.625 1.140625 Z M 37.53125 -53.875 C 33.820312 -53.875 30.453125 -52.929688 27.421875 -51.046875 C 24.390625 -49.160156 21.988281 -46.640625 20.21875 -43.484375 C 18.457031 -40.335938 17.578125 -36.820312 17.578125 -32.9375 C 17.578125 -29.050781 18.457031 -25.519531 20.21875 -22.34375 C 21.988281 -19.164062 24.390625 -16.648438 27.421875 -14.796875 C 30.453125 -12.941406 33.851562 -12.015625 37.625 -12.015625 C 41.332031 -12.015625 44.703125 -12.941406 47.734375 -14.796875 C 50.765625 -16.648438 53.160156 -19.164062 54.921875 -22.34375 C 56.691406 -25.519531 57.578125 -29.050781 57.578125 -32.9375 C 57.578125 -36.820312 56.675781 -40.335938 54.875 -43.484375 C 53.082031 -46.640625 50.671875 -49.160156 47.640625 -51.046875 C 44.609375 -52.929688 41.238281 -53.875 37.53125 -53.875 Z M 37.53125 -53.875 "/></g></g></g></svg></script>
+<script id="data" type="application/json">{"servicos": [{"id": "plantio", "nome": "Plantio", "linha": "oFruto", "duracao": "4 meses", "publicoCurto": "Pessoa física", "precoCurto": "R$12.500", "volume": "8 vídeos/mês", "resumo": "Ciclo de 4 meses pra estruturar a marca, produzir a primeira safra de conteúdo e deixar o cliente no controle da própria comunicação, apto a seguir, com a gente ou por conta.", "problema": "Pessoa que já tem autoridade e história na área, mas não transformou isso em presença digital. Sabe quem é, não sabe como comunicar, pra quem, com que narrativa.", "promessa": "Ao fim dos 4 meses o cliente sai com estratégia definida, uma primeira safra produzida e um guia que mostra como a comunicação dele funciona na prática, porque viu acontecer. Fica no controle. Não é abandono: quem quer seguir, renova.", "mecanismo": ["Mês 1, Estratégia (Solo + Semeadura): imersão presencial de 2 a 3h, mapa estratégico completo.", "Meses 2 a 4, Produção (Cultivo): 2 diárias/mês, roteiros, edição, calendário. O cliente publica.", "Meses 2 a 4, Acompanhamento (Colheita): leitura de performance, ajuste das próximas gravações."], "entregaveis": ["Mapa estratégico (mês 1)", "8 vídeos/mês bem produzidos (2/semana)", "2 diárias de gravação/mês", "Roteiros e edição", "Calendário de postagem", "Acompanhamento de performance"], "naoEntra": ["Estruturação de perfil (foto, bio, destaques, link/minisite)", "Gestão de postagem (add-on se não tiver quem poste)"], "diferencial": "Não cria dependência, cria capacidade. \"Plantio é uma safra, não um pomar\", não prende em contrato eterno, mas deixa a porta aberta. Quem segue, segue por querer.", "interno": ["Preço: R$5.000 mês 1 + R$2.500/mês (2-4). Total R$12.500.", "Base: hora piso R$50, edição teto 2h/vídeo, 2 diárias fixas.", "Serviço de giro de caixa. A 8 vídeos a hora é saudável; a 12 fura o piso, por isso escopo fixo em 8.", "Preço de posicionamento; sobe a cada case. Custo de editor futuro é do Davi, refaz-se a tabela."], "percorreCurto": "Solo→Semeadura (mês 1), Cultivo (2-4), Colheita acompanha. Vai até a colheita e encerra.", "busca": ["plantio", "safra", "4 meses", "pessoa fisica", "marca pessoal", "entrada", "giro", "8 videos", "escopo fixo"], "upsells": [{"item": "Estruturação de perfil", "tipo": "foto, bio, destaques, link/minisite"}, {"item": "Gestão de postagem", "tipo": "se não tiver quem poste"}, {"item": "Renovar produção", "tipo": "vira Pomar ou nova safra"}]}, {"id": "pomar", "nome": "Pomar", "linha": "oFruto", "duracao": "6 meses", "publicoCurto": "Pessoa física", "precoCurto": "R$21.000", "volume": "8 a 16 vídeos/mês", "resumo": "Parceria contínua de 6 meses. A gente cuida da marca safra após safra, estratégia, produção e gestão do feed, com o cliente como parceiro fixo.", "problema": "Pessoa que quer tirar o feed das costas de vez. Não quer só receber conteúdo pra postar sozinha, quer que a gente toque a comunicação por inteiro, com acompanhamento contínuo.", "promessa": "Durante 6 meses a marca é cuidada de forma contínua: estratégia roda, conteúdo sai, feed é gerido no ar, a gente ajusta o tempo todo. Ela toca a vida, a gente toca o feed.", "mecanismo": ["Mês 1, Estratégia + Setup (Solo + Semeadura): mapa completo + setup de perfil (uma vez, no começo).", "Meses 1 a 6, Produção + Gestão (Cultivo): 2 diárias/mês, roteiros, edição, gestão de feed, cobertura de momentos.", "Meses 1 a 6, Acompanhamento (Colheita): parceiro fixo o contrato inteiro. Nunca fecha."], "entregaveis": ["Mapa estratégico (mês 1)", "Setup de perfil (uma vez)", "2 diárias/mês", "Roteiros e edição", "Gestão de feed", "Cobertura de momentos", "Acompanhamento contínuo", "8 a 16 vídeos/mês"], "naoEntra": ["Nova sessão de foto ou refação de minisite no meio do contrato", "Criação de presença multicanal do zero (dimensiona no diagnóstico)"], "diferencial": "Sobre o Plantio: lá o cliente colhe sozinho; aqui a gente cuida da terra o ano todo. No Pomar o cliente não toca nada do feed. É pra quem quer o problema resolvido, não a ferramenta.", "interno": ["Preço: R$3.500/mês. Total 6 meses R$21.000.", "Ativo de longo prazo, recorrência que vira renovação e indicação.", "Margem: 8 confortável, 12 no piso, 16 (teto) fura. Base 2-3 vídeos/semana. Teto de 16 é linha vermelha → sobe ticket na renovação ou entra editor.", "Setup = 6h fixas, uma vez. Gestão de feed é a peça que puxa editor primeiro."], "percorreCurto": "Solo→Semeadura+Setup (mês 1), Cultivo+Gestão contínuo, Colheita perene. Não encerra.", "busca": ["pomar", "parceria", "6 meses", "recorrente", "pessoa fisica", "gestao de feed", "setup", "cobertura", "faixa", "ativo"], "upsells": [{"item": "Nova sessão de foto dedicada", "tipo": "fora do setup inicial"}, {"item": "Refação de minisite", "tipo": "no meio do contrato"}, {"item": "Presença multicanal do zero", "tipo": "dimensiona no diagnóstico"}, {"item": "Volume acima de 16/mês", "tipo": "gatilho de ticket maior"}]}, {"id": "marca-viva", "nome": "Marca Viva", "linha": "Sociedade · oFruto + Brenda", "duracao": "5 meses", "publicoCurto": "Marca sem rosto", "precoCurto": "R$5–6k/mês", "volume": "1 diária/mês", "resumo": "Serviço da sociedade com a Brenda. A marca sem rosto ganha cara e voz, a Brenda encarna a marca, com estratégia e produção por dentro.", "problema": "Marca que quer se comunicar mas o dono não quer, não sabe, ou não faz sentido aparecer. No filtro oFruto seria vermelho; aqui é exatamente o cliente. A Brenda resolve a ausência de rosto.", "promessa": "Transformar a marca sem cara numa marca com linguagem de internet, rosto e presença de gente, com a Brenda como o perfil que comunica. A marca deixa de ser logo e vira personagem.", "mecanismo": ["Mês 1, Estratégia (Solo + Semeadura): extração da marca, narrativa construída com a Brenda como intérprete.", "Meses 2 a 5, Produção (Cultivo): 1 diária/mês (Davi + Brenda no mesmo dia), roteiros, edição. Conteúdo no perfil do cliente.", "Meses 2 a 5, Acompanhamento (Colheita): leitura de performance, compartilhada com a Brenda."], "entregaveis": ["Mapa estratégico da marca (mês 1)", "Brenda como rosto e voz no período", "1 diária de gravação/mês", "Roteiros e edição", "Acompanhamento de performance", "Conteúdo entregue pro perfil do cliente"], "naoEntra": ["Gestão de postagem (opção/add-on)", "Conteúdo no perfil da Brenda (negociação e valor dela, à parte)"], "diferencial": "Único serviço pra quem NÃO quer aparecer, o inverso do Plantio/Pomar. A Brenda tem lastro real (Morena Rosa, Track&Field, Live!): o mídia kit dela justifica o ticket.", "interno": ["Preço: R$5.000 a R$6.000/mês, liso, 5 meses. Total R$25-30k.", "Brenda é SÓCIA percentual (não talent). Divisão 60/40 (Davi/Brenda) sobre o LÍQUIDO, contrato inteiro, fixo, sem premiação de originação.", "Davi: estratégia, roteiro, edição, acompanhamento. Brenda: rosto + frente comercial. Ela opina, não cria, daí 60/40.", "Custos diretos (viagem, pedágio, almoço) saem do topo. Custo de estrutura futura é do Davi.", "Régua do cliente: faturar R$80-100k/mês+ (o serviço é fatia do marketing, não o todo).", "Veto da Brenda caso a caso; cláusulas de conduta sempre no contrato."], "percorreCurto": "Mesma metodologia, Brenda como rosto. 1 diária/mês, 5 meses.", "busca": ["marca viva", "brenda", "sociedade", "marca institucional", "rosto emprestado", "creator", "5 meses", "porta voz", "60 40", "faturamento alto"], "upsells": [{"item": "Gestão de postagem", "tipo": "add-on, valor à parte"}, {"item": "Conteúdo no perfil da Brenda", "tipo": "negociação e valor dela"}, {"item": "Subir de R$6k", "tipo": "com portfólio e resultado"}]}], "metodologia": [{"id": "solo", "nome": "Solo", "curto": "Conhecer a terra antes de plantar.", "longo": "Antes de qualquer conteúdo, a extração: quem a pessoa (ou marca) já é, história, autoridade, o que quer, pra quem, por quê. Nada criado do nada, tudo lapidado do que já existe.", "nosServicos": "Reunião presencial de 2-3h no Plantio e no Pomar. No Marca Viva, extração da marca com a Brenda como intérprete."}, {"id": "semeadura", "nome": "Semeadura", "curto": "Plantar a estratégia.", "longo": "O mapa: posicionamento, narrativa, tom de voz, canais que fazem sentido, formatos, metas e prazos. É o guia que rege toda a produção seguinte.", "nosServicos": "Fim do mês 1 nos três serviços. No Pomar inclui o setup de perfil."}, {"id": "cultivo", "nome": "Cultivo", "curto": "A câmera com norte.", "longo": "A produção: roteiro em cima da estratégia, diárias, edição, conteúdo saindo com qualidade estética. É o trabalho recorrente de quem cuida.", "nosServicos": "Meses 2-4 no Plantio, contínuo no Pomar (com gestão), meses 2-5 no Marca Viva."}, {"id": "colheita", "nome": "Colheita", "curto": "Acompanhar o que a terra devolve.", "longo": "Leitura de performance: o que germinou, o que ressoou, o que ajustar. Colheita não é o fim, é acompanhar o resultado, no Pomar, safra após safra.", "nosServicos": "Acompanha a produção no Plantio e Marca Viva; contínua e perene no Pomar."}], "filtros": [{"id": "ofruto", "nome": "Filtro oFruto", "sub": "Plantio e Pomar · pessoa cuja marca é o rosto", "nota": "Cinco portas + roteamento de plano. Verde passa, amarelo serve com ressalva, vermelho trava. Três amarelos = vermelho na prática.", "portas": [{"n": "P1 · Aparecer", "q": "Topa ser o rosto, com constância? (inegociável)"}, {"n": "P2 · Nicho", "q": "A área permite comunicar? (regulado = amarelo)"}, {"n": "P3 · Substância", "q": "Tem trajetória e verdade própria pra extrair?"}, {"n": "P4 · Prazo", "q": "Compra a lógica da plantação (médio prazo)?"}, {"n": "P5 · Direção", "q": "Cede o rumo ou microgerencia?"}, {"n": "Roteamento", "q": "Perfil e verba → Plantio ou Pomar."}], "busca": ["filtro", "qualificacao", "ofruto", "portas", "plantio", "pomar"]}, {"id": "marca-viva", "nome": "Filtro Marca Viva", "sub": "Sociedade com a Brenda · marca sem rosto", "nota": "Seis portas. A inversão: quem trava na Porta 1 do oFruto (não aparece) é o cliente daqui.", "portas": [{"n": "P1 · Rede social", "q": "O cliente da marca é influenciável por conteúdo orgânico?"}, {"n": "P2 · Sem rosto", "q": "O dono não quer/sabe aparecer? (quer aparecer → vai pro oFruto)"}, {"n": "P3 · Encaixe + veto", "q": "Combina com a Brenda, e ela topa?"}, {"n": "P4 · Ticket", "q": "Fatura R$80-100k/mês+? Aguenta sem dor?"}, {"n": "P5 · Marca não anúncio", "q": "Compra lógica de marca, não de performance?"}, {"n": "P6 · Direção", "q": "Cede o rumo, respeita a Brenda como sócia-rosto?"}], "busca": ["filtro", "marca viva", "brenda", "sociedade", "portas", "veto"]}]}</script>
+<script>
+document.getElementById('logo').innerHTML=document.getElementById('logosvg').textContent;
+const DATA=JSON.parse(document.getElementById('data').textContent);
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const st=document.createElement('style');st.textContent=':root[data-theme="light"] #logo svg{filter:invert(1);}';document.head.appendChild(st);
+
+const hero=DATA.servicos.find(s=>s.id==='pomar')||DATA.servicos[0];
+const others=DATA.servicos.filter(s=>s.id!==hero.id);
+$('#heroCard').innerHTML=`
+  <div class="top"><div><div class="lbl">${hero.linha} · ${hero.duracao}</div><h2>${hero.nome}</h2></div><div class="go">›</div></div>
+  <div class="foot"><div><span class="k">Investimento</span><span class="v">${hero.precoCurto}</span></div>
+  <div style="text-align:right"><span class="k">Volume</span><span class="v">${hero.volume}</span></div></div>`;
+$('#heroCard').dataset.open='servico:'+hero.id;
+$('#miniServices').innerHTML=others.map(s=>`<div class="card svc" data-open="servico:${s.id}"><span class="badge">${s.duracao}</span><div><h4>${s.nome}</h4><div class="sub">${s.precoCurto} · ${s.publicoCurto}</div></div></div>`).join('');
+
+function svcFull(s){return `<div class="hero-card" data-open="servico:${s.id}" style="margin-bottom:12px">
+  <div class="top"><div><div class="lbl">${s.linha} · ${s.duracao}</div><h2>${s.nome}</h2></div><div class="go">›</div></div>
+  <p style="color:var(--ink-2);font-size:13px;line-height:1.5;margin:2px 0 18px">${s.resumo}</p>
+  <div class="foot"><div><span class="k">Investimento</span><span class="v">${s.precoCurto}</span></div>
+  <div style="text-align:right"><span class="k">Volume</span><span class="v">${s.volume}</span></div></div></div>`;}
+$('#serviceCards').innerHTML=DATA.servicos.map(svcFull).join('');
+$('#methodGrid').innerHTML=DATA.metodologia.map((f,i)=>`<div class="phase" data-open="fase:${f.id}"><div class="n">0${i+1}</div><h4>${f.nome}</h4><p>${f.curto}</p></div>`).join('');
+$('#methodMap').innerHTML=DATA.servicos.map(s=>`<div class="trow" data-open="servico:${s.id}"><div><h4>${s.nome}</h4><p>${s.percorreCurto}</p></div><span class="arrow">›</span></div>`).join('');
+
+const INDEX=[
+  ...DATA.servicos.map(s=>({t:'servico',id:s.id,title:s.nome,sub:s.resumo,tags:s.busca})),
+  ...DATA.metodologia.map(f=>({t:'metodologia',id:f.id,title:f.nome,sub:f.curto,tags:[f.nome.toLowerCase()]})),
+  ...DATA.filtros.map(f=>({t:'filtro',id:f.id,title:f.nome,sub:f.sub,tags:f.busca||[]})),
+  {t:'matriz',id:'matriz',title:'Matriz de horas',sub:'Margem vs piso',tags:['matriz','calculadora','hora','margem']}
+];
+$('#q').addEventListener('input',()=>{
+  const qv=$('#q').value.trim().toLowerCase(),home=$('#home'),R=$('#searchResults');
+  go('inicio',true);
+  if(!qv){home.style.display='';R.innerHTML='';return;}
+  home.style.display='none';
+  let items=INDEX.filter(i=>i.title.toLowerCase().includes(qv)||i.sub.toLowerCase().includes(qv)||(i.tags||[]).some(t=>t.includes(qv)));
+  R.innerHTML=items.length?`<div style="margin-top:8px">`+items.map(i=>i.t==='servico'?svcFull(DATA.servicos.find(s=>s.id===i.id)):`<div class="trow" data-open="${i.t}:${i.id}"><div><h4>${i.title}</h4><p>${i.sub}</p></div><span class="arrow">›</span></div>`).join('')+`</div>`
+    :`<div class="empty"><div class="big">Nada com “${qv}”.</div></div>`;
+});
+
+function go(v,keep){$$('.view').forEach(x=>x.classList.remove('on'));$('#v-'+v).classList.add('on');$$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
+  if(!keep){$('#q').value='';$('#searchResults').innerHTML='';$('#home').style.display='';}
+  const c=document.querySelector('.app');(c&&c.scrollTo)?c.scrollTo({top:0,behavior:'smooth'}):scrollTo({top:0,behavior:'smooth'});}
+document.addEventListener('click',e=>{const nav=e.target.closest('[data-view]');if(nav&&!e.target.closest('[data-open]')){go(nav.dataset.view);}});
+$$('.tab').forEach(b=>b.onclick=()=>go(b.dataset.view));
+
+const scrim=$('#scrim'),sheet=$('#sheet'),body=$('#sheetBody');
+function open(h){body.innerHTML=h;scrim.classList.add('on');sheet.classList.add('on');document.body.style.overflow='hidden';sheet.scrollTop=0;}
+function close(){scrim.classList.remove('on');sheet.classList.remove('on');document.body.style.overflow='';}
+scrim.onclick=close;
+const li=a=>a.map(x=>`<li>${x}</li>`).join('');
+function svcSheet(s){return `<div class="s-kind">${s.linha}</div><h2>${s.nome}</h2>
+  <p class="s-resume">${s.resumo}</p>
+  <div class="s-meta"><div><span class="k">Ciclo</span><span class="v">${s.duracao}</span></div><div><span class="k">Investimento</span><span class="v">${s.precoCurto}</span></div><div><span class="k">Volume</span><span class="v">${s.volume}</span></div></div>
+  <h5>Problema que resolve</h5><p>${s.problema}</p><h5>O que a gente compromete</h5><p>${s.promessa}</p>
+  <h5>Como funciona</h5><ul>${li(s.mecanismo)}</ul><h5>Entregáveis</h5><ul>${li(s.entregaveis)}</ul>
+  <h5>Diferencial</h5><p>${s.diferencial}</p>
+  <div class="upsell"><div class="u-head"><span class="badge">UPSELL</span> Venda extra deste serviço</div><ul>${s.upsells.map(u=>`<li>${u.item}<span class="tag">${u.tipo}</span></li>`).join('')}</ul></div>
+  <div class="internal"><div class="tag">Interno · não vai pro cliente</div><ul>${li(s.interno)}</ul></div>`;}
+function faseSheet(f){return `<div class="s-kind">Metodologia · fase</div><h2>${f.nome}</h2><p class="s-resume">${f.longo}</p><h5>Nos serviços</h5><p>${f.nosServicos}</p>`;}
+function filtroSheet(f){return `<div class="s-kind">Filtro de qualificação</div><h2>${f.nome}</h2><p class="s-resume">${f.sub}</p><p>${f.nota}</p><h5>Portas</h5><ul>${f.portas.map(p=>`<li><b>${p.n}</b> ${p.q}</li>`).join('')}</ul>`;}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-open]');if(!el)return;const [t,id]=el.dataset.open.split(':');
+  if(t==='servico')open(svcSheet(DATA.servicos.find(s=>s.id===id)));
+  else if(t==='fase'||t==='metodologia')open(faseSheet(DATA.metodologia.find(f=>f.id===id)));
+  else if(t==='filtro')open(filtroSheet(DATA.filtros.find(f=>f.id===id)));
+});
+
+/* ============ CALCULADORA DA MATRIZ ============ */
+const CALC = {"plantio": {"nome": "Plantio", "meses": 4, "receita": 12500, "sprint": 18, "gestao": 0, "setup": 0, "cobertura": 0}, "pomar": {"nome": "Pomar", "meses": 6, "receita": 21000, "sprint": 18, "gestao": 5, "setup": 6, "cobertura": 4}, "marca-viva": {"nome": "Marca Viva", "meses": 5, "receita": 27500, "sprint": 18, "gestao": 0, "setup": 0, "cobertura": 0}};
+const cState = { svc:'pomar', vid:8, edit:2, dia:2, hd:8, hora:50 };
+
+// segmento de serviço
+const segEl = document.getElementById('cSvc');
+segEl.innerHTML = Object.keys(CALC).map(k=>`<button data-svc="${k}" class="${k===cState.svc?'on':''}">${CALC[k].nome}</button>`).join('');
+segEl.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  cState.svc=b.dataset.svc;
+  segEl.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+  syncDefaults(); calc();
+});
+
+// quando troca de serviço, ajusta defaults sensatos
+function syncDefaults(){
+  const s=cState.svc;
+  if(s==='marca-viva'){ cState.dia=1; document.getElementById('rDia').value=1; }
+  else if(cState.dia<2){ cState.dia=2; document.getElementById('rDia').value=2; }
+}
+
+function brl(n){ return 'R$'+Math.round(n).toLocaleString('pt-BR'); }
+
+const R={vid:'rVid',edit:'rEdit',dia:'rDia',hd:'rHd',hora:'rHora'};
+Object.entries(R).forEach(([key,id])=>{
+  document.getElementById(id).addEventListener('input',e=>{ cState[key]=+e.target.value; calc(); });
+});
+
+function calc(){
+  const c=CALC[cState.svc];
+  const {vid,edit,dia,hd,hora}=cState;
+  // labels ao vivo
+  document.getElementById('vVid').textContent=vid;
+  document.getElementById('vEdit').textContent=edit+' h';
+  document.getElementById('vDia').textContent=dia;
+  document.getElementById('vHd').textContent=hd+' h';
+  document.getElementById('vHora').textContent=brl(hora);
+  const perSem=(vid/4).toFixed(1).replace('.0','');
+  document.getElementById('hVid').textContent=perSem+' por semana';
+
+  // horas por mês de produção
+  const roteiro=6, acomp=3;
+  const cob = c.cobertura||0;
+  const mesProd = dia*hd + vid*edit + roteiro + acomp + c.gestao + cob;
+  // mês 1 = sprint + setup + produção do mês
+  const mes1 = c.sprint + c.setup + dia*hd + vid*edit + roteiro + c.gestao + cob;
+  const totalHoras = mes1 + (c.meses-1)*mesProd;
+  const horaReal = c.receita/totalHoras;
+  const piso = hora;
+
+  // veredito
+  let cls,txt;
+  if(horaReal >= piso*1.15){ cls='v-green'; txt='Compensa bem'; }
+  else if(horaReal >= piso){ cls='v-amber'; txt='No limite do piso'; }
+  else { cls='v-red'; txt='Abaixo do piso'; }
+
+  const folga = c.receita - totalHoras*piso;
+
+  document.getElementById('cOut').innerHTML=`
+    <div class="k" style="font-size:11px;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">Sua hora real</div>
+    <div class="big-hour">${brl(horaReal)}<span style="font-size:20px;color:var(--ink-2)">/h</span></div>
+    <div class="verdict ${cls}"><span class="pip"></span>${txt}</div>
+    <div class="lines">
+      <div class="ln"><span class="k">Serviço</span><span class="v">${c.nome} · ${c.meses} meses</span></div>
+      <div class="ln"><span class="k">Receita do ciclo</span><span class="v">${brl(c.receita)}</span></div>
+      <div class="ln"><span class="k">Horas no ciclo</span><span class="v">${Math.round(totalHoras)} h</span></div>
+      <div class="ln"><span class="k">Horas / mês (produção)</span><span class="v">${Math.round(mesProd)} h</span></div>
+      <div class="ln"><span class="k">Piso definido</span><span class="v">${brl(piso)}/h</span></div>
+      <div class="ln"><span class="k">Folga sobre o piso</span><span class="v" style="color:${folga>=0?'var(--ink)':'var(--ink-3)'}">${folga>=0?'+':''}${brl(folga)}</span></div>
+    </div>
+    <div class="note">${c.gestao? 'Inclui gestão de feed ('+c.gestao+'h/mês) e setup de perfil ('+c.setup+'h, uma vez). ' : ''}A edição é o que mais pesa: ${vid} vídeos × ${edit}h = ${vid*edit}h/mês só de edição.</div>`;
+}
+syncDefaults(); calc();
+
+
+/* ============ FUNIL DE QUALIFICAÇÃO ============ */
+const FUNIS = {"ofruto": {"nome": "Filtro oFruto", "sub": "Plantio e Pomar · pessoa cuja marca é o rosto", "portas": [{"id": "aparecer", "titulo": "Aparecer", "q": "A pessoa topa ser o rosto, aparecer na câmera com constância?", "verde": {"lbl": "Topa aparecer", "txt": "Entende que a marca é ela."}, "amarelo": {"lbl": "Topa, mas com receio", "txt": "Serve. Primeiras diárias com mais direção e aquecimento."}, "vermelho": {"lbl": "Não quer aparecer", "txt": "Trava. O método é audiovisual com a pessoa no centro."}}, {"id": "nicho", "titulo": "Nicho", "q": "A área permite comunicar livremente na rede social?", "verde": {"lbl": "Área livre", "txt": "Comunica sem trava de conselho."}, "amarelo": {"lbl": "Nicho regulado", "txt": "Serve, mas a estratégia nasce dentro das regras do conselho (medicina, OAB, etc)."}, "vermelho": {"lbl": "Marca pessoal não é a alavanca", "txt": "Trava. Produto de prateleira sem rosto, ou negócio de tráfego/licitação."}}, {"id": "substancia", "titulo": "Substância", "q": "Já existe trajetória, autoridade, um ponto de vista pra extrair?", "verde": {"lbl": "Tem repertório", "txt": "Há solo pra cavar."}, "amarelo": {"lbl": "Substância difusa", "txt": "Serve, mas a fase Solo é mais longa e o trabalho estratégico vale mais."}, "vermelho": {"lbl": "Início absoluto", "txt": "Trava. Nada pra extrair ainda. Pode voltar com estrada."}}, {"id": "prazo", "titulo": "Prazo", "q": "Compra a lógica da plantação (médio/longo prazo, orgânico)?", "verde": {"lbl": "Pensa em construção", "txt": "Aceita o horizonte, quer marca e não pico."}, "amarelo": {"lbl": "Ansioso por resultado", "txt": "Serve, com expectativa alinhada por escrito."}, "vermelho": {"lbl": "Quer viralizar amanhã", "txt": "Trava. É cliente de tráfego pago, não seu."}}, {"id": "direcao", "titulo": "Direção", "q": "Cede o rumo criativo ou quer microgerenciar cada corte?", "verde": {"lbl": "Quer ser dirigido", "txt": "Respeita teu papel, colabora sem controlar."}, "amarelo": {"lbl": "Participativo demais", "txt": "Serve, com combinado claro de alçadas."}, "vermelho": {"lbl": "Quer controlar tudo", "txt": "Trava. Contrato infernal, resultado que não vem."}}], "roteia": true}, "marca-viva": {"nome": "Filtro Marca Viva", "sub": "Sociedade com a Brenda · marca sem rosto", "portas": [{"id": "rede", "titulo": "Rede social", "q": "O cliente DA MARCA é influenciável por conteúdo orgânico de rede social?", "verde": {"lbl": "Faz sentido", "txt": "Público decide/deseja via rede social."}, "amarelo": {"lbl": "Parcial", "txt": "Serve, alinhar o que a rede move pra aquele negócio."}, "vermelho": {"lbl": "Não faz sentido", "txt": "Trava. Cliente da marca não decide por rede social."}}, {"id": "semrosto", "titulo": "Sem rosto", "q": "O dono não quer / não sabe / não faz sentido aparecer?", "verde": {"lbl": "Precisa de rosto", "txt": "É exatamente o cliente do Marca Viva."}, "amarelo": {"lbl": "Aparece um pouco", "txt": "Serve, definir bem quem é rosto de quê."}, "vermelho": {"lbl": "O dono quer e sabe aparecer", "txt": "Não é Marca Viva. Redireciona pro oFruto (Plantio/Pomar)."}}, {"id": "encaixe", "titulo": "Encaixe + veto", "q": "Combina com o que a Brenda representa, e ela topa ser a cara?", "verde": {"lbl": "Casa e ela aprova", "txt": "Segmento alinhado ao perfil dela."}, "amarelo": {"lbl": "Casa com ajuste", "txt": "Serve com combinado escrito (tom, limites, cláusula)."}, "vermelho": {"lbl": "Destoa ou ela não quer", "txt": "Trava, independente do valor. A imagem dela é o ativo."}}, {"id": "ticket", "titulo": "Ticket", "q": "Fatura o bastante (R$80-100k/mês+) pra R$5-6k ser fatia digerível?", "verde": {"lbl": "Aguenta sem dor", "txt": "Já investe em marketing, tem estrutura."}, "amarelo": {"lbl": "No limite", "txt": "Serve, atenção ao risco de virar cobrança."}, "vermelho": {"lbl": "Vai machucar", "txt": "Trava. Não é 'não', é 'ainda não'. Quando crescer, volta."}}, {"id": "marca", "titulo": "Marca não anúncio", "q": "Compra lógica de marca (orgânico, médio prazo), não de performance?", "verde": {"lbl": "Pensa em marca", "txt": "Aceita o horizonte, quer presença e desejo."}, "amarelo": {"lbl": "Ansiosa por número", "txt": "Serve, expectativa alinhada por escrito."}, "vermelho": {"lbl": "Quer venda pra ontem", "txt": "Trava. É cliente de tráfego."}}, {"id": "direcao", "titulo": "Direção", "q": "Cede o rumo e respeita a Brenda como sócia-rosto, sem microgerenciar?", "verde": {"lbl": "Entrega a comunicação", "txt": "Confia no processo, respeita a Brenda."}, "amarelo": {"lbl": "Participativa demais", "txt": "Serve, com combinado de alçadas."}, "vermelho": {"lbl": "Quer controlar / mandar na Brenda", "txt": "Trava. Desgaste da sócia."}}], "roteia": false}};
+FUNIS.ofruto.id='ofruto'; FUNIS['marca-viva'].id='marca-viva';
+let fun=null, fIdx=0, fAmar=0, fTravou=null;
+const pickEl=document.getElementById('filtroPick'), runEl=document.getElementById('filtroRun');
+
+document.addEventListener('click',e=>{
+  const p=e.target.closest('.fpick'); if(!p) return;
+  startFunil(p.dataset.funil);
+});
+function startFunil(id){
+  fun=FUNIS[id]; fIdx=0; fAmar=0; fTravou=null;
+  pickEl.style.display='none'; runEl.style.display='block';
+  drawGate();
+}
+function exitFunil(){
+  runEl.style.display='none'; pickEl.style.display='block'; runEl.innerHTML='';
+}
+function progHtml(){
+  const n=fun.portas.length;
+  let s='<div class="fun-prog">';
+  for(let i=0;i<n;i++){
+    let cls='';
+    if(i<fIdx) cls='done-g';
+    else if(i===fIdx) cls='cur';
+    s+=`<div class="seg ${cls}"></div>`;
+  }
+  return s+'</div>';
+}
+function drawGate(){
+  const p=fun.portas[fIdx];
+  runEl.innerHTML=`
+    <div class="fun-top">
+      <button class="fun-back" onclick="fIdx>0?backGate():exitFunil()">‹</button>
+      <div><div class="ft-t">${fun.nome}</div><div class="ft-s">Porta ${fIdx+1} de ${fun.portas.length} · ${p.titulo}</div></div>
+    </div>
+    ${progHtml()}
+    <div class="gate">
+      <div class="g-q">${p.q}</div>
+      <button class="g-opt g" onclick="answer('verde')"><span class="dot"></span><span><span class="g-o-t">${p.verde.lbl}</span><span class="g-o-s">${p.verde.txt}</span></span></button>
+      <button class="g-opt a" onclick="answer('amarelo')"><span class="dot"></span><span><span class="g-o-t">${p.amarelo.lbl}</span><span class="g-o-s">${p.amarelo.txt}</span></span></button>
+      <button class="g-opt r" onclick="answer('vermelho')"><span class="dot"></span><span><span class="g-o-t">${p.vermelho.lbl}</span><span class="g-o-s">${p.vermelho.txt}</span></span></button>
+    </div>`;
+  const c=document.querySelector('.app');(c&&c.scrollTo)?c.scrollTo({top:0,behavior:'smooth'}):scrollTo({top:0,behavior:'smooth'});
+}
+function backGate(){ if(fIdx>0){ fIdx--; drawGate(); } }
+function answer(kind){
+  const p=fun.portas[fIdx];
+  if(kind==='vermelho'){ fTravou={porta:p, txt:p.vermelho.txt}; return verdict(); }
+  if(kind==='amarelo') fAmar++;
+  // 3 amarelos = vermelho na prática
+  if(fAmar>=3){ fTravou={porta:p, txt:'Três ou mais ressalvas (amarelos) no mesmo cliente. O contrato inteiro tende a ser trabalhoso.', amarelo:true}; return verdict(); }
+  fIdx++;
+  if(fIdx>=fun.portas.length) return verdict();
+  drawGate();
+}
+function verdict(){
+  let html;
+  if(fTravou){
+    html=`<div class="verd no">
+      <div class="v-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg></div>
+      <h2>Não serve agora</h2>
+      <p class="v-sub">Travou na porta <b>${fTravou.porta.titulo}</b>. ${fTravou.txt}</p>
+      ${fun.id==='marca-viva'&&fTravou.porta.id==='semrosto'?'<div class="v-plan">Redireciona pro oFruto</div>':''}
+      <div><button class="redo" onclick="startFunil(fun.id==='ofruto'?'ofruto':'marca-viva')">Refazer</button></div>
+    </div>`;
+  } else if(fun.roteia){
+    // oFruto: passou -> Plantio ou Pomar (roteamento é decisão, mostra os dois)
+    html=`<div class="verd ok">
+      <div class="v-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg></div>
+      <h2>Serve</h2>
+      <p class="v-sub">Passou em todas as portas. Agora é rotear pelo perfil e pela verba:</p>
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:400px;margin:0 auto">
+        <div class="card" style="text-align:left;cursor:default"><h4 style="font-weight:700;font-size:16px;margin-bottom:4px">Plantio</h4><p style="font-size:13px;color:var(--ink-2)">Quer subir rápido, é independente, verba pontual. Toca o próprio feed depois.</p></div>
+        <div class="card" style="text-align:left;cursor:default"><h4 style="font-weight:700;font-size:16px;margin-bottom:4px">Pomar</h4><p style="font-size:13px;color:var(--ink-2)">Quer parceria contínua, tirar o peso das costas, diluir o investimento.</p></div>
+      </div>
+      ${fAmar>0?warnHtml():''}
+      <div><button class="redo" onclick="startFunil('ofruto')">Refazer</button></div>
+    </div>`;
+  } else {
+    html=`<div class="verd ok">
+      <div class="v-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9"/></svg></div>
+      <h2>Serve</h2>
+      <p class="v-sub">Passou em todas as portas, a Brenda aprova e aguenta o ticket.</p>
+      <div class="v-plan">Marca Viva</div>
+      <p style="font-size:13px;color:var(--ink-3);margin-top:10px">Define R$5k ou R$6k conforme o porte, e o escopo do mês 1 conforme o perfil já existir ou não.</p>
+      ${fAmar>0?warnHtml():''}
+      <div><button class="redo" onclick="startFunil('marca-viva')">Refazer</button></div>
+    </div>`;
+  }
+  runEl.innerHTML=`<div class="fun-top"><button class="fun-back" onclick="exitFunil()">‹</button><div><div class="ft-t">${fun.nome}</div><div class="ft-s">Resultado</div></div></div>${html}`;
+  const c=document.querySelector('.app');(c&&c.scrollTo)?c.scrollTo({top:0,behavior:'smooth'}):scrollTo({top:0,behavior:'smooth'});
+}
+function warnHtml(){
+  return `<div class="warn"><div class="wh">${fAmar} ressalva${fAmar>1?'s':''} (amarelo) no caminho</div>
+    <ul><li>Cada ressalva vira uma cláusula de contrato ou uma conversa franca antes de assinar.</li>
+    <li>Um amarelo é gerenciável. Três já seria sinal de contrato trabalhoso.</li></ul></div>`;
+}
+
+
+/* ============ DOCUMENTO VIVO ============ */
+const DOCS = {"servicos": {"label": "Serviços", "items": [{"id": "plantio", "nome": "Plantio", "md": "# Plantio — ficha interna\n\n## O que é, em uma linha\nCiclo fechado de 4 meses: constrói a estratégia de marca, produz a primeira\nsafra de conteúdo, e deixa o cliente no controle da própria comunicação —\ncom um guia pra seguir produzindo. Safra, não pomar — tem começo e fim\ndefinidos, e a produção pode ser renovada com a gente depois.\n\n## Problema que resolve\nPessoa que já tem autoridade/história na área dela, mas não transformou isso\nem presença digital. Sabe quem é, não sabe como comunicar, pra quem, com que\nnarrativa. Sem estratégia, sem formato, sem consistência.\n\n## Promessa (o que a gente compromete)\nAo fim dos 4 meses o cliente sai com três coisas: estratégia de marca\ndefinida, uma primeira safra de conteúdo produzida, e um guia que mostra\ncomo a comunicação dele funciona na prática — porque ele viu acontecer, não\nsó recebeu no papel. Fica no controle, sabendo o que fazer. O produto é o\nciclo de construção — não os vídeos. Os vídeos são parte da entrega, não o\nprotagonista.\n\nImportante no enquadramento: não é \"te preparamos e te soltamos\". É \"te\ndeixamos capaz e no comando\". Quem quiser seguir produzindo com a gente,\nrenova a produção (vira Pomar ou nova safra). Autonomia é o que o cliente\nganha, não o que a gente empurra pra porta.\n\n## Público / critério de entrada\nFundador, profissional liberal ou creator cuja marca é o próprio rosto, que:\n- já tem repertório/autoridade real (tem o que extrair);\n- topa aparecer na câmera (inegociável);\n- tem caixa pra investir agora sem que o valor pese;\n- quer subir rápido e depois tocar sozinho — não quer agência pra sempre.\n\nQualificação completa: ver filtro-qualificacao-ofruto (serve Plantio e Pomar).\n\n## Mecanismo (como a entrega acontece)\n\n**Mês 1 — Estratégia (fases Solo + Semeadura)**\nImersão presencial de 2 a 3h pra extrair história, repertório, autoridade,\nobjetivos, público, diferenciais. Daí sai o mapa estratégico: posicionamento,\nnarrativa, tom de voz, canais prioritários, formatos, direcionamentos\ncriativos, metas e prazos. O mapa rege toda a produção seguinte.\n\n**Meses 2 a 4 — Produção (fase Cultivo)**\nTransforma estratégia em conteúdo: roteiros a partir do mapa, 2 diárias de\ngravação/mês, direção de cena, edição de todo o material, calendário de\npostagem. O cliente publica e conduz a própria rotina. A gente entrega\nestrutura e material pronto; a operação de postar é dele.\n\n**Meses 2 a 4 — Acompanhamento (fase Colheita)**\nLeitura de performance: o que funcionou, o que não, o que muda na próxima\ngravação. Aqui o cliente vê na prática como a comunicação dele acontece — é\no que transforma o mapa do mês 1 em repertório real. Termina o ciclo tendo\nvisto o processo rodar, com um guia pra repetir sozinho ou seguir com a\ngente.\n\n## Entregáveis\n- Mapa estratégico completo (mês 1)\n- 8 vídeos/mês, bem produzidos, com cena e narrativa (2/semana)\n- 2 diárias de gravação/mês\n- Roteiros\n- Edição de todo o material\n- Calendário de postagem\n- Acompanhamento de performance nos meses de produção\n\nTotal do ciclo: ~24 vídeos, 6 diárias. (Não vender pelo total — ver objeções.)\n\n## Não-entregáveis (avulso, se pedir)\n- Estruturação de perfil: foto de perfil, bio, destaques, link/minisite.\n- Gestão de postagem (o cliente posta; se não tiver quem poste, add-on).\n\n## Diferencial\nNão é gestão contínua nem produção solta. É a construção da primeira estrutura\nque deixa o cliente no controle da própria marca — com guia, repertório e a\nexperiência de ter visto o processo rodar. A frase que carrega isso e vale\nmanter na venda: \"Plantio é uma safra, não um pomar\" — diz numa linha que\nnão prende em contrato eterno, mas deixa a porta aberta pra continuar. É o\nque separa da agência tradicional: a gente não cria dependência, cria\ncapacidade — e quem quer seguir, segue por querer, não por precisar.\n\n## Objeções e como responder\n- **\"8 vídeos é pouco / R$800 a diária de um produtor.\"** Não vender por\n  volume. O produto é o ciclo de construção de presença, não pacote de vídeo.\n  Comparar Plantio com produtor avulso é comparar estratégia+produção+direção\n  com gravação solta. Se cair na conversa de \"quantos vídeos\", já perdeu o\n  enquadramento — puxar de volta pro resultado (marca estruturada + autonomia).\n- **\"Por que só 4 meses?\"** É safra, não pomar. Quem quer relação contínua é\n  Pomar. O Plantio entrega e solta de propósito.\n- **\"E depois dos 4 meses?\"** Sai no controle, com guia e repertório pra\n  produzir por conta. E se quiser seguir com a gente, renova a produção\n  (Pomar ou nova safra). Nunca enquadrar como \"aí você vira sozinho\" — é\n  \"aí você escolhe: toca por conta ou continua com a gente\". A porta fica\n  aberta dos dois lados.\n\n## Lógica de precificação (INTERNO)\n- Preço: R$5.000 mês 1 + R$2.500/mês (meses 2-4). Total R$12.500.\n- Base: hora piso R$50, edição teto 2h/vídeo, 2 diárias/mês fixas.\n- É o serviço de giro de caixa: entrada de R$5k banca o mês, hora saudável\n  a 8 vídeos. A 12 vídeos a hora fura o piso — por isso o escopo é fixo em 8.\n- Preço de posicionamento nesta fase; sobe na escada a cada case fechado.\n- Custo de estrutura futura (editor) é do Davi, não sai do preço; quando pesar,\n  refaz a tabela.\n\n## Resumo pra busca (operacional)\nCiclo de 4 meses pra estruturar a marca, produzir a primeira safra de conteúdo\ne deixar o cliente no controle da própria comunicação, com guia pra seguir\nproduzindo (por conta ou renovando com a gente). Escopo fixo, 8 vídeos/mês,\nentrada de caixa. Pessoa física, marca é o rosto."}, {"id": "pomar", "nome": "Pomar", "md": "# Pomar — ficha interna\n\n## O que é, em uma linha\nParceria contínua de 6 meses: a gente assume a marca por inteiro — estratégia,\nprodução e gestão do feed — safra após safra. Pomar, não safra única — não\ntem última colheita, tem manutenção.\n\n## Problema que resolve\nPessoa que quer tirar o feed das costas de vez. Não quer só receber conteúdo\npra postar sozinha (isso é Plantio) — quer que a gente toque a comunicação\ndela por inteiro, com acompanhamento contínuo e alguém no comando junto.\n\n## Promessa (o que a gente compromete)\nDurante 6 meses a marca do cliente é cuidada de forma contínua: a estratégia\nroda, o conteúdo sai, o feed é gerido no ar, e a gente está junto ajustando o\ntempo todo. \"Ela toca a vida, a gente toca o feed.\" O cliente não pensa em\npostar, horário, calendário — vive a vida dele, a comunicação anda.\n\n## Público / critério de entrada\nFundador, profissional liberal ou creator cuja marca é o próprio rosto, que:\n- já tem repertório/autoridade real (tem o que extrair);\n- topa aparecer na câmera (inegociável);\n- tem verba pra recorrência longa sem que o valor pese;\n- quer parceria fixa e tirar o peso da operação de vez — não quer tocar o\n  próprio feed.\n\nQualificação completa: ver filtro-qualificacao-ofruto (mesmo filtro do Plantio;\no que separa Plantio de Pomar é o roteamento no fim — perfil de relação e verba).\n\n## Mecanismo (como a entrega acontece)\n\n**Mês 1 — Estratégia + Setup (fases Solo + Semeadura)**\nMesma imersão presencial do Plantio (2-3h) e o mesmo mapa estratégico\ncompleto. Incluído aqui, e só aqui: setup de perfil, uma vez, no começo —\norganização dos canais existentes (bio, destaques, foto de perfil,\nlink/minisite) alinhados ao posicionamento, mais ativação pontual de um outro\ncanal se a estratégia pedir. As fotos de perfil saem dentro da própria diária,\nsem sessão extra. A terra sai pronta antes de a produção entrar no ar.\n\n**Meses 1 a 6 — Produção + Gestão (fase Cultivo, contínua)**\nRoteiros, 2 diárias de gravação/mês, edição. Incluído: gestão de feed — a\ngente publica e toca o calendário no ar. Incluído: cobertura de momentos —\nevento ou situação que faça sentido dentro do posicionamento, mediante agenda\nalinhada e data combinada com antecedência.\n\n**Meses 1 a 6 — Acompanhamento (fase Colheita, contínua)**\nParceiro fixo o contrato inteiro: identificar o que melhorar, onde ajustar\nposicionamento, conteúdo, roteiro. Nunca fecha — pomar bom não tem última\ncolheita, tem safras.\n\n## Volume (faixa, não número cravado)\nSem quantidade fixa de propósito: a internet é flexível, e travar número mata\no crescimento do cliente. Base: 2 a 4 vídeos/semana (8 a 16/mês). Teto: 16/mês.\nAs 2 diárias/mês dão conta de qualquer ponto da faixa; o que varia é o tempo\nde edição. Passou de 16 de forma recorrente → gatilho de renovação com ticket\nmaior (ver precificação).\n\n## Entregáveis\n- Mapa estratégico completo (mês 1)\n- Setup de perfil, uma vez, no início\n- 2 diárias de gravação/mês\n- Roteiros e edição de todo o material\n- Gestão de feed (a gente publica e toca o calendário)\n- Cobertura de momentos (agenda alinhada, data combinada)\n- Acompanhamento contínuo o contrato inteiro\n- Volume: 8 a 16 vídeos/mês (base 2 a 4/semana)\n\n## Não-entregáveis (avulso, se pedir)\n- Nova sessão de foto dedicada ou refação de minisite no meio do contrato\n  (o setup é uma vez, no começo; ajuste fino de destaque/link entra na gestão).\n- Criação de presença multicanal do zero (raro no perfil de cliente; se\n  aparecer, dimensiona no diagnóstico).\n\n## Diferencial\nSobre o Plantio: o Plantio entrega a plantação pronta e o cliente colhe\nsozinho; o Pomar é a gente cuidando da terra o ano todo. Um é estação\ndelimitada, o outro é perene. A diferença que vende: no Pomar o cliente não\ntoca nada do feed — a gente assume por inteiro. É o serviço de quem quer o\nproblema resolvido, não a ferramenta pra resolver.\n\n## Objeções e como responder\n- **\"Por que mais caro/longo que o Plantio se são as mesmas 2 diárias?\"**\n  Não se paga pela diária. Paga-se por gestão de feed + setup + cobertura +\n  acompanhamento contínuo por 6 meses. É serviço completo de social com\n  produção e gestão, não pacote de produção. Se cair no \"mas são as mesmas\n  diárias\", perdeu o enquadramento — puxar pro \"você não toca em nada\".\n- **\"E se eu quiser postar mais / menos?\"** A faixa existe pra isso (8 a 16).\n  Dentro dela, ajusta conforme a estratégia. Acima do teto de forma recorrente,\n  conversa de renovação.\n- **\"Posso começar mais barato?\"** Aí é Plantio, que tem entrada e horizonte\n  curto. Pomar é compromisso de parceria.\n\n## Lógica de precificação (INTERNO)\n- Preço: R$3.500/mês. Total 6 meses R$21.000.\n- Base: hora piso R$50, edição teto 2h/vídeo, 2 diárias/mês fixas.\n- É o ativo de longo prazo — recorrência travada por 6 meses, onde mora a\n  relação que vira renovação e indicação. Não é o giro (esse é o Plantio).\n- Régua de margem: a 8 vídeos a hora fica confortável; a 12 no piso; a 16\n  (teto) fura o piso. Base saudável = 2 a 3 vídeos/semana. Teto de 16 é linha\n  vermelha — passou disso recorrente, sobe o ticket na renovação (mais\n  resultado + mais trabalho justificam) ou entra editor.\n- Preço de posicionamento nesta fase; sobe na escada a cada case. O R$5k que\n  o serviço vale de verdade chega quando entrar editor (audiovisual + design)\n  ou quando o volume do cliente subir.\n- Setup de perfil = 6h fixas, uma vez. Cobre canais existentes + 1 ativação.\n- Gestão de feed é a peça mais faminta de equipe — é ela que puxa a\n  necessidade de editor primeiro.\n\n## Resumo pra busca (operacional)\nParceria contínua de 6 meses onde a gente assume a marca por inteiro —\nestratégia, produção, gestão de feed, cobertura e acompanhamento. Faixa 8 a 16\nvídeos/mês, sem número cravado. Recorrência, ativo de longo prazo. Pessoa\nfísica, marca é o rosto."}, {"id": "marca-viva", "nome": "Marca Viva", "md": "# Marca Viva — ficha interna\n\n## O que é, em uma linha\nServiço da sociedade (Davi + Brenda). A marca que não tem rosto ganha cara e\nvoz: a Brenda encarna a marca publicamente, a gente constrói estratégia e\nproduz o conteúdo. É o Plantio vestido de marca, com a Brenda como rosto\nemprestado.\n\n## Problema que resolve\nMarca/empresa que quer se comunicar no digital mas o dono/CEO não quer\naparecer, tem dificuldade de comunicação, ou não faz sentido ser o rosto.\nNo filtro do oFruto, essa pessoa seria vermelho (não aparece). Aqui é\nexatamente o cliente: a Brenda resolve a ausência de rosto.\n\n## Promessa (o que a gente compromete)\nTransformar a marca sem cara numa marca com linguagem de internet, rosto e\npresença de gente — com a Brenda como o perfil que comunica. A gente\ndesenvolve posicionamento, narrativa, formato (a marca não sabe se comunicar,\na gente constrói), e produz o conteúdo. A marca deixa de ser logo sem alma e\nvira personagem.\n\n## Público / critério de entrada\nMarca/empresa que fatura alto (régua: R$80k-100k/mês pra cima), cujo dono não\né o rosto, e cujo negócio faz sentido em rede social orgânica.\n\nQualificação completa: ver filtro-marca-viva (filtro próprio, 6 portas —\ndiferente do filtro oFruto). Portas-chave: faz sentido na rede social → é marca\nsem rosto → encaixe com a Brenda (+ veto dela) → aguenta o ticket → compra\nlógica de marca não de anúncio → cede a direção. Cláusulas de conduta da Brenda\nsempre no contrato (imagem dela é o ativo).\n\n## Estrutura da sociedade (INTERNO — não vai pro cliente)\n- Brenda é SÓCIA percentual, não talent com cachê. Ela é rosto + frente\n  comercial (rede de contatos com empresários, prospecta, indica, vende).\n- Divisão: 60% Davi / 40% Brenda, sobre o LÍQUIDO (depois dos custos diretos\n  do contrato), o contrato inteiro (mês 1 incluído).\n- Fixo, independente de quem vendeu. Sem premiação de originação nesta fase\n  (evita competição entre sócios, que os primeiros contratos não comportam).\n- Davi carrega: estratégia, desenvolvimento de marca, roteiro, edição,\n  acompanhamento. Brenda carrega: rosto nas gravações + frente comercial.\n  Ela opina, não cria — o desenvolvimento é do Davi. Daí o 60/40 e não 50/50.\n- Custos diretos do contrato (viagem, pedágio, almoço da diária) saem do topo,\n  antes de dividir, reduzem os dois igual.\n- Custo de estrutura futura (editor/equipe) é do Davi, NÃO sai da parte da\n  Brenda — a fatia maior já paga por ele assumir a operação. Quando pesar,\n  refaz-se a tabela de preço, não desconta da sócia.\n- Veto da Brenda sobre a marca: caso a caso, sempre conversado, mesmo já tendo\n  noção do que ela topa. Imagem dela é o ativo — ela tem direito de recusa.\n\n## Mecanismo (como a entrega acontece)\n\n**Mês 1 — Estratégia (fases Solo + Semeadura)**\nExtração da MARCA (não de um indivíduo): oferta, público, o que a marca é e\nquer. A narrativa e a voz passam a ser construídas com a Brenda como\nintérprete — é a marca falando pela boca dela. Sai o mapa: posicionamento,\nnarrativa, tom, canais, formatos, metas.\n\n**Meses 2 a 5 — Produção (fase Cultivo)**\n1 diária de gravação/mês (você + Brenda no mesmo dia, mata tudo do mês),\nroteiros, edição. Conteúdo sai no perfil do CLIENTE, nunca em collab no perfil\nda Brenda por padrão (o feed dela é protegido — só marca de moda que faça\nsentido com ela, e aí é negociação/valor à parte dela).\n\n**Meses 2 a 5 — Acompanhamento (fase Colheita)**\nLeitura de performance pra ajustar as próximas gravações. Compartilhado com a\nBrenda (ela é sócia, vê os resultados).\n\n## Volume e diárias\n1 diária/mês (contra 2 do Plantio) — tudo do mês gravado num dia, você e a\nBrenda juntos. Rende na casa de 4 a 6 vídeos/mês bem feitos.\n\n## Entregáveis\n- Mapa estratégico da marca (mês 1)\n- Brenda como rosto e voz da marca no período\n- 1 diária de gravação/mês\n- Roteiros e edição\n- Acompanhamento de performance\n- Conteúdo entregue pro perfil do cliente\n\n## Não-entregáveis (avulso / à parte)\n- Gestão de postagem: opção/add-on. Padrão é entrega; se o cliente não tem\n  quem poste, a gente pode fazer a gestão por um valor à parte.\n- Conteúdo no perfil da Brenda: fora do escopo — se sair, é negociação dela,\n  valor dela.\n\n## Diferencial\nÉ o único serviço pra quem NÃO quer aparecer — o inverso do Plantio/Pomar.\nResolve o cliente que o oFruto sozinho recusaria. E a Brenda não é figurante:\ntem lastro real (Morena Rosa, Track&Field, Live!, Óticas Carol) — o mídia kit\ndela sozinho justifica o ticket aos olhos da marca.\n\n## Objeções e como responder\n- **\"Por que R$5-6k se é só uma diária/mês?\"** Não é a diária. É estratégia +\n  construção de marca + creator profissional com lastro de marca grande\n  emprestando rosto e voz, pra uma marca que fatura alto. Pra ela é barato ter\n  isso montando a presença digital inteira.\n- **\"Podem gravar no perfil da Brenda?\"** Só se fizer sentido com o feed dela\n  (moda) e é negociação à parte, valor dela. Padrão: no perfil do cliente.\n- **\"A marca é pequena / vai pesar.\"** Fora do critério. Régua R$80-100k/mês\n  de faturamento pra cima. Abaixo disso vira relação de cobrança — recusa.\n\n## Lógica de precificação (INTERNO)\n- Preço: R$5.000 a R$6.000/mês (piso 5, alvo 6), liso, o contrato inteiro.\n  Escolhe conforme o cliente. Total: R$25.000 a R$30.000 em 5 meses.\n- Por que não R$4k: os custos diretos (viagem/pedágio/almoço, diária em SP)\n  saem do topo e comem a margem dos dois; a R$4k não compensa a estrutura.\n  R$5k é o piso pra sobrar margem depois do custo.\n- Divisão 60/40 sobre o líquido. Ex. a R$6k: Davi ~R$3.600/mês, Brenda\n  ~R$2.400/mês (antes de custos). A R$5k: Davi R$3.000, Brenda R$2.000.\n- Coincidência útil: a R$4k a Brenda tiraria R$1.600/mês — o mesmo que ela já\n  cobra da Ella por diária avulsa, mas aqui recorrente por 5 meses. A R$5-6k\n  ela ganha mais. Ancora fácil pra ela aceitar o 40%.\n- Régua de faturamento do cliente: 5-10% do faturamento em marketing é\n  saudável; o serviço é uma FATIA do marketing dele, não o todo. Por isso a\n  marca precisa faturar R$80-100k/mês+ pra R$5-6k ser digerível.\n- Alavancar com portfólio/resultado: com o tempo sobe de R$6k.\n\n## Resumo pra busca (operacional)\nServiço da sociedade com a Brenda: marca sem rosto ganha cara e voz (a Brenda\nencarna a marca), com estratégia e produção por dentro. 5 meses, 1 diária/mês,\nR$5-6k/mês, divisão 60/40. Pra marca que fatura alto e cujo dono não aparece."}]}, "metodologia": {"label": "Metodologia", "items": [{"id": "metodo", "nome": "Metodologia", "md": "# Metodologia oFruto\n\nA mesma espinha atravessa os três serviços. O que muda é até onde ela vai.\nPlantamos estratégia, cultivamos marcas, geramos fruto.\n\n## Solo — conhecer a terra antes de plantar\nAntes de qualquer conteúdo, a extração: quem a pessoa (ou marca) já é, história,\nautoridade, o que quer, pra quem, por quê. Nada criado do nada, tudo lapidado do\nque já existe. É a reunião presencial de 2 a 3h no Plantio e no Pomar; no Marca\nViva, a extração é da marca, com a Brenda como intérprete.\n\n## Semeadura — plantar a estratégia\nO mapa: posicionamento, narrativa, tom de voz, canais que fazem sentido,\nformatos, metas e prazos. É o guia que rege toda a produção seguinte. Fim do mês\n1 nos três serviços. No Pomar, inclui o setup de perfil.\n\n## Cultivo — a câmera com norte\nA produção: roteiro em cima da estratégia, diárias, edição, conteúdo saindo com\nqualidade estética. É o trabalho recorrente de quem cuida. Meses 2 a 4 no\nPlantio; contínuo no Pomar (com gestão de feed); meses 2 a 5 no Marca Viva.\n\n## Colheita — acompanhar o que a terra devolve\nLeitura de performance: o que germinou, o que ressoou, o que ajustar. Colheita\nnão é o fim, é acompanhar o resultado. No Pomar, safra após safra, sem última\ncolheita.\n\n## O princípio que amarra tudo\nSemear e não cultivar não dá fruto. Estratégia sem produção é PDF na gaveta;\nligar a câmera sem estratégia é jogar semente no cimento. Os serviços são formas\nde garantir que a plantação vá até a colheita: o Plantio entrega pronta pra\npessoa colher sozinha; o Pomar cuida da terra o ano todo."}]}, "filtros": {"label": "Filtros", "items": [{"id": "ofruto", "nome": "Filtro oFruto", "md": "# Filtro de Qualificação — oFruto\n\nFerramenta interna. Decide se uma pessoa é cliente, e para qual plano.\nRoda antes de fechar contrato. Não é diagnóstico de estratégia (isso é outra\nskill, roda depois).\n\n## Como usar\n\nDesce porta por porta, na ordem. Cada porta testa uma condição.\nCada porta tem três saídas possíveis:\n\n- **VERDE** — passa, desce pra próxima.\n- **AMARELO** — serve, mas com ressalva. Anota a ressalva; ela vira cláusula\n  de contrato ou conversa franca antes de fechar. Continua descendo.\n- **VERMELHO** — trava aqui. Não é cliente agora. O motivo do travamento é a\n  informação mais valiosa: diz o que faltou e o que a pessoa precisaria mudar\n  pra voltar a fazer sentido.\n\nUm só VERMELHO em qualquer porta encerra o funil. Os AMARELOS se acumulam:\num sozinho é gerenciável, três ou mais no mesmo cliente é sinal de que o\ncontrato inteiro vai ser trabalhoso — trate como VERMELHO na prática.\n\nAo lado de cada porta, a **fonte**: quem responde. `[você]` = seu julgamento\nobservando a pessoa e o material dela. `[cliente]` = a pessoa te conta, na\nconversa inicial. `[ambos]` = ela conta e você valida.\n\n---\n\n## PORTA 1 — Aparecer (gate inegociável) · fonte [cliente]\n\nA pessoa topa ser o rosto, aparecer na câmera com constância, ao longo de\ntodo o contrato?\n\n- **VERDE** — topa aparecer e entende que a marca é ela.\n- **AMARELO** — topa, mas com receio, timidez, ou \"nunca fiz isso\". Serve: parte\n  do teu trabalho é dirigir quem trava na frente da câmera. Vira ressalva: as\n  primeiras diárias vão ter mais direção e aquecimento.\n- **VERMELHO** — não quer aparecer, quer terceirizar o rosto, quer marca sem\n  cara. Para aqui. O método é audiovisual com a pessoa no centro; sem rosto,\n  não há o que cultivar.\n\n> Por que é a primeira porta: é a mais eliminatória e a mais barata de\n> descobrir. Não faz sentido testar mais nada se isso já trava.\n\n---\n\n## PORTA 2 — Encaixe de nicho · fonte [ambos]\n\nO tipo de negócio e a área da pessoa funcionam com marca pessoal orgânica em\nvídeo?\n\n- **VERDE** — profissional ou fundador cuja autoridade é pessoal e cuja área\n  permite comunicar livremente (a maioria: consultores, profissionais liberais\n  sem trava de conselho, donos de negócio de serviço, criadores).\n- **AMARELO** — nicho com regra de publicidade a respeitar (medicina, odonto,\n  advocacia com limite da OAB, áreas reguladas). Serve, mas a estratégia tem\n  que nascer dentro das regras do conselho de classe. Vira ressalva: alinhar o\n  que pode e o que não pode comunicar antes de qualquer roteiro.\n- **VERMELHO** — negócio onde marca pessoal não é a alavanca (produto físico de\n  prateleira sem rosto por trás, negócio que precisa de performance/tráfego e\n  não de autoridade pessoal, nicho onde aparecer é proibido de fato). Para\n  aqui. Não é que a pessoa é ruim; é que o teu método não é a ferramenta certa\n  pra ela.\n\n---\n\n## PORTA 3 — Substância pra extrair · fonte [você]\n\nJá existe trajetória, autoridade, um ponto de vista, uma verdade própria de\nonde lapidar?\n\n- **VERDE** — tem história, casos, repertório, uma posição sobre a própria\n  área. Há solo pra cavar.\n- **AMARELO** — tem substância, mas pouca ou ainda difusa. Serve, mas a fase\n  Solo vai ser mais longa e mais decisiva; o valor do trabalho estratégico\n  sobe. Vira ressalva: deixar claro que o primeiro mês é mais pesado de\n  extração.\n- **VERMELHO** — início absoluto, sem repertório, sem casos, sem verdade\n  própria. Nada pra extrair de dentro pra fora. Para aqui. Não é o momento —\n  pode voltar quando tiver estrada.\n\n---\n\n## PORTA 4 — Compra a lógica da plantação · fonte [cliente]\n\nEntende que marca orgânica se planta e se cultiva, que o fruto é médio/longo\nprazo, e não viralização sob encomenda?\n\n- **VERDE** — pensa em construção, aceita o horizonte, quer marca e não pico.\n- **AMARELO** — compra a lógica, mas com ansiedade por resultado, ou vindo de\n  uma frustração com tráfego/agência anterior. Serve, mas exige expectativa\n  alinhada por escrito e conversa honesta sobre prazos. Vira ressalva.\n- **VERMELHO** — quer viralizar amanhã, mede sucesso só por número imediato,\n  quer retorno de performance. Para aqui. É cliente de tráfego pago, não seu.\n\n---\n\n## PORTA 5 — Cede a direção · fonte [você]\n\nQuer ser dirigido e confia no processo, ou quer microgerenciar cada corte e\nroteiro?\n\n- **VERDE** — quer direção, respeita teu papel, colabora sem controlar.\n- **AMARELO** — opinativo, participativo demais, mas de boa fé. Serve, mas\n  precisa de um combinado claro de alçadas: o que é decisão dele, o que é tua.\n  Vira ressalva contratual.\n- **VERMELHO** — quer controlar tudo, acha que sabe mais que você sobre a\n  própria comunicação, transforma cada entrega em disputa. Para aqui. Contrato\n  infernal, resultado que não vem, portfólio manchado.\n\n---\n\n## ROTEAMENTO — Qual plano · fonte [ambos]\n\nSó chega aqui quem passou por todas as portas. Agora não é mais \"se\", é \"qual\".\nDuas leituras se cruzam:\n\n### Leitura A — perfil de relação\n\n- Quer subir rápido, é mais independente, topa tocar o próprio feed depois de\n  receber a plantação pronta → tende a **Plantio**.\n- Quer tirar o peso das costas de vez, parceria contínua, você como sócio de\n  comunicação → tende a **Colheita**.\n\n### Leitura B — capacidade financeira (roteador, não porta)\n\nA verba nunca elimina o cliente aqui; ela roteia.\n\n- Tem verba confortável pra recorrência longa sem que o valor machuque →\n  **Colheita** cabe.\n- Tem verba pontual, ou prefere um compromisso menor pra começar → **Plantio**,\n  que tem entrada maior mas horizonte curto e custo total menor.\n- Passa em tudo, mas a verba aperta em qualquer formato → não é VERMELHO, é\n  **\"ainda não\" ou \"começa pelo Plantio\"**. Cliente certo, momento financeiro\n  a amadurecer. Deixa a porta aberta.\n\n> Regra de ouro do roteamento: capacidade de pagar **sem dor** é condição de um\n> bom contrato. Cliente que vai ter que ser perseguido todo mês atrás de\n> pagamento contamina a relação, por melhor que seja em tudo o mais. Isso é\n> AMARELO forte — pesa antes de fechar.\n\n---\n\n## CHEGADA — O veredito\n\nAo fim do percurso, uma de três conclusões:\n\n1. **Serve — Plantio.** Passou nas portas, perfil independente / verba pontual.\n2. **Serve — Colheita.** Passou nas portas, perfil parceria / verba recorrente.\n3. **Não serve agora.** Travou numa porta. O veredito nomeia **qual porta** e\n   **o que mudaria o jogo** — isso é mais forte que uma recusa seca, e mantém a\n   ponte pro futuro.\n\nSome a isso os AMARELOS acumulados: cada um vira uma linha no contrato ou um\nponto da conversa de alinhamento antes da assinatura. Um contrato que nasce\ncom as ressalvas ditas é um contrato que não vira surpresa depois.\n\n---\n\n## Nota pra versão HTML (não é porta)\n\nA **capacidade operacional** (quantos Plantio/Colheita você aguenta ao mesmo\ntempo) não entra como porta, porque é condição tua, não do cliente. Ela vive\nno painel do HTML: o teto operacional aparece ali, e um cliente aprovado pode\nvirar \"fila de espera\" se a agenda estiver cheia — um \"sim, mas a partir de tal\nmês\", nunca um \"não\"."}, {"id": "marca-viva", "nome": "Filtro Marca Viva", "md": "# Filtro de Qualificação — Marca Viva\n\nFerramenta interna. Decide se uma marca é cliente do serviço Marca Viva\n(sociedade Davi + Brenda). Filtro próprio, diferente do filtro oFruto —\naqui o cliente é o INVERSO do ICP do oFruto: marca sem rosto próprio.\n\nRoda antes de fechar contrato. Não é diagnóstico de estratégia (outra skill).\n\n## Como usar\n\nDesce porta por porta, na ordem. Três saídas por porta:\n\n- **VERDE** — passa, desce.\n- **AMARELO** — serve com ressalva. Anota; vira cláusula ou conversa antes de\n  fechar. Continua.\n- **VERMELHO** — trava aqui. Não é cliente agora. O motivo do travamento diz\n  o que faltou.\n\nUm VERMELHO encerra. Amarelos se acumulam: um é gerenciável, três ou mais no\nmesmo cliente é vermelho na prática.\n\nFonte de cada resposta: `[você]` seu julgamento · `[cliente]` a marca conta ·\n`[brenda]` decisão/veto da Brenda · `[ambos]`.\n\n> A grande inversão: no filtro oFruto, \"não quer aparecer\" é o corte\n> eliminatório. Aqui, \"o dono não aparece\" é a CONDIÇÃO DE ENTRADA. Este\n> serviço existe pra quem trava na Porta 1 do oFruto.\n\n---\n\n## PORTA 1 — Faz sentido na rede social? · fonte [você]\n\nO cliente DA MARCA é influenciável por conteúdo orgânico de rede social?\n\n- **VERDE** — negócio de consumo, serviço, moda, lifestyle, estética,\n  bem-estar — algo cujo público decide/deseja via rede social.\n- **AMARELO** — faz sentido, mas de forma parcial ou indireta (parte do\n  público está, parte não). Serve, mas alinhar expectativa do que a rede\n  social move pra aquele negócio.\n- **VERMELHO** — negócio cujo cliente não decide por rede social (B2B de\n  nicho fechado, licitação, fornecedor industrial, boca a boca de indicação\n  fechada). Para aqui. Não adianta a marca estar onde o cliente dela não está.\n\n---\n\n## PORTA 2 — É marca sem rosto próprio? · fonte [cliente]\n\nO dono/CEO não quer, não sabe, ou não faz sentido ser o rosto — e por isso a\nmarca precisa de um rosto emprestado?\n\n- **VERDE** — dono não aparece, tem dificuldade de comunicação, ou não faz\n  sentido ele ser a cara. É exatamente o cliente do Marca Viva.\n- **AMARELO** — dono aparece um pouco mas não sustenta a comunicação sozinho,\n  ou toparia dividir o palco com a Brenda. Serve, mas definir bem quem é rosto\n  de quê pra não competir com o próprio cliente em cena.\n- **VERMELHO** — o dono QUER e SABE aparecer. Não é Marca Viva — é candidato\n  ao oFruto normal (Plantio/Pomar). Redireciona, não força.\n\n---\n\n## PORTA 3 — Encaixe com a Brenda (+ veto dela) · fonte [brenda]\n\nA Brenda vai ser a cara pública desta marca. Combina com o que ela representa,\ne ela topa?\n\n- **VERDE** — segmento que casa com o perfil dela (moda, lifestyle, estética,\n  bem-estar, consumo), e ela aprova ser a cara.\n- **AMARELO** — casa, mas exige ajuste (tom, limite do que ela comunica,\n  cláusula específica). Serve com o combinado escrito.\n- **VERMELHO** — segmento que destoa ou conflita com a imagem dela, OU ela não\n  quer associar o nome. Para aqui, independente do valor. A imagem dela é o\n  ativo do serviço — ela tem direito de veto.\n\n> Regra: veto da Brenda é caso a caso, sempre conversado, mesmo o Davi já tendo\n> noção do que ela topa. Cláusulas de conduta (não se envolver em polêmica etc.)\n> entram no contrato sempre — dos dois lados.\n\n---\n\n## PORTA 4 — Aguenta o ticket sem dor? · fonte [ambos]\n\nA marca fatura o bastante pra R$5-6k/mês ser uma fatia digerível do marketing?\n\n- **VERDE** — fatura na régua (R$80-100k/mês pra cima), já investe em\n  marketing, tem estrutura. R$5-6k não pesa.\n- **AMARELO** — está no limite da régua, ou a verba existe mas é apertada.\n  Serve, mas atenção ao risco de virar relação de cobrança — pesar antes.\n- **VERMELHO** — marca pequena, o valor vai machucar (viraria 15%+ do\n  faturamento só em conteúdo). Para aqui. Não é \"não\", é \"ainda não\" — quando\n  crescer, volta.\n\n> Régua: 5-10% do faturamento em marketing é saudável, e este serviço é só uma\n> FATIA do marketing, não o todo. Daí o piso de R$80-100k/mês de faturamento.\n> Sinais de porte sem perguntar faturamento na cara: nº de funcionários,\n> estrutura/ponto físico, se já investe em tráfego, outras frentes rodando.\n\n---\n\n## PORTA 5 — Compra a lógica de marca, não de anúncio? · fonte [cliente]\n\nA marca entende que é construção de presença orgânica de médio prazo, não\ncampanha de performance com retorno imediato?\n\n- **VERDE** — pensa em marca, aceita o horizonte, quer presença e desejo.\n- **AMARELO** — compra a lógica mas com ansiedade por número, ou vindo de\n  frustração com tráfego. Serve, mas expectativa alinhada por escrito.\n- **VERMELHO** — quer venda pra ontem, mede por conversão imediata. É cliente\n  de tráfego, não de marca. Para aqui.\n\n---\n\n## PORTA 6 — Cede a direção? · fonte [você]\n\nA marca confia que o Davi toca estratégia e conteúdo, e que a Brenda é a\nintérprete — sem microgerenciar nem tratar a Brenda como funcionária?\n\n- **VERDE** — entrega a comunicação, confia no processo, respeita a Brenda\n  como sócia-rosto e não como peça controlável.\n- **AMARELO** — participativo demais mas de boa fé. Serve, com combinado claro\n  de alçadas (o que é decisão da marca, o que é da dupla).\n- **VERMELHO** — quer controlar cada roteiro, ou quer mandar na Brenda como se\n  fosse contratada dela. Para aqui. Contrato infernal e desgaste da sócia.\n\n---\n\n## ROTEAMENTO DE ESCOPO (não é porta) · fonte [você]\n\nPassou nas 6 portas, é cliente. Última leitura, pra dimensionar o mês 1:\n\n- **Perfil da marca já existe e roda** → a gente pega e dá rumo. Mês 1 padrão.\n- **Perfil do zero / precisa montar** → tem trabalho de estruturação antes.\n  Dimensiona no diagnóstico; pode entrar no mês 1 ou virar extra.\n\n---\n\n## CHEGADA — O veredito\n\n1. **Serve — Marca Viva.** Passou nas 6 portas, Brenda aprovou, aguenta o\n   ticket. Define R$5k ou R$6k conforme porte, e o escopo do mês 1 conforme\n   o perfil já existir ou não.\n2. **Não serve agora.** Travou numa porta — nomeia qual e o que mudaria.\n   Se travou na Porta 2 por o dono QUERER aparecer → redireciona pro oFruto\n   (Plantio/Pomar), não é perda, é outro serviço.\n\nAmarelos acumulados viram cláusulas/conversa antes de assinar. Cláusulas de\nconduta da Brenda entram sempre, independente de amarelo."}]}};
+
+// markdown -> html (simples, cobre o que usamos nos .md)
+function mdToHtml(md){
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const lines=md.split('\n');
+  let out=[], inList=false, inQuote=false, inInternal=false;
+  const closeList=()=>{ if(inList){out.push('</ul>');inList=false;} };
+  function inline(t){
+    t=esc(t);
+    t=t.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+    t=t.replace(/`(.+?)`/g,'<code>$1</code>');
+    return t;
+  }
+  for(let raw of lines){
+    const line=raw.replace(/\s+$/,'');
+    if(/^##\s*Lógica de precificação|^##\s*Estrutura da sociedade/.test(line) && !inInternal){
+      closeList(); if(inInternal) out.push('</div>');
+      inInternal=true; out.push('<div class="doc-internal">');
+      out.push('<h2>'+inline(line.replace(/^##\s*/,''))+'</h2>'); continue;
+    }
+    if(line.startsWith('# ')){ closeList(); out.push('<h1>'+inline(line.slice(2))+'</h1>'); continue; }
+    if(line.startsWith('## ')){ closeList(); if(inInternal){out.push('</div>');inInternal=false;} out.push('<h2>'+inline(line.slice(3))+'</h2>'); continue; }
+    if(line.startsWith('### ')){ closeList(); out.push('<h3>'+inline(line.slice(4))+'</h3>'); continue; }
+    if(line.startsWith('> ')){ closeList(); out.push('<blockquote>'+inline(line.slice(2))+'</blockquote>'); continue; }
+    if(/^\s*-\s+/.test(line)){ if(!inList){out.push('<ul>');inList=true;} out.push('<li>'+inline(line.replace(/^\s*-\s+/,''))+'</li>'); continue; }
+    if(line.trim()===''){ closeList(); continue; }
+    closeList(); out.push('<p>'+inline(line)+'</p>');
+  }
+  closeList(); if(inInternal) out.push('</div>');
+  return out.join('');
+}
+
+let docCat='servicos', docItem=null;
+const docSeg=document.getElementById('docSeg'), docNav=document.getElementById('docNav'), docBody=document.getElementById('docBody');
+
+function renderDocSeg(){
+  docSeg.innerHTML=Object.keys(DOCS).map(k=>`<button data-cat="${k}" class="${k===docCat?'on':''}">${DOCS[k].label}</button>`).join('');
+}
+function renderDocNav(){
+  const items=DOCS[docCat].items;
+  if(items.length<=1){ docNav.innerHTML=''; return; }
+  docNav.innerHTML=items.map((it,i)=>`<button data-item="${it.id}" class="${(docItem||items[0].id)===it.id?'on':''}">${it.nome}</button>`).join('');
+}
+function renderDocBody(){
+  const items=DOCS[docCat].items;
+  docBody.innerHTML=items.map(it=>`<div class="doc-item" id="doc-${docCat}-${it.id}">${mdToHtml(it.md)}</div>`).join('');
+}
+function initDoc(){ renderDocSeg(); renderDocNav(); renderDocBody(); }
+
+docSeg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  docCat=b.dataset.cat;docItem=null;
+  renderDocSeg();renderDocNav();renderDocBody();
+  const c=document.querySelector('.app');(c&&c.scrollTo)?c.scrollTo({top:0}):scrollTo({top:0});
+});
+docNav.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  docItem=b.dataset.item;renderDocNav();
+  const el=document.getElementById('doc-'+docCat+'-'+docItem);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+});
+initDoc();
+
+
+/* ============ GERADOR DE PROPOSTAS ============ */
+const MOLDES = { "plantio": {"capa": {"servico": "Plantio", "tagline": "A primeira safra da sua marca."}, "contexto": {"titulo": "Por que essa proposta", "texto": "Hoje, [NOME] já tem experiência, repertório e autoridade em [ÁREA]. Mas essa percepção ainda não está traduzida numa presença digital consistente.\n\nO desafio não é simplesmente produzir conteúdo. É transformar o conhecimento e a personalidade de [NOME] numa comunicação reconhecível, estratégica e sustentável."}, "objetivo": {"titulo": "O objetivo", "texto": "Estruturar a presença digital de [NOME], construir seu posicionamento e produzir uma primeira safra de conteúdo, de forma que [NOME] siga comunicando a própria marca com autonomia."}, "solucao": {"titulo": "A solução: Plantio", "texto": "O Plantio é um ciclo de quatro meses que combina estratégia de marca, produção audiovisual e acompanhamento de performance para construir a primeira base de comunicação digital.", "conceito": "Estratégia → Produção → Autonomia"}, "comofunciona": {"titulo": "Como funciona", "etapas": [{"quando": "Mês 1", "o_que": "Estratégia", "desc": "Imersão, extração e o mapa completo da marca."}, {"quando": "Meses 2 a 4", "o_que": "Produção + acompanhamento", "desc": "Roteiro, gravação, edição, calendário e leitura de performance."}, {"quando": "Final do mês 4", "o_que": "Primeira safra + autonomia", "desc": "A base pronta e você no controle pra continuar."}]}, "entregaveis": {"titulo": "Entregáveis", "grupos": [{"nome": "Estratégia", "itens": ["Imersão de 2 a 3 horas", "Mapa estratégico da marca", "Posicionamento", "Narrativa", "Tom de voz", "Direcionamento de canais e formatos"]}, {"nome": "Produção", "itens": ["2 diárias por mês", "8 vídeos por mês", "24 vídeos no ciclo", "Roteiros", "Direção", "Edição", "Calendário de postagem"]}, {"nome": "Acompanhamento", "itens": ["Análise de performance", "Ajustes para as próximas produções"]}]}, "naoinclui": {"titulo": "O que não está incluso", "itens": ["Gestão diária das redes", "Publicação dos conteúdos", "Resposta a comentários e mensagens", "Criação de identidade visual", "Estruturação de perfil", "Tráfego pago", "Captação adicional fora das diárias previstas", "Peças ou demandas não descritas nesta proposta"], "nota": "Necessidades adicionais podem ser avaliadas e contratadas separadamente."}, "responsabilidades": {"titulo": "Responsabilidades", "cliente": ["Participar da imersão", "Disponibilizar informações e materiais", "Comparecer às gravações", "Aprovar roteiros dentro do prazo", "Realizar as postagens", "Fornecer acessos quando necessário", "Cumprir os prazos combinados"], "agencia": ["Conduzir a estratégia", "Desenvolver os roteiros", "Dirigir as gravações", "Editar os conteúdos", "Organizar o calendário", "Acompanhar a performance"]}, "cronograma": {"titulo": "Cronograma", "linhas": [{"etapa": "Imersão + estratégia", "periodo": "Mês 1"}, {"etapa": "Roteirização + gravações", "periodo": "Meses 2 a 4"}, {"etapa": "Edição + calendário", "periodo": "Meses 2 a 4"}, {"etapa": "Acompanhamento", "periodo": "Meses 2 a 4"}, {"etapa": "Encerramento", "periodo": "Final do mês 4"}]}, "investimento": {"titulo": "Investimento", "linhas": [{"o_que": "Mês 1 — Estratégia", "valor": "R$ 5.000"}, {"o_que": "Meses 2 a 4 — Produção", "valor": "R$ 2.500/mês"}], "total": "R$ 12.500", "total_label": "Total do ciclo"}, "condicoes": {"titulo": "Condições comerciais", "campos": [{"k": "Validade da proposta", "v": "[VALIDADE]"}, {"k": "Forma de pagamento", "v": "[PAGAMENTO]"}, {"k": "Início previsto", "v": "[INÍCIO]"}], "texto": "Prazo de aprovação de roteiros, política de reagendamento, propriedade e uso dos materiais e demais termos são detalhados no contrato."}, "porque": {"titulo": "Por que a oFruto", "provas": [{"t": "Método", "d": "Um processo claro: extração, estratégia, produção e acompanhamento. Nada de ligar a câmera sem norte."}, {"t": "Produção com direção", "d": "Conteúdo com qualidade estética e narrativa, não volume solto."}, {"t": "Foco em autonomia", "d": "Você termina o ciclo sabendo comunicar a própria marca, não dependente de terceiros."}]}, "depois": {"titulo": "O que muda depois do Plantio", "antes": "Marca sem estrutura clara, conteúdo pontual, dependência de terceiros.", "depois": "Posicionamento definido, linguagem estabelecida, primeira biblioteca de conteúdo, processo aprendido e autonomia.", "fecho": "Você não está comprando 24 vídeos. Está comprando uma marca que passa a se comunicar sozinha."}, "proximos": {"titulo": "Próximos passos", "passos": ["Aprovação da proposta", "Assinatura do contrato", "Pagamento inicial", "Agendamento da imersão", "Início do Plantio"]}} };
+/* Dados de jornada por serviço (o que o cliente vê) */
+const PROP_JORNADA = {
+  plantio:[
+    {n:'Mês 1',t:'Estratégia',d:'Imersão e mapa completo da marca.'},
+    {n:'2 a 4',t:'Produção',d:'Roteiro, gravação, edição e calendário. Você publica.'},
+    {n:'2 a 4',t:'Acompanhamento',d:'Leitura de performance e ajustes.'}
+  ],
+  pomar:[
+    {n:'Mês 1',t:'Estratégia + Setup',d:'Mapa completo e preparação do perfil.'},
+    {n:'1 a 6',t:'Produção + Gestão',d:'Gravação, edição, gestão de feed e cobertura.'},
+    {n:'1 a 6',t:'Acompanhamento',d:'Parceria contínua, ajuste o tempo todo.'}
+  ],
+  'marca-viva':[
+    {n:'Mês 1',t:'Estratégia',d:'Extração da marca, narrativa com a Brenda como voz.'},
+    {n:'2 a 5',t:'Produção',d:'Gravação, edição, conteúdo no perfil da marca.'},
+    {n:'2 a 5',t:'Acompanhamento',d:'Leitura de performance e ajustes.'}
+  ]
+};
+/* escopo default (editável) por serviço — versão limpa pro cliente */
+function scopeDefault(id){
+  const s=DATA.servicos.find(x=>x.id===id);
+  return s.entregaveis.map(e=>'• '+e).join('\n');
+}
+
+let propState = { servicos:[], scopes:{} };
+
+/* ----- SUPABASE: quando plugar, trocar estas 3 funções ----- */
+/* Hoje guarda em memória (zera ao recarregar). Depois: salvar/ler do Supabase. */
+let PROPOSTAS = []; // [{id,nome,empresa,servicos,dados,status,criada}]
+function dbSalvar(p){ PROPOSTAS.unshift(p); /* TODO supabase insert */ renderPropList(); }
+function dbAtualizar(id,patch){ const p=PROPOSTAS.find(x=>x.id===id); if(p)Object.assign(p,patch); /* TODO supabase update */ renderPropList(); }
+function dbExcluir(id){ PROPOSTAS=PROPOSTAS.filter(x=>x.id!==id); /* TODO supabase delete */ renderPropList(); }
+/* ----------------------------------------------------------- */
+
+/* render seletor de serviços */
+function renderPfSvcs(){
+  document.getElementById('pfSvcs').innerHTML=DATA.servicos.map(s=>`
+    <div class="pf-svc ${propState.servicos.includes(s.id)?'on':''}" data-svc="${s.id}">
+      <div class="chk"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></div>
+      <div><h4>${s.nome}</h4><div class="sub">${s.duracao} · ${s.precoCurto}</div></div>
+    </div>`).join('');
+}
+function renderPfScopes(){
+  const box=document.getElementById('pfScopes');
+  if(!propState.servicos.length){ box.innerHTML='<p style="color:var(--ink-3);font-size:13.5px">Selecione ao menos um serviço acima.</p>'; return; }
+  box.innerHTML=propState.servicos.map(id=>{
+    const s=DATA.servicos.find(x=>x.id===id);
+    if(propState.scopes[id]===undefined) propState.scopes[id]={escopo:scopeDefault(id),invest:s.precoCurto,resume:s.resumo};
+    const sc=propState.scopes[id];
+    return `<div class="pf-scope" data-scope="${id}">
+      <div class="sc-nome">${s.nome}</div>
+      <textarea class="pf-input sc-resume" data-f="resume" rows="2" placeholder="Descrição">${sc.resume}</textarea>
+      <textarea class="pf-input sc-escopo" data-f="escopo" placeholder="Escopo (uma linha por item)">${sc.escopo}</textarea>
+      <input class="pf-input sc-invest" data-f="invest" value="${sc.invest}" placeholder="Investimento">
+    </div>`;
+  }).join('');
+}
+document.getElementById('pfSvcs').addEventListener('click',e=>{
+  const el=e.target.closest('.pf-svc'); if(!el)return;
+  const id=el.dataset.svc;
+  if(propState.servicos.includes(id)) propState.servicos=propState.servicos.filter(x=>x!==id);
+  else propState.servicos.push(id);
+  renderPfSvcs(); renderPfScopes();
+});
+document.getElementById('pfScopes').addEventListener('input',e=>{
+  const wrap=e.target.closest('[data-scope]'); if(!wrap)return;
+  const id=wrap.dataset.scope, f=e.target.dataset.f;
+  propState.scopes[id][f]=e.target.value;
+});
+
+function coletaProposta(){
+  return {
+    id:'p'+Date.now(),
+    nome:document.getElementById('pfNome').value||'Cliente',
+    empresa:document.getElementById('pfEmpresa').value,
+    area:document.getElementById('pfArea').value,
+    welcome:document.getElementById('pfWelcome').value,
+    o_contexto:document.getElementById('pfContexto').value,
+    o_objetivo:document.getElementById('pfObjetivo').value,
+    inicio:document.getElementById('pfInicio').value,
+    servicos:propState.servicos.slice(),
+    scopes:JSON.parse(JSON.stringify(propState.scopes)),
+    validade:document.getElementById('pfValidade').value,
+    pagamento:document.getElementById('pfPagamento').value,
+    video:document.getElementById('pfVideo').value,
+    obs:document.getElementById('pfObs').value,
+    status:'aberta',
+    criada:new Date().toLocaleDateString('pt-BR')
+  };
+}
+
+/* montar o preview (o que o cliente vê) */
+const logoSvg=document.getElementById('logosvg').textContent;
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function nl2br(s){return esc(s).replace(/\n/g,'<br>');}
+
+/* aplica lacunas [NOME] [ÁREA] [EMPRESA] etc com base nos dados do cliente */
+function fill(txt,p){
+  return String(txt||'')
+    .replace(/\[NOME\]/g,p.nome||'[NOME]')
+    .replace(/\[EMPRESA\]/g,p.empresa||'')
+    .replace(/\[ÁREA\]/g,p.area||'[área]')
+    .replace(/\[VALIDADE\]/g,p.validade||'—')
+    .replace(/\[PAGAMENTO\]/g,p.pagamento||'—')
+    .replace(/\[INÍCIO\]/g,p.inicio||'a combinar');
+}
+
+function abrirPreview(p){
+  const pv=document.getElementById('propView');
+  // ---- BOAS-VINDAS (estilo Proton) ----
+  document.getElementById('pvWelcome').innerHTML=`
+    <div class="pv-w-top"><span class="pv-logo">${logoSvg}</span><span class="pv-brand">oFruto</span></div>
+    <div class="pv-w-btm">
+      <h1>${esc(p.nome)}${p.empresa?`<span class="emp">${esc(p.empresa)}</span>`:''}</h1>
+      <p>${nl2br(p.welcome||'Que bom ter você aqui. Preparei essa proposta com cuidado, pensando na sua marca. Quando quiser, é só avançar.')}</p>
+      <button class="pv-enter" id="pvEnter">Ver proposta</button>
+    </div>`;
+
+  // ---- CORPO GUIADO (a partir do molde do serviço) ----
+  // usa o primeiro serviço escolhido como base do molde comercial
+  const baseId = p.servicos[0];
+  const m = (typeof MOLDES!=='undefined' && MOLDES[baseId]) ? MOLDES[baseId] : null;
+  const s0 = DATA.servicos.find(x=>x.id===baseId);
+  let body='';
+
+  if(m){
+    // capa
+    body+=`<section class="pp-cover"><div class="pp-logo">${logoSvg}</div>
+      <div class="pp-c-name">Plantamos estratégia,<br>cultivamos marcas,<br>geramos fruto.</div>
+      <div class="pp-c-meta">Proposta para ${esc(p.nome)}${p.empresa?' · '+esc(p.empresa):''} · ${esc(p.criada)}</div></section>`;
+    // contexto
+    body+=ppSecNum('01','Contexto',m.contexto.titulo, `<p>${nl2br(fill(p.o_contexto||m.contexto.texto,p))}</p>`);
+    // objetivo
+    body+=ppSecNum('02','Objetivo',m.objetivo.titulo, `<p>${nl2br(fill(p.o_objetivo||m.objetivo.texto,p))}</p>`);
+    // solução
+    body+=`<section class="pp-sec"><span class="pp-bignum">03</span><div class="pp-eyebrow">A solução</div><h3>${esc(m.solucao.titulo)}</h3><p>${nl2br(fill(m.solucao.texto,p))}</p>
+      <div class="pp-conceito">${esc(m.solucao.conceito)}</div></section>`;
+    // como funciona
+    body+=`<section class="pp-sec"><h3>${esc(m.comofunciona.titulo)}</h3><div class="pp-flow">`+
+      m.comofunciona.etapas.map((e,i)=>`<div class="pp-flow-step"><div class="pp-fs-when">${esc(e.quando)}</div><div class="pp-fs-what">${esc(e.o_que)}</div><div class="pp-fs-d">${esc(e.desc)}</div></div>${i<m.comofunciona.etapas.length-1?'<div class="pp-flow-arrow">↓</div>':''}`).join('')+`</div></section>`;
+    // entregáveis
+    body+=`<section class="pp-sec"><h3>${esc(m.entregaveis.titulo)}</h3>`+
+      m.entregaveis.grupos.map(g=>`<div class="pp-eg"><div class="pp-eg-t">${esc(g.nome)}</div><ul>${g.itens.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>`).join('')+`</section>`;
+    // não inclui
+    body+=`<section class="pp-sec"><h3>${esc(m.naoinclui.titulo)}</h3><ul class="pp-neg">${m.naoinclui.itens.map(i=>`<li>${esc(i)}</li>`).join('')}</ul><p class="pp-nota">${esc(m.naoinclui.nota)}</p></section>`;
+    // responsabilidades
+    body+=`<section class="pp-sec"><h3>${esc(m.responsabilidades.titulo)}</h3><div class="pp-resp">
+      <div><div class="pp-r-t">Cliente</div><ul>${m.responsabilidades.cliente.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>
+      <div><div class="pp-r-t">oFruto</div><ul>${m.responsabilidades.agencia.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div></div></section>`;
+    // cronograma
+    body+=`<section class="pp-sec"><h3>${esc(m.cronograma.titulo)}</h3><div class="pp-cron">`+
+      m.cronograma.linhas.map(l=>`<div class="pp-cron-row"><span>${esc(l.etapa)}</span><span class="pp-cron-p">${esc(l.periodo)}</span></div>`).join('')+`</div></section>`;
+    // investimento (usa valor editado do escopo se houver)
+    const invLinhas=m.investimento.linhas.map(l=>`<div class="pp-inv-row"><span>${esc(l.o_que)}</span><span class="pp-inv-v">${esc(l.valor)}</span></div>`).join('');
+    body+=`<section class="pp-sec"><h3>${esc(m.investimento.titulo)}</h3><div class="pp-inv">${invLinhas}</div></section>`;
+    // condições
+    const condRows=m.condicoes.campos.map(c=>`<div class="pp-cond-row"><span class="k">${esc(c.k)}</span><span class="v">${esc(fill(c.v,p))}</span></div>`).join('');
+    body+=`<section class="pp-sec"><h3>${esc(m.condicoes.titulo)}</h3><div class="pp-cond">${condRows}</div><p class="pp-nota">${esc(m.condicoes.texto)}</p></section>`;
+    // por que
+    body+=`<section class="pp-sec"><h3>${esc(m.porque.titulo)}</h3><div class="pp-provas">`+
+      m.porque.provas.map(pr=>`<div class="pp-prova"><div class="pp-pr-t">${esc(pr.t)}</div><div class="pp-pr-d">${esc(pr.d)}</div></div>`).join('')+`</div></section>`;
+    // depois
+    body+=`<section class="pp-sec pp-depois"><h3>${esc(m.depois.titulo)}</h3>
+      <div class="pp-ad"><div class="pp-ad-b"><span>Antes</span>${esc(m.depois.antes)}</div><div class="pp-ad-d"><span>Depois</span>${esc(m.depois.depois)}</div></div>
+      <p class="pp-fecho">${esc(m.depois.fecho)}</p></section>`;
+    // vídeo
+    if(p.video) body+=`<section class="pp-sec"><a class="pv-video" href="${esc(p.video)}" target="_blank" rel="noopener">Ver vídeo / material</a></section>`;
+    // próximos passos
+    body+=`<section class="pp-sec"><h3>${esc(m.proximos.titulo)}</h3><div class="pp-steps">`+
+      m.proximos.passos.map((ps,i)=>`<div class="pp-step"><span class="pp-st-n">0${i+1}</span><span>${esc(ps)}</span></div>`).join('')+`</div></section>`;
+    // obs
+    if(p.obs) body+=`<section class="pp-sec"><h3>Observações</h3><p>${nl2br(p.obs)}</p></section>`;
+  } else {
+    // fallback: serviço sem molde ainda (Pomar/Marca Viva) — versão simples
+    body=p.servicos.map(id=>{
+      const s=DATA.servicos.find(x=>x.id===id), sc=p.scopes[id];
+      return `<section class="pp-sec"><div class="pp-s-eye">${s.linha} · ${s.duracao}</div><h3>${s.nome}</h3>
+        <p>${esc(sc.resume)}</p><div class="pv-scope">${esc(sc.escopo)}</div>
+        <div class="pv-invest"><span class="k">Investimento</span><span class="v">${esc(sc.invest)}</span></div></section>`;
+    }).join('');
+  }
+  // ---- seção final: quem sou (foto placeholder p/ Supabase) ----
+  body+=`<section class="pp-sec pp-quem">
+    <div class="pp-quem-foto">
+      <!-- IMG-SUPABASE: trocar por <img src="URL_FOTO_DAVI"> -->
+      <span class="pp-foto-ph">Davi</span>
+    </div>
+    <div class="pp-quem-txt">
+      <div class="pp-eyebrow">Quem cuida disso</div>
+      <p class="pp-quem-p">Sou o Davi, diretor criativo e sócio da oFruto. Cuido pessoalmente da estratégia e da direção de cada marca que passa por aqui.</p>
+      <p class="pp-quem-fecho">Tô aqui pra te ajudar a gerar frutos.</p>
+    </div>
+  </section>`;
+  body+=`<div class="pv-foot"><div class="pv-f-logo">${logoSvg}</div>oFruto · plantamos estratégia, cultivamos marcas, geramos fruto.</div>`;
+
+  document.getElementById('pvBody').innerHTML=body;
+  document.getElementById('pvBody').classList.remove('on');
+  document.getElementById('pvWelcome').style.display='';
+  pv.classList.add('on'); document.body.style.overflow='hidden';
+  document.getElementById('pvEnter').onclick=()=>{
+    document.getElementById('pvWelcome').style.display='none';
+    document.getElementById('pvBody').classList.add('on');
+    pv.scrollTop=0;
+    setupPropScroll();
+  };
+}
+function setupPropScroll(){
+  const pv=document.getElementById('propView');
+  const secs=[...pv.querySelectorAll('.pp-cover, .pp-sec')];
+  let prog=pv.querySelector('.pp-progress'); if(prog) prog.remove();
+  prog=document.createElement('div'); prog.className='pp-progress';
+  const n=secs.length;
+  let ticks='';
+  for(let i=0;i<n;i++){ ticks+=`<span class="tick" data-i="${i}" style="top:${(i/(n-1))*100}%"></span>`; }
+  prog.innerHTML=`<div class="track-fill"></div><div class="thumb"></div>${ticks}`;
+  pv.appendChild(prog);
+  const fill=prog.querySelector('.track-fill'), thumb=prog.querySelector('.thumb');
+  prog.addEventListener('click',e=>{const t=e.target.closest('.tick');if(t)secs[+t.dataset.i].scrollIntoView({behavior:'smooth'});});
+  function setPos(idx){ const pctv=n>1?(idx/(n-1))*100:0; fill.style.height=pctv+'%'; thumb.style.top=pctv+'%'; }
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); setPos(secs.indexOf(en.target)); } });
+  },{root:pv,threshold:.4});
+  secs.forEach(s=>io.observe(s));
+  if(secs[0]){ secs[0].classList.add('in'); setPos(0); }
+}
+function ppText(titulo,texto){return `<section class="pp-sec"><h3>${esc(titulo)}</h3><p>${nl2br(texto)}</p></section>`;}
+function ppSecNum(num,eye,titulo,inner){return `<section class="pp-sec"><span class="pp-bignum">${num}</span><div class="pp-eyebrow">${esc(eye)}</div><h3>${esc(titulo)}</h3>${inner}</section>`;}
+
+document.getElementById('pvClose').onclick=()=>{const pv=document.getElementById('propView');pv.classList.remove('on');document.body.style.overflow='';const pr=pv.querySelector('.pp-progress');if(pr)pr.remove();};
+
+document.getElementById('pfPreview').onclick=()=>{
+  if(!propState.servicos.length){alert('Selecione ao menos um serviço.');return;}
+  abrirPreview(coletaProposta());
+};
+document.getElementById('pfGerar').onclick=()=>{
+  if(!propState.servicos.length){alert('Selecione ao menos um serviço.');return;}
+  const p=coletaProposta();
+  dbSalvar(p);
+  abrirPreview(p);
+};
+
+/* lista de propostas */
+function renderPropList(){
+  const list=document.getElementById('propList'), empty=document.getElementById('propEmpty');
+  if(!PROPOSTAS.length){ list.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  const nomes=ids=>ids.map(id=>DATA.servicos.find(s=>s.id===id).nome).join(', ');
+  const stLabel={aberta:'Aberta',concluida:'Concluída',arquivada:'Arquivada'};
+  list.innerHTML=PROPOSTAS.map(p=>`
+    <div class="prop-card ${p.status==='concluida'?'done':''} ${p.status==='arquivada'?'arch':''}" data-id="${p.id}">
+      <div class="pc-main" data-abrir="${p.id}">
+        <h4>${p.nome}${p.empresa?' · '+p.empresa:''}</h4>
+        <div class="pc-sub">${nomes(p.servicos)} · ${p.criada}</div>
+      </div>
+      <span class="pc-status">${stLabel[p.status]}</span>
+      <div class="pc-acts">
+        <button data-act="concluir" data-id="${p.id}" title="Concluída"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></button>
+        <button data-act="arquivar" data-id="${p.id}" title="Arquivar"><svg viewBox="0 0 24 24"><path d="M3 7h18v13H3z"/><path d="M3 7l2-3h14l2 3M10 12h4"/></svg></button>
+        <button data-act="excluir" data-id="${p.id}" title="Excluir"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button>
+      </div>
+    </div>`).join('');
+}
+document.getElementById('propList').addEventListener('click',e=>{
+  const abrir=e.target.closest('[data-abrir]');
+  if(abrir){ const p=PROPOSTAS.find(x=>x.id===abrir.dataset.abrir); if(p)abrirPreview(p); return; }
+  const b=e.target.closest('[data-act]'); if(!b)return;
+  const id=b.dataset.id, act=b.dataset.act;
+  if(act==='excluir'){ if(confirm('Excluir esta proposta?')) dbExcluir(id); }
+  else if(act==='concluir'){ const p=PROPOSTAS.find(x=>x.id===id); dbAtualizar(id,{status:p.status==='concluida'?'aberta':'concluida'}); }
+  else if(act==='arquivar'){ const p=PROPOSTAS.find(x=>x.id===id); dbAtualizar(id,{status:p.status==='arquivada'?'aberta':'arquivada'}); }
+});
+
+renderPfSvcs(); renderPfScopes(); renderPropList();
+
+</script>
+</body>
+</html>
