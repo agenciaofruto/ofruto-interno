@@ -6,7 +6,7 @@
 <title>oFruto · Serviços</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/proposta.css">
 <style>
 :root{
@@ -24,7 +24,7 @@
   --shadow:0 30px 70px -30px rgba(0,0,0,.95);
   --relevo:inset 0 1px 0 rgba(255,255,255,.10), inset 0 -1px 0 rgba(0,0,0,.6), 0 8px 24px -10px rgba(0,0,0,.8);
   /* acentos = branco (sem cor) */
-  --leaf:#f5f5f3;
+  --leaf:#8ba668;
   --leaf-deep:#cfcfcd;
   --amber:#9a9a98;
   --terra:#f5f5f3;
@@ -88,9 +88,9 @@ input{font-family:inherit;}
 .welcome{padding:30px 2px 4px;text-align:center;position:relative;}
 .welcome .w-logo{width:64px;height:64px;margin:0 auto 22px;border-radius:20px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--brd);box-shadow:var(--relevo);}
 .welcome .w-logo svg{width:36px;height:36px;}
-.welcome h1{font-weight:800;font-size:clamp(28px,7vw,36px);letter-spacing:-.035em;margin-bottom:14px;}
+.welcome h1{font-weight:900;font-size:clamp(30px,8vw,40px);letter-spacing:-.045em;margin-bottom:14px;}
 .welcome p{font-size:14.5px;color:var(--ink-2);line-height:1.6;max-width:44ch;margin:0 auto;}
-@media(min-width:900px){.welcome{padding-top:40px;} .welcome h1{font-size:42px;}}
+@media(min-width:900px){.welcome{padding-top:40px;} .welcome h1{font-size:48px;}}
 
 /* ---------- HERO CARD ---------- */
 
@@ -98,7 +98,7 @@ input{font-family:inherit;}
 .hero-card:active{transform:scale(.99);}
 .hero-card .top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;}
 .hero-card .lbl{font-size:12.5px;color:var(--ink-2);margin-bottom:6px;}
-.hero-card h2{font-weight:800;font-size:32px;letter-spacing:-.04em;}
+.hero-card h2{font-weight:900;font-size:36px;letter-spacing:-.05em;}
 .hero-card::after{content:"";position:absolute;top:-40%;right:-12%;width:60%;height:80%;background:radial-gradient(closest-side,rgba(255,255,255,.06),transparent);filter:blur(20px);pointer-events:none;}
 .hero-card>*{position:relative;}
 .hero-card .go{width:34px;height:34px;border-radius:50%;background:var(--surface-3);border:1px solid var(--brd-2);display:grid;place-items:center;font-size:17px;color:var(--ink-2);flex:none;box-shadow:var(--relevo);}
@@ -167,7 +167,7 @@ input{font-family:inherit;}
 .empty .big{font-weight:700;font-size:19px;color:var(--ink-2);margin-bottom:8px;letter-spacing:-.02em;}
 
 .phead{padding:8px 2px 4px;}
-.phead h1{font-weight:800;font-size:clamp(26px,7vw,34px);letter-spacing:-.035em;}
+.phead h1{font-weight:900;font-size:clamp(28px,8vw,38px);letter-spacing:-.045em;}
 .phead p{color:var(--ink-2);font-size:14px;margin-top:8px;}
 
 /* ---------- TAB BAR ---------- */
@@ -199,7 +199,7 @@ input{font-family:inherit;}
 }
 .sheet .grip{width:38px;height:4px;border-radius:4px;background:var(--surface-3);margin:8px auto 20px;}
 .sheet .s-kind{font-size:12px;color:var(--ink-3);margin-bottom:8px;}
-.sheet h2{font-weight:800;font-size:32px;letter-spacing:-.035em;margin-bottom:10px;}
+.sheet h2{font-weight:900;font-size:36px;letter-spacing:-.045em;margin-bottom:10px;}
 .sheet .s-resume{font-size:15px;color:var(--ink-2);line-height:1.6;margin-bottom:18px;}
 .sheet .s-meta{display:flex;gap:24px;flex-wrap:wrap;padding:16px 0;border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);margin-bottom:18px;}
 .sheet .s-meta .k{font-size:11px;color:var(--ink-3);display:block;margin-bottom:3px;}
@@ -1021,7 +1021,7 @@ function coletaProposta(){
   };
 }
 
-/* montar o preview (o que o cliente vê) — esc/nl2br/fill/ppText/ppSecNum/
+/* montar o preview (o que o cliente vê) — esc/nl2br/fill/
    montarBoasVindas/montarCorpoProposta/setupPropScroll vêm de
    assets/js/proposta-render.js (compartilhado com a página pública proposta.html) */
 const logoSvg=document.getElementById('logosvg').textContent;
