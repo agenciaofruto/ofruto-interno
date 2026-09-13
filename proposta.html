@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Proposta · oFruto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/proposta.css">
+<style>
+/* estados específicos desta página pública (não fazem parte do preview interno) */
+.pv-loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:13.5px;letter-spacing:.04em;}
+.pv-indisponivel{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:32px;text-align:center;}
+.pv-ind-box{max-width:380px;}
+.pv-ind-logo{width:48px;height:48px;margin:0 auto 26px;opacity:.7;}
+.pv-ind-logo svg,.pv-ind-logo img{width:100%;height:100%;}
+.pv-indisponivel h1{font-weight:800;font-size:26px;letter-spacing:-.03em;margin-bottom:12px;}
+.pv-indisponivel p{font-size:14.5px;color:var(--ink-2);line-height:1.6;}
+</style>
+</head>
+<body>
+
+<div class="pv-loading" id="pvLoading">Carregando proposta…</div>
+
+<div class="prop-view" id="propView" hidden>
+  <div class="pv-wrap">
+    <div class="pv-welcome" id="pvWelcome"></div>
+    <div class="pv-body" id="pvBody"></div>
+  </div>
+</div>
+
+<div class="pv-indisponivel" id="pvIndisponivel" hidden>
+  <div class="pv-ind-box">
+    <div class="pv-ind-logo"><img src="assets/logo.svg" alt="oFruto"></div>
+    <h1>Proposta não disponível</h1>
+    <p>Esse link não está mais ativo ou não existe. Entre em contato com quem enviou a proposta para receber um novo acesso.</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/proposta-render.js"></script>
+<script>
+(async function(){
+  const logoHtml = '<img src="assets/logo.svg" alt="oFruto" style="width:100%;height:100%">';
+  const loading = document.getElementById('pvLoading');
+  const root = document.getElementById('propView');
+  const indisponivel = document.getElementById('pvIndisponivel');
+
+  function mostrarIndisponivel(){
+    loading.hidden = true;
+    root.hidden = true;
+    indisponivel.hidden = false;
+  }
+
+  const token = new URLSearchParams(location.search).get('id');
+  if(!token){ mostrarIndisponivel(); return; }
+
+  let resultado;
+  try{
+    resultado = await sb.rpc('get_proposta_publica', { p_token: token });
+  }catch(e){
+    mostrarIndisponivel(); return;
+  }
+  const { data, error } = resultado;
+  if(error || !data || !data.length){ mostrarIndisponivel(); return; }
+
+  const p = data[0];
+  document.getElementById('pvWelcome').innerHTML = montarBoasVindas(p, logoHtml);
+  document.getElementById('pvBody').innerHTML = montarCorpoProposta(p, logoHtml);
+
+  loading.hidden = true;
+  root.hidden = false;
+  root.classList.add('on');
+  document.body.style.overflow = 'hidden';
+
+  const btnEnter = document.getElementById('pvEnter');
+  if(btnEnter){
+    btnEnter.onclick = () => {
+      document.getElementById('pvWelcome').style.display = 'none';
+      document.getElementById('pvBody').classList.add('on');
+      root.scrollTop = 0;
+      setupPropScroll();
+    };
+  }
+})();
+</script>
+</body>
+</html>

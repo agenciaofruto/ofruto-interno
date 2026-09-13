@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/proposta.css">
 <style>
 :root{
   /* minimal monocromático — preto e branco, sem cor */
@@ -279,197 +280,12 @@ textarea.pf-input{resize:vertical;line-height:1.5;}
 .prop-card .pc-acts{display:flex;gap:6px;flex:none;}
 .prop-card .pc-acts button{width:34px;height:34px;border-radius:50%;background:var(--surface-2);border:1px solid var(--brd);display:grid;place-items:center;color:var(--ink-2);transition:.18s;}
 .prop-card .pc-acts button:hover{color:var(--ink);border-color:var(--brd-2);}
+.prop-card .pc-acts button.on{background:var(--surface-3);color:var(--ink);border-color:var(--brd-2);}
 .prop-card .pc-acts svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;}
 
+/* estilos pp-/pv- (apresentação da proposta) vivem em assets/css/proposta.css,
+   compartilhado com a página pública proposta.html — ver <link> no <head> */
 
-
-
-/* ===== textura/atmosfera verde (placeholder p/ imagem real do Supabase) ===== */
-.prop-view{--tex-green:radial-gradient(120% 90% at 80% 100%, rgba(60,110,40,.28), rgba(30,55,20,.10) 42%, transparent 70%);}
-.pp-cover{position:relative;overflow:hidden;}
-.pp-cover::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:var(--tex-green);
-  /* IMG-SUPABASE: trocar por background-image da textura verde hospedada */
-}
-.pp-cover::after{content:"";position:absolute;left:-10%;bottom:-30%;width:70%;height:70%;pointer-events:none;
-  background:radial-gradient(closest-side, rgba(90,150,60,.16), transparent 72%);filter:blur(30px);}
-/* número grande de fundo por seção (marca a etapa, estilo ref) */
-.pp-sec{position:relative;overflow:hidden;width:100%;}
-.pp-sec .pp-bignum{position:absolute;right:-2%;top:50%;transform:translateY(-50%);
-  font-weight:800;font-size:min(38vw,300px);line-height:.8;letter-spacing:-.06em;
-  color:rgba(255,255,255,.035);pointer-events:none;z-index:0;user-select:none;}
-.pp-sec > *{position:relative;z-index:1;}
-.pp-sec .pp-eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;font-weight:600;display:flex;align-items:center;gap:10px;}
-.pp-sec .pp-eyebrow::before{content:"";width:24px;height:1px;background:var(--ink-3);}
-
-/* ===== PROPOSTA NAVEGADA (snap + animação) ===== */
-.prop-view.on{scroll-snap-type:y proximity;}
-.pv-body.on{padding-top:0!important;}
-/* cada seção vira uma "página" que encaixa e respira */
-.pp-sec, .pp-cover{
-  scroll-snap-align:start;scroll-snap-stop:normal;
-  min-height:88vh;display:flex;flex-direction:column;justify-content:center;
-  padding:60px 0;margin-bottom:0!important;
-  opacity:0;transform:translateY(40px);
-  transition:opacity .7s var(--ease), transform .7s var(--ease);
-}
-.pp-cover{min-height:92vh;width:100%;}
-.pp-sec.in, .pp-cover.in{opacity:1;transform:translateY(0);}
-/* stagger interno: filhos entram em cascata */
-.pp-sec.in > *{animation:ppRise .6s var(--ease) both;}
-.pp-sec.in > *:nth-child(1){animation-delay:.05s}
-.pp-sec.in > *:nth-child(2){animation-delay:.13s}
-.pp-sec.in > *:nth-child(3){animation-delay:.21s}
-.pp-sec.in > *:nth-child(4){animation-delay:.29s}
-.pp-sec.in > *:nth-child(5){animation-delay:.37s}
-@keyframes ppRise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-/* títulos maiores, mais deck */
-.pp-sec h3{font-size:clamp(24px,6vw,34px);margin-bottom:22px;}
-.pp-sec > p:first-of-type{font-size:clamp(16px,2.4vw,19px);}
-.pp-eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;font-weight:600;}
-/* barra de progresso lateral (pontinhos) */
-.pp-progress{position:fixed;right:22px;top:14vh;bottom:14vh;z-index:83;width:2px;background:rgba(255,255,255,.14);border-radius:2px;}
-.pp-progress .track-fill{position:absolute;top:0;left:0;right:0;background:rgba(255,255,255,.35);border-radius:2px;height:0;transition:height .3s var(--ease);}
-.pp-progress .thumb{position:absolute;left:50%;top:0;width:11px;height:11px;border-radius:50%;background:var(--ink);transform:translate(-50%,-50%);box-shadow:0 0 12px rgba(255,255,255,.5);transition:top .35s var(--ease);}
-.pp-progress .tick{position:absolute;left:50%;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);transform:translate(-50%,-50%);cursor:pointer;}
-/* hint de scroll na capa */
-.pp-scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:var(--ink-3);font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px;animation:hintBob 2s ease-in-out infinite;}
-.pp-scroll-hint svg{width:18px;height:18px;stroke:var(--ink-3);fill:none;stroke-width:2;}
-@keyframes hintBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
-@media(max-width:600px){.pp-progress{right:10px;} .pp-sec,.pp-cover{min-height:82vh;}}
-
-/* ===== PROPOSTA GUIADA (pp-) ===== */
-.pv-body{padding-top:0!important;}
-.pp-cover{min-height:78vh;display:flex;flex-direction:column;justify-content:center;text-align:center;border-bottom:1px solid var(--brd);margin-bottom:44px;position:relative;}
-.pp-cover .pp-logo{width:54px;height:54px;margin:0 auto 30px;}
-.pp-cover .pp-logo svg{width:100%;height:100%;}
-.pp-cover .pp-c-name{font-weight:800;font-size:clamp(30px,7vw,52px);letter-spacing:-.04em;line-height:1.08;}
-
-.pp-cover .pp-c-meta{font-size:12.5px;color:var(--ink-3);letter-spacing:.02em;margin-top:34px;}
-.pp-sec{margin-bottom:44px;scroll-margin-top:20px;}
-.pp-sec h3{font-weight:800;font-size:22px;letter-spacing:-.03em;margin-bottom:16px;}
-.pp-sec p{font-size:15px;color:var(--ink-2);line-height:1.7;margin-bottom:12px;}
-.pp-conceito{display:inline-block;font-weight:700;font-size:15px;letter-spacing:-.01em;padding:12px 22px;border:1px solid var(--brd-2);border-radius:100px;margin-top:8px;}
-.pp-flow{display:flex;flex-direction:column;gap:0;}
-.pp-flow-step{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:18px 20px;}
-.pp-fs-when{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px;}
-.pp-fs-what{font-weight:700;font-size:17px;letter-spacing:-.02em;margin-bottom:4px;}
-.pp-fs-d{font-size:13.5px;color:var(--ink-2);line-height:1.5;}
-.pp-flow-arrow{text-align:center;color:var(--ink-3);font-size:18px;padding:8px 0;}
-.pp-eg{margin-bottom:20px;}
-.pp-eg-t{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--brd);}
-.pp-eg ul,.pp-neg,.pp-resp ul{list-style:none;padding:0;margin:0;}
-.pp-eg li{font-size:14px;color:var(--ink-2);padding:5px 0 5px 18px;position:relative;line-height:1.5;}
-.pp-eg li::before{content:"";position:absolute;left:0;top:12px;width:5px;height:5px;border-radius:50%;background:var(--ink-3);}
-.pp-neg li{font-size:14px;color:var(--ink-3);padding:6px 0 6px 22px;position:relative;line-height:1.5;}
-.pp-neg li::before{content:"✕";position:absolute;left:0;color:var(--ink-3);font-size:12px;}
-.pp-nota{font-size:13px;color:var(--ink-3);font-style:italic;margin-top:12px;}
-.pp-resp{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-.pp-r-t{font-weight:700;font-size:14px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--brd);}
-.pp-resp li{font-size:13.5px;color:var(--ink-2);padding:5px 0 5px 16px;position:relative;line-height:1.45;}
-.pp-resp li::before{content:"";position:absolute;left:0;top:11px;width:4px;height:4px;border-radius:50%;background:var(--ink-3);}
-.pp-cron{display:flex;flex-direction:column;}
-.pp-cron-row{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--brd);font-size:14px;color:var(--ink-2);}
-.pp-cron-p{color:var(--ink);font-weight:600;}
-.pp-inv{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:6px 20px;}
-.pp-inv-row{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--brd);font-size:14.5px;color:var(--ink-2);}
-.pp-inv-v{color:var(--ink);font-weight:600;}
-.pp-inv-total{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;}
-.pp-inv-total>span:first-child{font-size:13px;color:var(--ink-3);}
-.pp-inv-tv{font-weight:800;font-size:26px;letter-spacing:-.03em;}
-.pp-cond-row{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--brd);font-size:14px;}
-.pp-cond-row .k{color:var(--ink-3);}
-.pp-cond-row .v{color:var(--ink);font-weight:600;text-align:right;}
-.pp-provas{display:flex;flex-direction:column;gap:14px;}
-.pp-prova{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:16px 18px;}
-.pp-pr-t{font-weight:700;font-size:15px;margin-bottom:5px;}
-.pp-pr-d{font-size:13.5px;color:var(--ink-2);line-height:1.55;}
-.pp-depois .pp-ad{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
-.pp-ad>div{border:1px solid var(--brd);border-radius:var(--r);padding:16px 18px;font-size:13.5px;line-height:1.55;}
-.pp-ad-b{color:var(--ink-3);}
-.pp-ad-d{color:var(--ink-2);background:var(--surface);}
-.pp-ad>div span{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;color:var(--ink-3);font-weight:700;}
-.pp-fecho{font-size:16px;color:var(--ink);font-weight:600;line-height:1.5;letter-spacing:-.01em;}
-.pp-steps{display:flex;flex-direction:column;gap:10px;}
-.pp-step{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:14px 18px;}
-.pp-st-n{font-weight:800;font-size:14px;color:var(--ink-3);}
-.pp-step>span:last-child{font-size:14.5px;font-weight:600;}
-@media(min-width:900px){.pp-resp,.pp-depois .pp-ad{gap:24px;}}
-
-/* ===== PREVIEW DA PROPOSTA (o que o cliente vê) ===== */
-.prop-view{position:fixed;inset:0;z-index:80;background:#000;overflow-y:auto;overflow-x:hidden;display:none;}
-.prop-view.on{display:block;animation:fade .4s var(--ease);}
-.pv-close{position:fixed;top:20px;right:20px;z-index:82;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid var(--brd-2);backdrop-filter:blur(20px);display:grid;place-items:center;color:var(--ink);font-size:20px;}
-.pv-wrap{max-width:680px;margin:0 auto;padding:0 26px 80px;width:100%;}
-@media(min-width:900px){.pv-wrap{max-width:720px;}}
-/* boas-vindas */
-.pv-welcome{position:relative;min-height:100dvh;display:flex;flex-direction:column;justify-content:space-between;text-align:left;padding:0;margin:0 -26px;}
-.pv-welcome::before{content:"";position:absolute;top:0;left:0;right:0;height:62%;pointer-events:none;
-  background:
-    radial-gradient(120% 80% at 78% 8%, rgba(255,255,255,.22), rgba(255,255,255,.05) 34%, transparent 62%),
-    linear-gradient(180deg, rgba(255,255,255,.06), transparent 55%);}
-.pv-welcome::after{content:"";position:absolute;top:8%;right:-6%;width:60%;height:44%;pointer-events:none;opacity:.5;
-  background:radial-gradient(closest-side, rgba(255,255,255,.14), transparent 70%);filter:blur(30px);}
-.pv-w-top{position:relative;padding:30px 30px 0;display:flex;align-items:center;gap:10px;}
-.pv-w-top .pv-logo{width:34px;height:34px;}
-.pv-w-top .pv-logo svg{width:100%;height:100%;}
-.pv-w-top .pv-brand{font-weight:600;font-size:15px;letter-spacing:.01em;}
-.pv-w-btm{position:relative;padding:0 30px 42px;}
-.pv-w-btm .pv-hi{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px;}
-.pv-w-btm h1{font-weight:800;font-size:clamp(34px,10vw,52px);letter-spacing:-.045em;line-height:1.02;margin-bottom:8px;}
-.pv-w-btm h1 .emp{display:block;font-size:.5em;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-top:6px;}
-.pv-w-btm p{font-size:15px;color:var(--ink-2);line-height:1.6;max-width:40ch;margin:18px 0 30px;}
-.pv-enter{width:100%;padding:17px;border-radius:100px;background:var(--ink);color:#000;font-weight:600;font-size:15.5px;border:none;cursor:pointer;transition:transform .18s;}
-.pv-enter:active{transform:scale(.98);}
-/* corpo */
-.pv-body{display:none;padding-top:60px;}
-.pv-body.on{display:block;animation:fade .5s var(--ease);}
-.pv-head{text-align:center;margin-bottom:50px;}
-.pv-head .pv-logo-sm{width:52px;height:52px;margin:0 auto 24px;}
-.pv-head .pv-logo-sm svg{width:100%;height:100%;}
-.pv-head .pv-for{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px;}
-.pv-head h2{font-weight:800;font-size:32px;letter-spacing:-.035em;}
-.pv-head .pv-emp{font-size:15px;color:var(--ink-2);margin-top:6px;}
-.pv-msg{font-size:15px;color:var(--ink-2);line-height:1.7;text-align:center;max-width:48ch;margin:0 auto 50px;padding-bottom:40px;border-bottom:1px solid var(--brd);}
-.pv-svc{margin-bottom:40px;}
-.pv-svc .pv-s-eye{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;}
-.pv-svc h3{font-weight:800;font-size:28px;letter-spacing:-.03em;margin-bottom:8px;}
-.pv-svc .pv-s-resume{font-size:15px;color:var(--ink-2);line-height:1.6;margin-bottom:20px;}
-.pv-svc .pv-scope{font-size:14.5px;color:var(--ink-2);line-height:1.7;white-space:pre-wrap;margin-bottom:20px;}
-.pv-invest{display:flex;align-items:baseline;justify-content:space-between;padding:20px 22px;background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);margin-bottom:12px;}
-.pv-invest .k{font-size:13px;color:var(--ink-3);}
-.pv-invest .v{font-weight:800;font-size:24px;letter-spacing:-.03em;}
-.pv-jornada{margin:44px 0;padding:30px 0;border-top:1px solid var(--brd);border-bottom:1px solid var(--brd);}
-.pv-jornada .pv-j-t{font-weight:700;font-size:18px;margin-bottom:20px;text-align:center;}
-.pv-jornada .pv-j-steps{display:flex;flex-direction:column;gap:14px;}
-.pv-jstep{display:flex;gap:14px;align-items:flex-start;}
-.pv-jstep .pv-j-n{width:30px;height:30px;border-radius:50%;background:var(--surface-2);border:1px solid var(--brd-2);display:grid;place-items:center;font-size:13px;font-weight:700;flex:none;}
-.pv-jstep h4{font-weight:700;font-size:15px;margin-bottom:2px;}
-.pv-jstep p{font-size:13px;color:var(--ink-2);line-height:1.5;}
-.pv-cond{display:flex;flex-direction:column;gap:12px;margin-top:30px;}
-.pv-cond .pv-c-row{display:flex;justify-content:space-between;gap:16px;font-size:14px;padding:12px 0;border-bottom:1px solid var(--brd);}
-.pv-cond .pv-c-row .k{color:var(--ink-3);}
-.pv-cond .pv-c-row .v{color:var(--ink);font-weight:600;text-align:right;}
-.pv-video{display:block;text-align:center;margin-top:30px;padding:15px;border-radius:100px;background:var(--surface-2);border:1px solid var(--brd-2);color:var(--ink);font-weight:600;font-size:14px;text-decoration:none;}
-
-/* ===== seção quem sou (final) ===== */
-.pp-quem{align-items:flex-start;}
-.pp-quem-foto{width:100%;max-width:340px;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;margin-bottom:28px;
-  background:linear-gradient(160deg,#1e1e22,#141416);border:1px solid var(--brd);
-  display:grid;place-items:center;position:relative;}
-.pp-quem-foto::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 70% 0%, rgba(90,150,60,.14), transparent 60%);}
-.pp-quem-foto img{width:100%;height:100%;object-fit:cover;}
-.pp-foto-ph{font-weight:800;font-size:40px;letter-spacing:-.03em;color:var(--ink-3);position:relative;}
-.pp-quem-p{font-size:clamp(17px,2.6vw,21px);color:var(--ink);line-height:1.55;font-weight:500;letter-spacing:-.01em;margin-bottom:18px;max-width:30ch;}
-.pp-quem-fecho{font-size:clamp(20px,3.4vw,28px);font-weight:800;letter-spacing:-.03em;color:var(--ink);}
-@media(min-width:760px){
-  .pp-quem{flex-direction:row;gap:44px;align-items:center;}
-  .pp-quem-foto{margin-bottom:0;flex:none;}
-}
-
-.pv-foot{text-align:center;margin-top:50px;color:var(--ink-3);font-size:13px;}
-.pv-foot .pv-f-logo{width:36px;height:36px;margin:0 auto 12px;opacity:.6;}
-.pv-foot .pv-f-logo svg{width:100%;height:100%;}
 
 /* ---------- CALCULADORA ---------- */
 .calc-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px;}
@@ -751,14 +567,11 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 <script id="logosvg" type="text/plain"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1080" zoomAndPan="magnify" viewBox="0 0 810 1012.49997" height="1350" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><g/><clipPath id="25db0e4602"><path d="M 578.292969 453.359375 L 591.789062 453.359375 L 591.789062 466.855469 L 578.292969 466.855469 Z M 578.292969 453.359375 " clip-rule="nonzero"/></clipPath></defs><path fill="#ffffff" d="M 581.722656 460.085938 C 581.722656 458.164062 583.160156 456.589844 585.207031 456.589844 C 586.453125 456.589844 587.207031 457.023438 587.855469 457.640625 L 587.09375 458.519531 C 586.550781 458.019531 585.972656 457.679688 585.199219 457.679688 C 583.90625 457.679688 582.96875 458.742188 582.96875 460.085938 C 582.96875 461.410156 583.90625 462.488281 585.199219 462.488281 C 586.03125 462.488281 586.5625 462.152344 587.140625 461.609375 L 587.902344 462.382812 C 587.199219 463.117188 586.425781 463.582031 585.160156 463.582031 C 583.191406 463.582031 581.722656 462.046875 581.722656 460.085938 " fill-opacity="1" fill-rule="nonzero"/><g clip-path="url(#25db0e4602)"><path fill="#ffffff" d="M 585.117188 454.53125 C 584.351562 454.53125 583.613281 454.679688 582.917969 454.976562 C 582.242188 455.261719 581.640625 455.667969 581.121094 456.1875 C 580.601562 456.707031 580.191406 457.3125 579.910156 457.984375 C 579.613281 458.679688 579.464844 459.421875 579.464844 460.183594 C 579.464844 460.945312 579.613281 461.6875 579.910156 462.382812 C 580.191406 463.058594 580.601562 463.660156 581.121094 464.179688 C 581.640625 464.699219 582.242188 465.105469 582.917969 465.390625 C 583.613281 465.6875 584.351562 465.835938 585.117188 465.835938 C 585.878906 465.835938 586.621094 465.6875 587.316406 465.390625 C 587.988281 465.105469 588.59375 464.699219 589.113281 464.179688 C 589.632812 463.660156 590.039062 463.058594 590.324219 462.382812 C 590.621094 461.6875 590.769531 460.945312 590.769531 460.183594 C 590.769531 459.421875 590.621094 458.679688 590.324219 457.984375 C 590.039062 457.3125 589.632812 456.707031 589.113281 456.1875 C 588.59375 455.667969 587.988281 455.261719 587.316406 454.976562 C 586.621094 454.679688 585.878906 454.53125 585.117188 454.53125 Z M 585.117188 467.007812 C 584.195312 467.007812 583.300781 466.828125 582.460938 466.472656 C 581.648438 466.128906 580.917969 465.636719 580.292969 465.007812 C 579.664062 464.382812 579.171875 463.652344 578.828125 462.839844 C 578.472656 462 578.292969 461.105469 578.292969 460.183594 C 578.292969 459.261719 578.472656 458.371094 578.828125 457.527344 C 579.171875 456.714844 579.664062 455.984375 580.292969 455.359375 C 580.917969 454.734375 581.648438 454.242188 582.460938 453.898438 C 583.300781 453.542969 584.195312 453.359375 585.117188 453.359375 C 586.039062 453.359375 586.929688 453.542969 587.773438 453.898438 C 588.585938 454.242188 589.316406 454.734375 589.941406 455.359375 C 590.566406 455.984375 591.058594 456.714844 591.402344 457.527344 C 591.757812 458.371094 591.941406 459.261719 591.941406 460.183594 C 591.941406 461.105469 591.757812 462 591.402344 462.839844 C 591.058594 463.652344 590.566406 464.382812 589.941406 465.007812 C 589.316406 465.636719 588.585938 466.128906 587.773438 466.472656 C 586.929688 466.828125 586.039062 467.007812 585.117188 467.007812 " fill-opacity="1" fill-rule="nonzero"/></g><g fill="#ffffff" fill-opacity="1"><g transform="translate(240.740787, 527.215377)"><g><path d="M 37.625 1.140625 C 32.914062 1.140625 28.5 0.257812 24.375 -1.5 C 20.25 -3.269531 16.625 -5.710938 13.5 -8.828125 C 10.382812 -11.953125 7.941406 -15.570312 6.171875 -19.6875 C 4.410156 -23.8125 3.53125 -28.226562 3.53125 -32.9375 C 3.53125 -37.644531 4.410156 -42.046875 6.171875 -46.140625 C 7.941406 -50.234375 10.382812 -53.835938 13.5 -56.953125 C 16.625 -60.078125 20.234375 -62.519531 24.328125 -64.28125 C 28.421875 -66.050781 32.820312 -66.9375 37.53125 -66.9375 C 42.238281 -66.9375 46.65625 -66.050781 50.78125 -64.28125 C 54.90625 -62.519531 58.523438 -60.078125 61.640625 -56.953125 C 64.765625 -53.835938 67.207031 -50.234375 68.96875 -46.140625 C 70.738281 -42.046875 71.625 -37.644531 71.625 -32.9375 C 71.625 -28.226562 70.738281 -23.8125 68.96875 -19.6875 C 67.207031 -15.570312 64.765625 -11.953125 61.640625 -8.828125 C 58.523438 -5.710938 54.921875 -3.269531 50.828125 -1.5 C 46.734375 0.257812 42.332031 1.140625 37.625 1.140625 Z M 37.53125 -53.875 C 33.820312 -53.875 30.453125 -52.929688 27.421875 -51.046875 C 24.390625 -49.160156 21.988281 -46.640625 20.21875 -43.484375 C 18.457031 -40.335938 17.578125 -36.820312 17.578125 -32.9375 C 17.578125 -29.050781 18.457031 -25.519531 20.21875 -22.34375 C 21.988281 -19.164062 24.390625 -16.648438 27.421875 -14.796875 C 30.453125 -12.941406 33.851562 -12.015625 37.625 -12.015625 C 41.332031 -12.015625 44.703125 -12.941406 47.734375 -14.796875 C 50.765625 -16.648438 53.160156 -19.164062 54.921875 -22.34375 C 56.691406 -25.519531 57.578125 -29.050781 57.578125 -32.9375 C 57.578125 -36.820312 56.675781 -40.335938 54.875 -43.484375 C 53.082031 -46.640625 50.671875 -49.160156 47.640625 -51.046875 C 44.609375 -52.929688 41.238281 -53.875 37.53125 -53.875 Z M 37.53125 -53.875 "/></g></g></g><g fill="#ffffff" fill-opacity="1"><g transform="translate(306.438682, 527.215377)"><g><path d="M 19.953125 0 L 6.265625 0 L 6.265625 -65.796875 L 41.234375 -65.796875 L 41.234375 -53.421875 L 19.953125 -53.421875 L 19.953125 -41.15625 L 44.6875 -41.15625 L 44.6875 -28.875 L 19.953125 -28.875 Z M 19.953125 0 "/></g></g></g><g fill="#ffffff" fill-opacity="1"><g transform="translate(344.320801, 527.215377)"><g><path d="M 26.84375 -11.390625 L 19.953125 -11.390625 L 19.953125 0 L 6.265625 0 L 6.265625 -65.796875 L 29.140625 -65.796875 C 33.023438 -65.796875 36.613281 -65.128906 39.90625 -63.796875 C 43.207031 -62.472656 46.09375 -60.617188 48.5625 -58.234375 C 51.039062 -55.859375 52.972656 -53.109375 54.359375 -49.984375 C 55.742188 -46.859375 56.4375 -43.503906 56.4375 -39.921875 C 56.4375 -34.035156 55.109375 -28.972656 52.453125 -24.734375 C 49.804688 -20.492188 46.1875 -17.3125 41.59375 -15.1875 L 55.8125 0 L 37.625 0 Z M 19.953125 -23.75 L 25.609375 -23.75 C 31.023438 -23.75 35.175781 -25.046875 38.0625 -27.640625 C 40.945312 -30.234375 42.390625 -33.972656 42.390625 -38.859375 C 42.390625 -41.566406 41.859375 -44.007812 40.796875 -46.1875 C 39.734375 -48.363281 38.15625 -50.113281 36.0625 -51.4375 C 33.976562 -52.757812 31.378906 -53.421875 28.265625 -53.421875 L 19.953125 -53.421875 Z M 19.953125 -23.75 "/></g></g></g><g fill="#ffffff" fill-opacity="1"><g transform="translate(394.477181, 527.215377)"><g><path d="M 34.09375 1.140625 C 27.675781 1.140625 22.359375 -0.222656 18.140625 -2.953125 C 13.929688 -5.691406 10.796875 -9.445312 8.734375 -14.21875 C 6.679688 -18.988281 5.65625 -24.40625 5.65625 -30.46875 L 5.65625 -65.796875 L 19.34375 -65.796875 L 19.34375 -28.171875 C 19.34375 -22.992188 20.59375 -19.003906 23.09375 -16.203125 C 25.59375 -13.410156 29.257812 -12.015625 34.09375 -12.015625 C 39.207031 -12.015625 42.925781 -13.46875 45.25 -16.375 C 47.582031 -19.289062 48.75 -23.222656 48.75 -28.171875 L 48.75 -65.796875 L 62.265625 -65.796875 L 62.265625 -29.3125 C 62.265625 -22.957031 61.128906 -17.5 58.859375 -12.9375 C 56.585938 -8.375 53.347656 -4.882812 49.140625 -2.46875 C 44.929688 -0.0625 39.914062 1.140625 34.09375 1.140625 Z M 34.09375 1.140625 "/></g></g></g><g fill="#ffffff" fill-opacity="1"><g transform="translate(452.934142, 527.215377)"><g><path d="M 31.609375 0 L 17.921875 0 L 17.921875 -53.421875 L 1.671875 -53.421875 L 1.671875 -65.796875 L 48.921875 -65.796875 L 48.921875 -53.421875 L 31.609375 -53.421875 Z M 31.609375 0 "/></g></g></g><g fill="#ffffff" fill-opacity="1"><g transform="translate(494.083504, 527.215377)"><g><path d="M 37.625 1.140625 C 32.914062 1.140625 28.5 0.257812 24.375 -1.5 C 20.25 -3.269531 16.625 -5.710938 13.5 -8.828125 C 10.382812 -11.953125 7.941406 -15.570312 6.171875 -19.6875 C 4.410156 -23.8125 3.53125 -28.226562 3.53125 -32.9375 C 3.53125 -37.644531 4.410156 -42.046875 6.171875 -46.140625 C 7.941406 -50.234375 10.382812 -53.835938 13.5 -56.953125 C 16.625 -60.078125 20.234375 -62.519531 24.328125 -64.28125 C 28.421875 -66.050781 32.820312 -66.9375 37.53125 -66.9375 C 42.238281 -66.9375 46.65625 -66.050781 50.78125 -64.28125 C 54.90625 -62.519531 58.523438 -60.078125 61.640625 -56.953125 C 64.765625 -53.835938 67.207031 -50.234375 68.96875 -46.140625 C 70.738281 -42.046875 71.625 -37.644531 71.625 -32.9375 C 71.625 -28.226562 70.738281 -23.8125 68.96875 -19.6875 C 67.207031 -15.570312 64.765625 -11.953125 61.640625 -8.828125 C 58.523438 -5.710938 54.921875 -3.269531 50.828125 -1.5 C 46.734375 0.257812 42.332031 1.140625 37.625 1.140625 Z M 37.53125 -53.875 C 33.820312 -53.875 30.453125 -52.929688 27.421875 -51.046875 C 24.390625 -49.160156 21.988281 -46.640625 20.21875 -43.484375 C 18.457031 -40.335938 17.578125 -36.820312 17.578125 -32.9375 C 17.578125 -29.050781 18.457031 -25.519531 20.21875 -22.34375 C 21.988281 -19.164062 24.390625 -16.648438 27.421875 -14.796875 C 30.453125 -12.941406 33.851562 -12.015625 37.625 -12.015625 C 41.332031 -12.015625 44.703125 -12.941406 47.734375 -14.796875 C 50.765625 -16.648438 53.160156 -19.164062 54.921875 -22.34375 C 56.691406 -25.519531 57.578125 -29.050781 57.578125 -32.9375 C 57.578125 -36.820312 56.675781 -40.335938 54.875 -43.484375 C 53.082031 -46.640625 50.671875 -49.160156 47.640625 -51.046875 C 44.609375 -52.929688 41.238281 -53.875 37.53125 -53.875 Z M 37.53125 -53.875 "/></g></g></g></svg></script>
 <script id="data" type="application/json">{"servicos": [{"id": "plantio", "nome": "Plantio", "linha": "oFruto", "duracao": "4 meses", "publicoCurto": "Pessoa física", "precoCurto": "R$12.500", "volume": "8 vídeos/mês", "resumo": "Ciclo de 4 meses pra estruturar a marca, produzir a primeira safra de conteúdo e deixar o cliente no controle da própria comunicação, apto a seguir, com a gente ou por conta.", "problema": "Pessoa que já tem autoridade e história na área, mas não transformou isso em presença digital. Sabe quem é, não sabe como comunicar, pra quem, com que narrativa.", "promessa": "Ao fim dos 4 meses o cliente sai com estratégia definida, uma primeira safra produzida e um guia que mostra como a comunicação dele funciona na prática, porque viu acontecer. Fica no controle. Não é abandono: quem quer seguir, renova.", "mecanismo": ["Mês 1, Estratégia (Solo + Semeadura): imersão presencial de 2 a 3h, mapa estratégico completo.", "Meses 2 a 4, Produção (Cultivo): 2 diárias/mês, roteiros, edição, calendário. O cliente publica.", "Meses 2 a 4, Acompanhamento (Colheita): leitura de performance, ajuste das próximas gravações."], "entregaveis": ["Mapa estratégico (mês 1)", "8 vídeos/mês bem produzidos (2/semana)", "2 diárias de gravação/mês", "Roteiros e edição", "Calendário de postagem", "Acompanhamento de performance"], "naoEntra": ["Estruturação de perfil (foto, bio, destaques, link/minisite)", "Gestão de postagem (add-on se não tiver quem poste)"], "diferencial": "Não cria dependência, cria capacidade. \"Plantio é uma safra, não um pomar\", não prende em contrato eterno, mas deixa a porta aberta. Quem segue, segue por querer.", "interno": ["Preço: R$5.000 mês 1 + R$2.500/mês (2-4). Total R$12.500.", "Base: hora piso R$50, edição teto 2h/vídeo, 2 diárias fixas.", "Serviço de giro de caixa. A 8 vídeos a hora é saudável; a 12 fura o piso, por isso escopo fixo em 8.", "Preço de posicionamento; sobe a cada case. Custo de editor futuro é do Davi, refaz-se a tabela."], "percorreCurto": "Solo→Semeadura (mês 1), Cultivo (2-4), Colheita acompanha. Vai até a colheita e encerra.", "busca": ["plantio", "safra", "4 meses", "pessoa fisica", "marca pessoal", "entrada", "giro", "8 videos", "escopo fixo"], "upsells": [{"item": "Estruturação de perfil", "tipo": "foto, bio, destaques, link/minisite"}, {"item": "Gestão de postagem", "tipo": "se não tiver quem poste"}, {"item": "Renovar produção", "tipo": "vira Pomar ou nova safra"}]}, {"id": "pomar", "nome": "Pomar", "linha": "oFruto", "duracao": "6 meses", "publicoCurto": "Pessoa física", "precoCurto": "R$21.000", "volume": "8 a 16 vídeos/mês", "resumo": "Parceria contínua de 6 meses. A gente cuida da marca safra após safra, estratégia, produção e gestão do feed, com o cliente como parceiro fixo.", "problema": "Pessoa que quer tirar o feed das costas de vez. Não quer só receber conteúdo pra postar sozinha, quer que a gente toque a comunicação por inteiro, com acompanhamento contínuo.", "promessa": "Durante 6 meses a marca é cuidada de forma contínua: estratégia roda, conteúdo sai, feed é gerido no ar, a gente ajusta o tempo todo. Ela toca a vida, a gente toca o feed.", "mecanismo": ["Mês 1, Estratégia + Setup (Solo + Semeadura): mapa completo + setup de perfil (uma vez, no começo).", "Meses 1 a 6, Produção + Gestão (Cultivo): 2 diárias/mês, roteiros, edição, gestão de feed, cobertura de momentos.", "Meses 1 a 6, Acompanhamento (Colheita): parceiro fixo o contrato inteiro. Nunca fecha."], "entregaveis": ["Mapa estratégico (mês 1)", "Setup de perfil (uma vez)", "2 diárias/mês", "Roteiros e edição", "Gestão de feed", "Cobertura de momentos", "Acompanhamento contínuo", "8 a 16 vídeos/mês"], "naoEntra": ["Nova sessão de foto ou refação de minisite no meio do contrato", "Criação de presença multicanal do zero (dimensiona no diagnóstico)"], "diferencial": "Sobre o Plantio: lá o cliente colhe sozinho; aqui a gente cuida da terra o ano todo. No Pomar o cliente não toca nada do feed. É pra quem quer o problema resolvido, não a ferramenta.", "interno": ["Preço: R$3.500/mês. Total 6 meses R$21.000.", "Ativo de longo prazo, recorrência que vira renovação e indicação.", "Margem: 8 confortável, 12 no piso, 16 (teto) fura. Base 2-3 vídeos/semana. Teto de 16 é linha vermelha → sobe ticket na renovação ou entra editor.", "Setup = 6h fixas, uma vez. Gestão de feed é a peça que puxa editor primeiro."], "percorreCurto": "Solo→Semeadura+Setup (mês 1), Cultivo+Gestão contínuo, Colheita perene. Não encerra.", "busca": ["pomar", "parceria", "6 meses", "recorrente", "pessoa fisica", "gestao de feed", "setup", "cobertura", "faixa", "ativo"], "upsells": [{"item": "Nova sessão de foto dedicada", "tipo": "fora do setup inicial"}, {"item": "Refação de minisite", "tipo": "no meio do contrato"}, {"item": "Presença multicanal do zero", "tipo": "dimensiona no diagnóstico"}, {"item": "Volume acima de 16/mês", "tipo": "gatilho de ticket maior"}]}, {"id": "marca-viva", "nome": "Marca Viva", "linha": "Sociedade · oFruto + Brenda", "duracao": "5 meses", "publicoCurto": "Marca sem rosto", "precoCurto": "R$5–6k/mês", "volume": "1 diária/mês", "resumo": "Serviço da sociedade com a Brenda. A marca sem rosto ganha cara e voz, a Brenda encarna a marca, com estratégia e produção por dentro.", "problema": "Marca que quer se comunicar mas o dono não quer, não sabe, ou não faz sentido aparecer. No filtro oFruto seria vermelho; aqui é exatamente o cliente. A Brenda resolve a ausência de rosto.", "promessa": "Transformar a marca sem cara numa marca com linguagem de internet, rosto e presença de gente, com a Brenda como o perfil que comunica. A marca deixa de ser logo e vira personagem.", "mecanismo": ["Mês 1, Estratégia (Solo + Semeadura): extração da marca, narrativa construída com a Brenda como intérprete.", "Meses 2 a 5, Produção (Cultivo): 1 diária/mês (Davi + Brenda no mesmo dia), roteiros, edição. Conteúdo no perfil do cliente.", "Meses 2 a 5, Acompanhamento (Colheita): leitura de performance, compartilhada com a Brenda."], "entregaveis": ["Mapa estratégico da marca (mês 1)", "Brenda como rosto e voz no período", "1 diária de gravação/mês", "Roteiros e edição", "Acompanhamento de performance", "Conteúdo entregue pro perfil do cliente"], "naoEntra": ["Gestão de postagem (opção/add-on)", "Conteúdo no perfil da Brenda (negociação e valor dela, à parte)"], "diferencial": "Único serviço pra quem NÃO quer aparecer, o inverso do Plantio/Pomar. A Brenda tem lastro real (Morena Rosa, Track&Field, Live!): o mídia kit dela justifica o ticket.", "interno": ["Preço: R$5.000 a R$6.000/mês, liso, 5 meses. Total R$25-30k.", "Brenda é SÓCIA percentual (não talent). Divisão 60/40 (Davi/Brenda) sobre o LÍQUIDO, contrato inteiro, fixo, sem premiação de originação.", "Davi: estratégia, roteiro, edição, acompanhamento. Brenda: rosto + frente comercial. Ela opina, não cria, daí 60/40.", "Custos diretos (viagem, pedágio, almoço) saem do topo. Custo de estrutura futura é do Davi.", "Régua do cliente: faturar R$80-100k/mês+ (o serviço é fatia do marketing, não o todo).", "Veto da Brenda caso a caso; cláusulas de conduta sempre no contrato."], "percorreCurto": "Mesma metodologia, Brenda como rosto. 1 diária/mês, 5 meses.", "busca": ["marca viva", "brenda", "sociedade", "marca institucional", "rosto emprestado", "creator", "5 meses", "porta voz", "60 40", "faturamento alto"], "upsells": [{"item": "Gestão de postagem", "tipo": "add-on, valor à parte"}, {"item": "Conteúdo no perfil da Brenda", "tipo": "negociação e valor dela"}, {"item": "Subir de R$6k", "tipo": "com portfólio e resultado"}]}], "metodologia": [{"id": "solo", "nome": "Solo", "curto": "Conhecer a terra antes de plantar.", "longo": "Antes de qualquer conteúdo, a extração: quem a pessoa (ou marca) já é, história, autoridade, o que quer, pra quem, por quê. Nada criado do nada, tudo lapidado do que já existe.", "nosServicos": "Reunião presencial de 2-3h no Plantio e no Pomar. No Marca Viva, extração da marca com a Brenda como intérprete."}, {"id": "semeadura", "nome": "Semeadura", "curto": "Plantar a estratégia.", "longo": "O mapa: posicionamento, narrativa, tom de voz, canais que fazem sentido, formatos, metas e prazos. É o guia que rege toda a produção seguinte.", "nosServicos": "Fim do mês 1 nos três serviços. No Pomar inclui o setup de perfil."}, {"id": "cultivo", "nome": "Cultivo", "curto": "A câmera com norte.", "longo": "A produção: roteiro em cima da estratégia, diárias, edição, conteúdo saindo com qualidade estética. É o trabalho recorrente de quem cuida.", "nosServicos": "Meses 2-4 no Plantio, contínuo no Pomar (com gestão), meses 2-5 no Marca Viva."}, {"id": "colheita", "nome": "Colheita", "curto": "Acompanhar o que a terra devolve.", "longo": "Leitura de performance: o que germinou, o que ressoou, o que ajustar. Colheita não é o fim, é acompanhar o resultado, no Pomar, safra após safra.", "nosServicos": "Acompanha a produção no Plantio e Marca Viva; contínua e perene no Pomar."}], "filtros": [{"id": "ofruto", "nome": "Filtro oFruto", "sub": "Plantio e Pomar · pessoa cuja marca é o rosto", "nota": "Cinco portas + roteamento de plano. Verde passa, amarelo serve com ressalva, vermelho trava. Três amarelos = vermelho na prática.", "portas": [{"n": "P1 · Aparecer", "q": "Topa ser o rosto, com constância? (inegociável)"}, {"n": "P2 · Nicho", "q": "A área permite comunicar? (regulado = amarelo)"}, {"n": "P3 · Substância", "q": "Tem trajetória e verdade própria pra extrair?"}, {"n": "P4 · Prazo", "q": "Compra a lógica da plantação (médio prazo)?"}, {"n": "P5 · Direção", "q": "Cede o rumo ou microgerencia?"}, {"n": "Roteamento", "q": "Perfil e verba → Plantio ou Pomar."}], "busca": ["filtro", "qualificacao", "ofruto", "portas", "plantio", "pomar"]}, {"id": "marca-viva", "nome": "Filtro Marca Viva", "sub": "Sociedade com a Brenda · marca sem rosto", "nota": "Seis portas. A inversão: quem trava na Porta 1 do oFruto (não aparece) é o cliente daqui.", "portas": [{"n": "P1 · Rede social", "q": "O cliente da marca é influenciável por conteúdo orgânico?"}, {"n": "P2 · Sem rosto", "q": "O dono não quer/sabe aparecer? (quer aparecer → vai pro oFruto)"}, {"n": "P3 · Encaixe + veto", "q": "Combina com a Brenda, e ela topa?"}, {"n": "P4 · Ticket", "q": "Fatura R$80-100k/mês+? Aguenta sem dor?"}, {"n": "P5 · Marca não anúncio", "q": "Compra lógica de marca, não de performance?"}, {"n": "P6 · Direção", "q": "Cede o rumo, respeita a Brenda como sócia-rosto?"}], "busca": ["filtro", "marca viva", "brenda", "sociedade", "portas", "veto"]}]}</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/proposta-render.js"></script>
 <script>
 document.getElementById('logo').innerHTML=document.getElementById('logosvg').textContent;
 const DATA=JSON.parse(document.getElementById('data').textContent);
-
-const SUPABASE_URL = 'https://vlwrjidrlsfizdxfsye.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_REMINpQNTezds4hWd7AOXQ_kTNBJoiu';
-
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const st=document.createElement('style');st.textContent=':root[data-theme="light"] #logo svg{filter:invert(1);}';document.head.appendChild(st);
@@ -1063,7 +876,8 @@ initDoc();
 
 
 /* ============ GERADOR DE PROPOSTAS ============ */
-const MOLDES = { "plantio": {"capa": {"servico": "Plantio", "tagline": "A primeira safra da sua marca."}, "contexto": {"titulo": "Por que essa proposta", "texto": "Hoje, [NOME] já tem experiência, repertório e autoridade em [ÁREA]. Mas essa percepção ainda não está traduzida numa presença digital consistente.\n\nO desafio não é simplesmente produzir conteúdo. É transformar o conhecimento e a personalidade de [NOME] numa comunicação reconhecível, estratégica e sustentável."}, "objetivo": {"titulo": "O objetivo", "texto": "Estruturar a presença digital de [NOME], construir seu posicionamento e produzir uma primeira safra de conteúdo, de forma que [NOME] siga comunicando a própria marca com autonomia."}, "solucao": {"titulo": "A solução: Plantio", "texto": "O Plantio é um ciclo de quatro meses que combina estratégia de marca, produção audiovisual e acompanhamento de performance para construir a primeira base de comunicação digital.", "conceito": "Estratégia → Produção → Autonomia"}, "comofunciona": {"titulo": "Como funciona", "etapas": [{"quando": "Mês 1", "o_que": "Estratégia", "desc": "Imersão, extração e o mapa completo da marca."}, {"quando": "Meses 2 a 4", "o_que": "Produção + acompanhamento", "desc": "Roteiro, gravação, edição, calendário e leitura de performance."}, {"quando": "Final do mês 4", "o_que": "Primeira safra + autonomia", "desc": "A base pronta e você no controle pra continuar."}]}, "entregaveis": {"titulo": "Entregáveis", "grupos": [{"nome": "Estratégia", "itens": ["Imersão de 2 a 3 horas", "Mapa estratégico da marca", "Posicionamento", "Narrativa", "Tom de voz", "Direcionamento de canais e formatos"]}, {"nome": "Produção", "itens": ["2 diárias por mês", "8 vídeos por mês", "24 vídeos no ciclo", "Roteiros", "Direção", "Edição", "Calendário de postagem"]}, {"nome": "Acompanhamento", "itens": ["Análise de performance", "Ajustes para as próximas produções"]}]}, "naoinclui": {"titulo": "O que não está incluso", "itens": ["Gestão diária das redes", "Publicação dos conteúdos", "Resposta a comentários e mensagens", "Criação de identidade visual", "Estruturação de perfil", "Tráfego pago", "Captação adicional fora das diárias previstas", "Peças ou demandas não descritas nesta proposta"], "nota": "Necessidades adicionais podem ser avaliadas e contratadas separadamente."}, "responsabilidades": {"titulo": "Responsabilidades", "cliente": ["Participar da imersão", "Disponibilizar informações e materiais", "Comparecer às gravações", "Aprovar roteiros dentro do prazo", "Realizar as postagens", "Fornecer acessos quando necessário", "Cumprir os prazos combinados"], "agencia": ["Conduzir a estratégia", "Desenvolver os roteiros", "Dirigir as gravações", "Editar os conteúdos", "Organizar o calendário", "Acompanhar a performance"]}, "cronograma": {"titulo": "Cronograma", "linhas": [{"etapa": "Imersão + estratégia", "periodo": "Mês 1"}, {"etapa": "Roteirização + gravações", "periodo": "Meses 2 a 4"}, {"etapa": "Edição + calendário", "periodo": "Meses 2 a 4"}, {"etapa": "Acompanhamento", "periodo": "Meses 2 a 4"}, {"etapa": "Encerramento", "periodo": "Final do mês 4"}]}, "investimento": {"titulo": "Investimento", "linhas": [{"o_que": "Mês 1 — Estratégia", "valor": "R$ 5.000"}, {"o_que": "Meses 2 a 4 — Produção", "valor": "R$ 2.500/mês"}], "total": "R$ 12.500", "total_label": "Total do ciclo"}, "condicoes": {"titulo": "Condições comerciais", "campos": [{"k": "Validade da proposta", "v": "[VALIDADE]"}, {"k": "Forma de pagamento", "v": "[PAGAMENTO]"}, {"k": "Início previsto", "v": "[INÍCIO]"}], "texto": "Prazo de aprovação de roteiros, política de reagendamento, propriedade e uso dos materiais e demais termos são detalhados no contrato."}, "porque": {"titulo": "Por que a oFruto", "provas": [{"t": "Método", "d": "Um processo claro: extração, estratégia, produção e acompanhamento. Nada de ligar a câmera sem norte."}, {"t": "Produção com direção", "d": "Conteúdo com qualidade estética e narrativa, não volume solto."}, {"t": "Foco em autonomia", "d": "Você termina o ciclo sabendo comunicar a própria marca, não dependente de terceiros."}]}, "depois": {"titulo": "O que muda depois do Plantio", "antes": "Marca sem estrutura clara, conteúdo pontual, dependência de terceiros.", "depois": "Posicionamento definido, linguagem estabelecida, primeira biblioteca de conteúdo, processo aprendido e autonomia.", "fecho": "Você não está comprando 24 vídeos. Está comprando uma marca que passa a se comunicar sozinha."}, "proximos": {"titulo": "Próximos passos", "passos": ["Aprovação da proposta", "Assinatura do contrato", "Pagamento inicial", "Agendamento da imersão", "Início do Plantio"]}} };
+/* MOLDES (moldes comerciais por serviço) agora vive em assets/js/proposta-render.js,
+   compartilhado com a página pública proposta.html. */
 /* Dados de jornada por serviço (o que o cliente vê) */
 const PROP_JORNADA = {
   plantio:[
@@ -1207,111 +1021,15 @@ function coletaProposta(){
   };
 }
 
-/* montar o preview (o que o cliente vê) */
+/* montar o preview (o que o cliente vê) — esc/nl2br/fill/ppText/ppSecNum/
+   montarBoasVindas/montarCorpoProposta/setupPropScroll vêm de
+   assets/js/proposta-render.js (compartilhado com a página pública proposta.html) */
 const logoSvg=document.getElementById('logosvg').textContent;
-function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function nl2br(s){return esc(s).replace(/\n/g,'<br>');}
-
-/* aplica lacunas [NOME] [ÁREA] [EMPRESA] etc com base nos dados do cliente */
-function fill(txt,p){
-  return String(txt||'')
-    .replace(/\[NOME\]/g,p.nome||'[NOME]')
-    .replace(/\[EMPRESA\]/g,p.empresa||'')
-    .replace(/\[ÁREA\]/g,p.area||'[área]')
-    .replace(/\[VALIDADE\]/g,p.validade||'—')
-    .replace(/\[PAGAMENTO\]/g,p.pagamento||'—')
-    .replace(/\[INÍCIO\]/g,p.inicio||'a combinar');
-}
 
 function abrirPreview(p){
   const pv=document.getElementById('propView');
-  // ---- BOAS-VINDAS (estilo Proton) ----
-  document.getElementById('pvWelcome').innerHTML=`
-    <div class="pv-w-top"><span class="pv-logo">${logoSvg}</span><span class="pv-brand">oFruto</span></div>
-    <div class="pv-w-btm">
-      <h1>${esc(p.nome)}${p.empresa?`<span class="emp">${esc(p.empresa)}</span>`:''}</h1>
-      <p>${nl2br(p.welcome||'Que bom ter você aqui. Preparei essa proposta com cuidado, pensando na sua marca. Quando quiser, é só avançar.')}</p>
-      <button class="pv-enter" id="pvEnter">Ver proposta</button>
-    </div>`;
-
-  // ---- CORPO GUIADO (a partir do molde do serviço) ----
-  // usa o primeiro serviço escolhido como base do molde comercial
-  const baseId = p.servicos[0];
-  const m = (typeof MOLDES!=='undefined' && MOLDES[baseId]) ? MOLDES[baseId] : null;
-  const s0 = DATA.servicos.find(x=>x.id===baseId);
-  let body='';
-
-  if(m){
-    // capa
-    body+=`<section class="pp-cover"><div class="pp-logo">${logoSvg}</div>
-      <div class="pp-c-name">Plantamos estratégia,<br>cultivamos marcas,<br>geramos fruto.</div>
-      <div class="pp-c-meta">Proposta para ${esc(p.nome)}${p.empresa?' · '+esc(p.empresa):''} · ${esc(p.criada)}</div></section>`;
-    // contexto
-    body+=ppSecNum('01','Contexto',m.contexto.titulo, `<p>${nl2br(fill(p.o_contexto||m.contexto.texto,p))}</p>`);
-    // objetivo
-    body+=ppSecNum('02','Objetivo',m.objetivo.titulo, `<p>${nl2br(fill(p.o_objetivo||m.objetivo.texto,p))}</p>`);
-    // solução
-    body+=`<section class="pp-sec"><span class="pp-bignum">03</span><div class="pp-eyebrow">A solução</div><h3>${esc(m.solucao.titulo)}</h3><p>${nl2br(fill(m.solucao.texto,p))}</p>
-      <div class="pp-conceito">${esc(m.solucao.conceito)}</div></section>`;
-    // como funciona
-    body+=`<section class="pp-sec"><h3>${esc(m.comofunciona.titulo)}</h3><div class="pp-flow">`+
-      m.comofunciona.etapas.map((e,i)=>`<div class="pp-flow-step"><div class="pp-fs-when">${esc(e.quando)}</div><div class="pp-fs-what">${esc(e.o_que)}</div><div class="pp-fs-d">${esc(e.desc)}</div></div>${i<m.comofunciona.etapas.length-1?'<div class="pp-flow-arrow">↓</div>':''}`).join('')+`</div></section>`;
-    // entregáveis
-    body+=`<section class="pp-sec"><h3>${esc(m.entregaveis.titulo)}</h3>`+
-      m.entregaveis.grupos.map(g=>`<div class="pp-eg"><div class="pp-eg-t">${esc(g.nome)}</div><ul>${g.itens.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>`).join('')+`</section>`;
-    // não inclui
-    body+=`<section class="pp-sec"><h3>${esc(m.naoinclui.titulo)}</h3><ul class="pp-neg">${m.naoinclui.itens.map(i=>`<li>${esc(i)}</li>`).join('')}</ul><p class="pp-nota">${esc(m.naoinclui.nota)}</p></section>`;
-    // responsabilidades
-    body+=`<section class="pp-sec"><h3>${esc(m.responsabilidades.titulo)}</h3><div class="pp-resp">
-      <div><div class="pp-r-t">Cliente</div><ul>${m.responsabilidades.cliente.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>
-      <div><div class="pp-r-t">oFruto</div><ul>${m.responsabilidades.agencia.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div></div></section>`;
-    // cronograma
-    body+=`<section class="pp-sec"><h3>${esc(m.cronograma.titulo)}</h3><div class="pp-cron">`+
-      m.cronograma.linhas.map(l=>`<div class="pp-cron-row"><span>${esc(l.etapa)}</span><span class="pp-cron-p">${esc(l.periodo)}</span></div>`).join('')+`</div></section>`;
-    // investimento (usa valor editado do escopo se houver)
-    const invLinhas=m.investimento.linhas.map(l=>`<div class="pp-inv-row"><span>${esc(l.o_que)}</span><span class="pp-inv-v">${esc(l.valor)}</span></div>`).join('');
-    body+=`<section class="pp-sec"><h3>${esc(m.investimento.titulo)}</h3><div class="pp-inv">${invLinhas}</div></section>`;
-    // condições
-    const condRows=m.condicoes.campos.map(c=>`<div class="pp-cond-row"><span class="k">${esc(c.k)}</span><span class="v">${esc(fill(c.v,p))}</span></div>`).join('');
-    body+=`<section class="pp-sec"><h3>${esc(m.condicoes.titulo)}</h3><div class="pp-cond">${condRows}</div><p class="pp-nota">${esc(m.condicoes.texto)}</p></section>`;
-    // por que
-    body+=`<section class="pp-sec"><h3>${esc(m.porque.titulo)}</h3><div class="pp-provas">`+
-      m.porque.provas.map(pr=>`<div class="pp-prova"><div class="pp-pr-t">${esc(pr.t)}</div><div class="pp-pr-d">${esc(pr.d)}</div></div>`).join('')+`</div></section>`;
-    // depois
-    body+=`<section class="pp-sec pp-depois"><h3>${esc(m.depois.titulo)}</h3>
-      <div class="pp-ad"><div class="pp-ad-b"><span>Antes</span>${esc(m.depois.antes)}</div><div class="pp-ad-d"><span>Depois</span>${esc(m.depois.depois)}</div></div>
-      <p class="pp-fecho">${esc(m.depois.fecho)}</p></section>`;
-    // vídeo
-    if(p.video) body+=`<section class="pp-sec"><a class="pv-video" href="${esc(p.video)}" target="_blank" rel="noopener">Ver vídeo / material</a></section>`;
-    // próximos passos
-    body+=`<section class="pp-sec"><h3>${esc(m.proximos.titulo)}</h3><div class="pp-steps">`+
-      m.proximos.passos.map((ps,i)=>`<div class="pp-step"><span class="pp-st-n">0${i+1}</span><span>${esc(ps)}</span></div>`).join('')+`</div></section>`;
-    // obs
-    if(p.obs) body+=`<section class="pp-sec"><h3>Observações</h3><p>${nl2br(p.obs)}</p></section>`;
-  } else {
-    // fallback: serviço sem molde ainda (Pomar/Marca Viva) — versão simples
-    body=p.servicos.map(id=>{
-      const s=DATA.servicos.find(x=>x.id===id), sc=p.scopes[id];
-      return `<section class="pp-sec"><div class="pp-s-eye">${s.linha} · ${s.duracao}</div><h3>${s.nome}</h3>
-        <p>${esc(sc.resume)}</p><div class="pv-scope">${esc(sc.escopo)}</div>
-        <div class="pv-invest"><span class="k">Investimento</span><span class="v">${esc(sc.invest)}</span></div></section>`;
-    }).join('');
-  }
-  // ---- seção final: quem sou (foto placeholder p/ Supabase) ----
-  body+=`<section class="pp-sec pp-quem">
-    <div class="pp-quem-foto">
-      <!-- IMG-SUPABASE: trocar por <img src="URL_FOTO_DAVI"> -->
-      <span class="pp-foto-ph">Davi</span>
-    </div>
-    <div class="pp-quem-txt">
-      <div class="pp-eyebrow">Quem cuida disso</div>
-      <p class="pp-quem-p">Sou o Davi, diretor criativo e sócio da oFruto. Cuido pessoalmente da estratégia e da direção de cada marca que passa por aqui.</p>
-      <p class="pp-quem-fecho">Tô aqui pra te ajudar a gerar frutos.</p>
-    </div>
-  </section>`;
-  body+=`<div class="pv-foot"><div class="pv-f-logo">${logoSvg}</div>oFruto · plantamos estratégia, cultivamos marcas, geramos fruto.</div>`;
-
-  document.getElementById('pvBody').innerHTML=body;
+  document.getElementById('pvWelcome').innerHTML=montarBoasVindas(p, logoSvg);
+  document.getElementById('pvBody').innerHTML=montarCorpoProposta(p, logoSvg);
   document.getElementById('pvBody').classList.remove('on');
   document.getElementById('pvWelcome').style.display='';
   pv.classList.add('on'); document.body.style.overflow='hidden';
@@ -1322,27 +1040,6 @@ function abrirPreview(p){
     setupPropScroll();
   };
 }
-function setupPropScroll(){
-  const pv=document.getElementById('propView');
-  const secs=[...pv.querySelectorAll('.pp-cover, .pp-sec')];
-  let prog=pv.querySelector('.pp-progress'); if(prog) prog.remove();
-  prog=document.createElement('div'); prog.className='pp-progress';
-  const n=secs.length;
-  let ticks='';
-  for(let i=0;i<n;i++){ ticks+=`<span class="tick" data-i="${i}" style="top:${(i/(n-1))*100}%"></span>`; }
-  prog.innerHTML=`<div class="track-fill"></div><div class="thumb"></div>${ticks}`;
-  pv.appendChild(prog);
-  const fill=prog.querySelector('.track-fill'), thumb=prog.querySelector('.thumb');
-  prog.addEventListener('click',e=>{const t=e.target.closest('.tick');if(t)secs[+t.dataset.i].scrollIntoView({behavior:'smooth'});});
-  function setPos(idx){ const pctv=n>1?(idx/(n-1))*100:0; fill.style.height=pctv+'%'; thumb.style.top=pctv+'%'; }
-  const io=new IntersectionObserver(entries=>{
-    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); setPos(secs.indexOf(en.target)); } });
-  },{root:pv,threshold:.4});
-  secs.forEach(s=>io.observe(s));
-  if(secs[0]){ secs[0].classList.add('in'); setPos(0); }
-}
-function ppText(titulo,texto){return `<section class="pp-sec"><h3>${esc(titulo)}</h3><p>${nl2br(texto)}</p></section>`;}
-function ppSecNum(num,eye,titulo,inner){return `<section class="pp-sec"><span class="pp-bignum">${num}</span><div class="pp-eyebrow">${esc(eye)}</div><h3>${esc(titulo)}</h3>${inner}</section>`;}
 
 document.getElementById('pvClose').onclick=()=>{const pv=document.getElementById('propView');pv.classList.remove('on');document.body.style.overflow='';const pr=pv.querySelector('.pp-progress');if(pr)pr.remove();};
 
@@ -1372,12 +1069,51 @@ function renderPropList(){
       </div>
       <span class="pc-status">${stLabel[p.status]}</span>
       <div class="pc-acts">
+        <button data-act="link" data-id="${p.id}" class="${p.link_ativo?'on':''}" title="${p.token_publico?(p.link_ativo?'Link público (ativo)':'Link público (desativado)'):'Gerar link público'}"><svg viewBox="0 0 24 24"><path d="M9 15l6-6"/><path d="M8 8h-1a4 4 0 0 0 0 8h1"/><path d="M16 16h1a4 4 0 0 0 0-8h-1"/></svg></button>
         <button data-act="concluir" data-id="${p.id}" title="Concluída"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg></button>
         <button data-act="arquivar" data-id="${p.id}" title="Arquivar"><svg viewBox="0 0 24 24"><path d="M3 7h18v13H3z"/><path d="M3 7l2-3h14l2 3M10 12h4"/></svg></button>
         <button data-act="excluir" data-id="${p.id}" title="Excluir"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button>
       </div>
     </div>`).join('');
 }
+
+/* ---- link público da proposta (token_publico + link_ativo na tabela propostas) ---- */
+function urlPropostaPublica(p){
+  return location.origin + '/proposta.html?id=' + p.token_publico;
+}
+function mostrarLinkInfo(p){
+  const url = urlPropostaPublica(p);
+  open(`
+    <div class="s-kind">Proposta · Link público</div>
+    <h2>${esc(p.nome)}</h2>
+    <p class="s-resume">${p.link_ativo
+      ? 'O link está ativo. Qualquer pessoa com esse endereço consegue ver a proposta, sem acessar a Central oFruto.'
+      : 'O link está desativado. Quem tiver o endereço vê uma mensagem de proposta indisponível.'}</p>
+    <div class="pf-input" style="user-select:all;word-break:break-all;cursor:text;background:var(--surface-2)">${esc(url)}</div>
+    <div class="pf-actions">
+      <button class="pf-btn primary" id="linkCopiar" type="button">Copiar link</button>
+      <button class="pf-btn" id="linkToggle" type="button">${p.link_ativo?'Desativar link':'Ativar link'}</button>
+    </div>`);
+  const btnCopiar=document.getElementById('linkCopiar');
+  btnCopiar.onclick=async()=>{
+    try{ await navigator.clipboard.writeText(url); btnCopiar.textContent='Copiado!'; }
+    catch(e){ alert('Não foi possível copiar automaticamente. Copie manualmente:\n'+url); }
+  };
+  document.getElementById('linkToggle').onclick=async()=>{
+    await dbAtualizar(p.id,{link_ativo:!p.link_ativo});
+    const atualizado=PROPOSTAS.find(x=>x.id===p.id);
+    if(atualizado) mostrarLinkInfo(atualizado);
+  };
+}
+async function abrirLinkPublico(id){
+  let p=PROPOSTAS.find(x=>x.id===id); if(!p) return;
+  if(!p.token_publico){
+    await dbAtualizar(id,{token_publico:crypto.randomUUID(),link_ativo:true});
+    p=PROPOSTAS.find(x=>x.id===id)||p;
+  }
+  mostrarLinkInfo(p);
+}
+
 document.getElementById('propList').addEventListener('click',e=>{
   const abrir=e.target.closest('[data-abrir]');
   if(abrir){ const p=PROPOSTAS.find(x=>x.id===abrir.dataset.abrir); if(p)abrirPreview(p); return; }
@@ -1386,6 +1122,7 @@ document.getElementById('propList').addEventListener('click',e=>{
   if(act==='excluir'){ if(confirm('Excluir esta proposta?')) dbExcluir(id); }
   else if(act==='concluir'){ const p=PROPOSTAS.find(x=>x.id===id); dbAtualizar(id,{status:p.status==='concluida'?'aberta':'concluida'}); }
   else if(act==='arquivar'){ const p=PROPOSTAS.find(x=>x.id===id); dbAtualizar(id,{status:p.status==='arquivada'?'aberta':'arquivada'}); }
+  else if(act==='link'){ abrirLinkPublico(id); }
 });
 
 renderPfSvcs(); renderPfScopes(); renderPropList();dbCarregar();
