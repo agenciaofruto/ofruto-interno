@@ -172,7 +172,11 @@ body{background:#000;}
    espaço extra é percorrido, e o JS (ativarJornadaScroll) desloca os cards
    lateralmente conforme a posição do scroll — sem arraste manual e sem
    indicador de progresso próprio (usa só a barra lateral geral da proposta). */
-.pp-jornada-sec{overflow:visible;min-height:160vh;scroll-snap-align:none;padding:0;}
+.pp-jornada-sec{overflow:visible;min-height:160vh;scroll-snap-align:none;padding:0;
+  justify-content:flex-start;}
+/* justify-content:flex-start acima sobrescreve o "center" herdado de .pp-sec —
+   sem isso o bloco sticky ficava centralizado dentro da seção alta, e nunca
+   tinha uma corrida limpa desde o topo da tela pra "grudar" corretamente. */
 /* min-height acima é só um valor de fallback antes do JS calcular a altura
    exata (ver ativarJornadaScroll em proposta-render.js) */
 .pp-jornada-sticky{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;

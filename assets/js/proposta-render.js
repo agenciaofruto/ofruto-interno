@@ -242,18 +242,40 @@ function ativarJornadaScroll(root){
   sec.dataset.jornadaWired='1';
   const sticky = sec.querySelector('.pp-jornada-sticky');
   const track = sec.querySelector('.pp-jornada-scroll');
+  const cards = [...track.querySelectorAll('.pp-jcard')];
+  const PAUSA = 260; // px de scroll "parado" em cada card — tempo de ler antes de deslizar pro próximo
 
-  // a altura extra da seção precisa bater com a distância que os cards vão
-  // percorrer — calculada aqui (não em CSS), pra não sobrar scroll "parado"
-  // no fim nem faltar espaço antes do fim.
-  let maxScroll = 0, total = 0;
+  let maxScroll = 0, totalPx = 0, paradas = [];
+
+  // a altura extra da seção soma uma pausa por card + a distância real que
+  // os cards precisam deslizar. Sem essa pausa, o card começava a deslizar
+  // pro próximo assim que ficava totalmente visível — nunca dava tempo de
+  // ler antes de já estar saindo de cena.
   function medir(){
     maxScroll = Math.max(0, track.scrollWidth - sticky.clientWidth);
-    sec.style.minHeight = (sticky.offsetHeight + maxScroll + 120) + 'px';
-    total = sec.offsetHeight - sticky.offsetHeight;
+    paradas = cards.map(c => Math.min(maxScroll, c.offsetLeft));
+    totalPx = cards.length*PAUSA + maxScroll;
+    sec.style.minHeight = (sticky.offsetHeight + totalPx + 60) + 'px';
   }
   medir();
   window.addEventListener('resize', medir);
+
+  // converte a distância já rolada (em px, só dentro desta seção) na posição
+  // horizontal correspondente: alterna trechos "parados" (card legível,
+  // sem se mexer) com trechos de deslize (a distância real até o próximo card).
+  function deslocamentoPara(y){
+    let restante = y;
+    for(let i=0;i<paradas.length;i++){
+      if(restante <= PAUSA) return paradas[i];
+      restante -= PAUSA;
+      if(i < paradas.length-1){
+        const dist = paradas[i+1]-paradas[i];
+        if(restante <= dist) return paradas[i] + restante;
+        restante -= dist;
+      }
+    }
+    return paradas[paradas.length-1] || 0;
+  }
 
   function update(){
     const rect = sec.getBoundingClientRect();
@@ -261,9 +283,8 @@ function ativarJornadaScroll(root){
     // fade-in (pensado pra seções de 1 tela) só disparava depois de um scroll
     // enorme, porque essa seção é bem mais alta que a tela.
     if(rect.top < window.innerHeight) sec.classList.add('in');
-    let progresso = total>0 ? (-rect.top)/total : 0;
-    progresso = Math.max(0, Math.min(1, progresso));
-    track.style.transform = `translateX(${-progresso*maxScroll}px)`;
+    const y = Math.max(0, Math.min(totalPx, -rect.top));
+    track.style.transform = `translateX(${-deslocamentoPara(y)}px)`;
   }
 
   root.addEventListener('scroll', update, {passive:true});
