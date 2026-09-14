@@ -115,8 +115,6 @@ function montarCorpoProposta(p, logoHtml){
     // entregáveis (expansível)
     body+=montarAcordeao(m.entregaveis.titulo, 'Ver entregáveis', 'Ocultar entregáveis',
       m.entregaveis.grupos.map(g=>`<div class="pp-eg"><div class="pp-eg-t">${esc(g.nome)}</div><ul>${g.itens.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>`).join(''));
-    // vídeo (se houver) — encaixa junto ao material de produção
-    if(p.video) body+=`<section class="pp-sec"><a class="pv-video" href="${esc(p.video)}" target="_blank" rel="noopener">Ver vídeo / material</a></section>`;
     // o que não está incluso (expansível)
     body+=montarAcordeao(m.naoinclui.titulo, 'Ver o que não está incluso', 'Ocultar',
       `<ul class="pp-neg">${m.naoinclui.itens.map(i=>`<li>${esc(i)}</li>`).join('')}</ul><p class="pp-nota">${esc(m.naoinclui.nota)}</p>`);
@@ -152,7 +150,6 @@ function montarCorpoProposta(p, logoHtml){
           ${p.pagamento?`<div class="pp-inv-row"><span>Forma de pagamento</span><span class="pp-inv-v">${esc(p.pagamento)}</span></div>`:''}
         </div></section>`;
     }).join('');
-    if(p.video) body+=`<section class="pp-sec"><a class="pv-video" href="${esc(p.video)}" target="_blank" rel="noopener">Ver vídeo / material</a></section>`;
   }
 
   if(p.obs) body+=`<section class="pp-sec"><h3>Observações</h3><p>${nl2br(p.obs)}</p></section>`;
@@ -167,6 +164,11 @@ function montarCorpoProposta(p, logoHtml){
       <p class="pp-quem-fecho">Tô aqui pra te ajudar a gerar frutos.</p>
     </div>
   </section>`;
+
+  // ---- veja nosso trabalho (portfólio/vídeo) — perto do fim, antes de fechar ----
+  if(p.video) body+=`<section class="pp-sec"><h3>Quer ver de perto?</h3>
+    <p>Dá uma olhada nos trabalhos e resultados que já entregamos.</p>
+    <a class="pv-video" href="${esc(p.video)}" target="_blank" rel="noopener">Ver portfólio</a></section>`;
 
   // ---- vamos conversar (fechamento) ----
   body+=`<section class="pp-sec"><h3>Vamos conversar</h3>
@@ -240,16 +242,29 @@ function ativarJornadaScroll(root){
   sec.dataset.jornadaWired='1';
   const sticky = sec.querySelector('.pp-jornada-sticky');
   const track = sec.querySelector('.pp-jornada-scroll');
+  const cards = [...track.querySelectorAll('.pp-jcard')];
+
+  let maxScroll = 0, total = 0, pontosDeParada = [];
 
   // a altura extra da seção precisa bater com a distância que os cards vão
   // percorrer — calculada aqui (não em CSS), pra não sobrar scroll "parado"
-  // no fim nem faltar espaço antes do fim.
-  function calcularAltura(){
-    const maxScroll = Math.max(0, track.scrollWidth - sticky.clientWidth);
+  // no fim nem faltar espaço antes do fim. Também guarda, pra cada card, em
+  // que progresso (0 a 1) ele fica perfeitamente visível — são os "pontos de
+  // parada" do snap logo abaixo.
+  function medir(){
+    maxScroll = Math.max(0, track.scrollWidth - sticky.clientWidth);
     sec.style.minHeight = (sticky.offsetHeight + maxScroll + 120) + 'px';
+    total = sec.offsetHeight - sticky.offsetHeight;
+    pontosDeParada = cards.map(c => maxScroll>0 ? Math.min(1, c.offsetLeft / maxScroll) : 0);
   }
-  calcularAltura();
-  window.addEventListener('resize', calcularAltura);
+  medir();
+  window.addEventListener('resize', medir);
+
+  function progressoAtual(){
+    const rect = sec.getBoundingClientRect();
+    const p = total>0 ? (-rect.top)/total : 0;
+    return Math.max(0, Math.min(1, p));
+  }
 
   function update(){
     const rect = sec.getBoundingClientRect();
@@ -257,12 +272,25 @@ function ativarJornadaScroll(root){
     // fade-in (pensado pra seções de 1 tela) só disparava depois de um scroll
     // enorme, porque essa seção é bem mais alta que a tela.
     if(rect.top < window.innerHeight) sec.classList.add('in');
-    const total = sec.offsetHeight - sticky.offsetHeight;
-    let progresso = total>0 ? (-rect.top)/total : 0;
-    progresso = Math.max(0, Math.min(1, progresso));
-    const maxScroll = Math.max(0, track.scrollWidth - sticky.clientWidth);
+    const progresso = progressoAtual();
     track.style.transform = `translateX(${-progresso*maxScroll}px)`;
   }
-  root.addEventListener('scroll', update, {passive:true});
+
+  // sem isso, o card parava em qualquer posição intermediária quando o
+  // usuário parava de rolar — nunca um card inteiro, sempre um pedaço de
+  // dois. Ao parar de rolar, ajusta suavemente pro card mais próximo.
+  let snapTimer=null;
+  function agendarSnap(){
+    clearTimeout(snapTimer);
+    snapTimer=setTimeout(()=>{
+      const progresso = progressoAtual();
+      if(progresso<=0 || progresso>=1) return; // já está numa ponta, não força
+      let alvo=pontosDeParada[0], menorDist=Infinity;
+      pontosDeParada.forEach(pr=>{ const d=Math.abs(pr-progresso); if(d<menorDist){menorDist=d;alvo=pr;} });
+      root.scrollTo({top: sec.offsetTop + alvo*total, behavior:'smooth'});
+    }, 130);
+  }
+
+  root.addEventListener('scroll', ()=>{ update(); agendarSnap(); }, {passive:true});
   update();
 }
