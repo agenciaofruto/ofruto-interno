@@ -242,29 +242,18 @@ function ativarJornadaScroll(root){
   sec.dataset.jornadaWired='1';
   const sticky = sec.querySelector('.pp-jornada-sticky');
   const track = sec.querySelector('.pp-jornada-scroll');
-  const cards = [...track.querySelectorAll('.pp-jcard')];
-
-  let maxScroll = 0, total = 0, pontosDeParada = [];
 
   // a altura extra da seção precisa bater com a distância que os cards vão
   // percorrer — calculada aqui (não em CSS), pra não sobrar scroll "parado"
-  // no fim nem faltar espaço antes do fim. Também guarda, pra cada card, em
-  // que progresso (0 a 1) ele fica perfeitamente visível — são os "pontos de
-  // parada" do snap logo abaixo.
+  // no fim nem faltar espaço antes do fim.
+  let maxScroll = 0, total = 0;
   function medir(){
     maxScroll = Math.max(0, track.scrollWidth - sticky.clientWidth);
     sec.style.minHeight = (sticky.offsetHeight + maxScroll + 120) + 'px';
     total = sec.offsetHeight - sticky.offsetHeight;
-    pontosDeParada = cards.map(c => maxScroll>0 ? Math.min(1, c.offsetLeft / maxScroll) : 0);
   }
   medir();
   window.addEventListener('resize', medir);
-
-  function progressoAtual(){
-    const rect = sec.getBoundingClientRect();
-    const p = total>0 ? (-rect.top)/total : 0;
-    return Math.max(0, Math.min(1, p));
-  }
 
   function update(){
     const rect = sec.getBoundingClientRect();
@@ -272,25 +261,11 @@ function ativarJornadaScroll(root){
     // fade-in (pensado pra seções de 1 tela) só disparava depois de um scroll
     // enorme, porque essa seção é bem mais alta que a tela.
     if(rect.top < window.innerHeight) sec.classList.add('in');
-    const progresso = progressoAtual();
+    let progresso = total>0 ? (-rect.top)/total : 0;
+    progresso = Math.max(0, Math.min(1, progresso));
     track.style.transform = `translateX(${-progresso*maxScroll}px)`;
   }
 
-  // sem isso, o card parava em qualquer posição intermediária quando o
-  // usuário parava de rolar — nunca um card inteiro, sempre um pedaço de
-  // dois. Ao parar de rolar, ajusta suavemente pro card mais próximo.
-  let snapTimer=null;
-  function agendarSnap(){
-    clearTimeout(snapTimer);
-    snapTimer=setTimeout(()=>{
-      const progresso = progressoAtual();
-      if(progresso<=0 || progresso>=1) return; // já está numa ponta, não força
-      let alvo=pontosDeParada[0], menorDist=Infinity;
-      pontosDeParada.forEach(pr=>{ const d=Math.abs(pr-progresso); if(d<menorDist){menorDist=d;alvo=pr;} });
-      root.scrollTo({top: sec.offsetTop + alvo*total, behavior:'smooth'});
-    }, 130);
-  }
-
-  root.addEventListener('scroll', ()=>{ update(); agendarSnap(); }, {passive:true});
+  root.addEventListener('scroll', update, {passive:true});
   update();
 }

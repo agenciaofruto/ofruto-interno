@@ -102,7 +102,7 @@ body{background:#000;}
 
 /* ===== PROPOSTA GUIADA (pp-) ===== */
 .pv-body{padding-top:0!important;}
-.pp-cover{min-height:78vh;display:flex;flex-direction:column;justify-content:center;text-align:center;border-bottom:1px solid var(--brd);margin-bottom:44px;position:relative;
+.pp-cover{min-height:78vh;display:flex;flex-direction:column;justify-content:center;text-align:center;margin-bottom:44px;position:relative;
   /* full-bleed: a foto de fundo ocupa a largura inteira da tela, mesmo com o
      texto confinado numa coluna central mais estreita (.pv-wrap) */
   width:100vw;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;
