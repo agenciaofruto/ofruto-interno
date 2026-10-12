@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aprovação de conteúdo · oFruto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/proposta.css">
+<style>
+/* estados desta página pública (mesmo padrão de proposta.html) */
+.pv-loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:13.5px;letter-spacing:.04em;}
+.pv-indisponivel{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:32px;text-align:center;}
+.pv-ind-box{max-width:380px;}
+.pv-ind-logo{width:48px;height:48px;margin:0 auto 26px;opacity:.7;}
+.pv-ind-logo svg,.pv-ind-logo img{width:100%;height:100%;}
+.pv-indisponivel h1{font-weight:800;font-size:26px;letter-spacing:-.03em;margin-bottom:12px;}
+.pv-indisponivel p{font-size:14.5px;color:var(--ink-2);line-height:1.6;}
+
+/* conteúdo da aprovação (av-) */
+.av-wrap{max-width:560px;margin:0 auto;padding:36px 20px 80px;}
+.av-head{margin-bottom:28px;}
+.av-head .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;font-weight:600;}
+.av-head h1{font-weight:800;font-size:28px;letter-spacing:-.03em;}
+.av-head p{font-size:14px;color:var(--ink-2);margin-top:6px;}
+.av-proj{margin-bottom:34px;}
+.av-proj h2{font-weight:700;font-size:16px;letter-spacing:-.01em;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--brd);}
+.av-card{background:var(--surface);border:1px solid var(--brd);border-radius:var(--r);padding:18px 20px;margin-bottom:14px;}
+.av-card h3{font-weight:700;font-size:15.5px;margin-bottom:4px;}
+.av-meta{font-size:12.5px;color:var(--ink-3);margin-bottom:12px;}
+.av-embed{border-radius:12px;overflow:hidden;background:#000;margin-bottom:12px;aspect-ratio:16/9;}
+.av-embed iframe{width:100%;height:100%;border:0;display:block;}
+.av-embed.is-portrait{aspect-ratio:9/16;max-width:260px;}
+.av-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-2);margin-bottom:12px;text-decoration:underline;}
+.av-legenda{font-size:13.5px;color:var(--ink-2);line-height:1.5;margin-bottom:14px;white-space:pre-wrap;}
+.av-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 12px;border-radius:100px;margin-bottom:12px;}
+.av-ajuste-texto{font-size:13px;color:var(--ink-2);background:var(--surface-2);border-radius:10px;padding:10px 14px;margin-bottom:12px;}
+.av-acts{display:flex;gap:8px;flex-wrap:wrap;}
+.av-btn{font-size:13px;font-weight:600;padding:9px 16px;border-radius:100px;border:1px solid var(--brd-2);background:var(--surface-2);color:var(--ink);transition:.18s;}
+.av-btn:hover{background:var(--surface-3);}
+.av-btn.primary{background:var(--ink);color:#000;border-color:var(--ink);}
+.av-btn.primary:hover{opacity:.88;}
+.av-ajuste-form{margin-top:10px;display:none;}
+.av-ajuste-form.on{display:block;}
+.av-ajuste-form textarea{width:100%;font-family:inherit;font-size:13.5px;color:var(--ink);background:var(--surface-2);border:1px solid var(--brd);border-radius:10px;padding:10px 12px;resize:vertical;margin-bottom:8px;}
+.av-empty{color:var(--ink-3);font-size:13.5px;}
+</style>
+</head>
+<body>
+
+<div class="pv-loading" id="pvLoading">Carregando…</div>
+
+<div class="av-wrap" id="avRoot" hidden></div>
+
+<div class="pv-indisponivel" id="pvIndisponivel" hidden>
+  <div class="pv-ind-box">
+    <div class="pv-ind-logo"><img src="assets/logo.svg" alt="oFruto"></div>
+    <h1>Link não disponível</h1>
+    <p>Esse link não está mais ativo ou não existe. Entre em contato com a agência para receber um novo acesso.</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase-client.js"></script>
+<script>
+(function(){
+  const loading = document.getElementById('pvLoading');
+  const root = document.getElementById('avRoot');
+  const indisponivel = document.getElementById('pvIndisponivel');
+  const token = new URLSearchParams(location.search).get('c');
+  /* .pv-loading/.pv-indisponivel têm display:flex explícito na própria classe, que empata em
+     especificidade com a regra [hidden]{display:none} do navegador e vence por vir depois no CSS —
+     o atributo `hidden` sozinho não esconde esses elementos (nem o `hidden` estático que já vem no
+     HTML de pvIndisponivel). Força via style inline, que tem prioridade sobre qualquer classe. */
+  indisponivel.style.display = 'none';
+
+  function mostrarIndisponivel(){
+    loading.style.display = 'none';
+    root.style.display = 'none';
+    indisponivel.style.display = '';
+  }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function fmtDateBR(iso){
+    if(!iso) return '';
+    const [y,m,d] = iso.split('-');
+    return d && m && y ? `${d}/${m}/${y}` : iso;
+  }
+
+  /* Normaliza link de Drive/YouTube/Vimeo pra embeddable — porte da lógica equivalente
+     já usada no site de produção de conteúdo anterior (Selo Br). Qualquer outro link
+     vira um "Abrir arquivo" simples em vez de iframe. */
+  function embedInfo(url){
+    if(!url) return null;
+    url = url.trim();
+    let m;
+    if((m = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/)) || (m = url.match(/[?&]v=([a-zA-Z0-9_-]+)/))){
+      return { src: `https://www.youtube.com/embed/${m[1]}`, portrait: false };
+    }
+    if((m = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/))){
+      return { src: `https://www.youtube.com/embed/${m[1]}`, portrait: true };
+    }
+    if((m = url.match(/vimeo\.com\/(\d+)/))){
+      return { src: `https://player.vimeo.com/video/${m[1]}`, portrait: false };
+    }
+    if((m = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/))){
+      return { src: `https://drive.google.com/file/d/${m[1]}/preview`, portrait: false };
+    }
+    return { link: url };
+  }
+
+  const STATUS_APROVACAO = {
+    pendente: {nome:'Aguardando sua análise', cor:'#f5f5f3', bg:'rgba(245,245,243,.12)'},
+    aprovado: {nome:'Aprovado', cor:'#4ade80', bg:'rgba(74,222,128,.14)'},
+    ajustes: {nome:'Ajuste solicitado', cor:'#ff8a65', bg:'rgba(255,138,101,.14)'},
+    reprovado: {nome:'Reprovado', cor:'#ff6464', bg:'rgba(255,100,100,.14)'},
+  };
+
+  function conteudoHtml(c){
+    const st = STATUS_APROVACAO[c.status_aprovacao] || STATUS_APROVACAO.pendente;
+    const emb = embedInfo(c.embed);
+    let embedHtml = '';
+    if(emb && emb.src){
+      embedHtml = `<div class="av-embed${emb.portrait?' is-portrait':''}"><iframe src="${esc(emb.src)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`;
+    } else if(emb && emb.link){
+      embedHtml = `<a class="av-link" href="${esc(emb.link)}" target="_blank" rel="noopener">Abrir arquivo ↗</a>`;
+    }
+    const podeAgir = c.status_aprovacao !== 'aprovado';
+    return `<div class="av-card" data-conteudo-id="${esc(c.id)}">
+      <h3>${esc(c.titulo||'(sem título)')}</h3>
+      ${c.data_publicacao?`<div class="av-meta">Previsto para ${fmtDateBR(c.data_publicacao)}</div>`:''}
+      ${embedHtml}
+      ${c.legenda?`<div class="av-legenda">${esc(c.legenda)}</div>`:''}
+      <div class="av-badge" style="color:${st.cor};background:${st.bg};">${st.nome}</div>
+      ${c.status_aprovacao==='ajustes' && c.ajuste_texto?`<div class="av-ajuste-texto">"${esc(c.ajuste_texto)}"</div>`:''}
+      ${podeAgir?`<div class="av-acts">
+        <button class="av-btn primary" data-acao="aprovado">Aprovar</button>
+        <button class="av-btn" data-acao="abrir-ajuste">Pedir ajuste</button>
+        <button class="av-btn" data-acao="reprovado">Reprovar</button>
+      </div>
+      <div class="av-ajuste-form" id="ajuste-${esc(c.id)}">
+        <textarea rows="3" placeholder="O que precisa mudar?"></textarea>
+        <button class="av-btn primary" data-acao="enviar-ajuste">Enviar</button>
+      </div>`:`<div class="av-acts"><button class="av-btn" data-acao="pendente">Reabrir</button></div>`}
+    </div>`;
+  }
+
+  function projetoHtml(p){
+    const conteudos = p.conteudos||[];
+    return `<div class="av-proj">
+      <h2>${esc(p.nome)}</h2>
+      ${conteudos.length ? conteudos.map(conteudoHtml).join('') : '<div class="av-empty">Nenhum conteúdo ainda.</div>'}
+    </div>`;
+  }
+
+  async function enviarAcao(conteudoId, status, ajusteTexto){
+    const { data, error } = await sb.rpc('atualizar_aprovacao_conteudo', {
+      p_token: token, p_conteudo_id: conteudoId, p_status: status, p_ajuste_texto: ajusteTexto||null
+    });
+    return !error && data === true;
+  }
+
+  root.addEventListener('click', async (e)=>{
+    const btn = e.target.closest('[data-acao]');
+    if(!btn) return;
+    const card = btn.closest('[data-conteudo-id]');
+    const conteudoId = card.dataset.conteudoId;
+    const acao = btn.dataset.acao;
+    if(acao === 'abrir-ajuste'){
+      document.getElementById('ajuste-'+conteudoId).classList.add('on');
+      return;
+    }
+    if(acao === 'enviar-ajuste'){
+      const texto = card.querySelector('.av-ajuste-form textarea').value.trim();
+      if(!texto) return;
+      btn.disabled = true; btn.textContent = 'Enviando…';
+      const ok = await enviarAcao(conteudoId, 'ajustes', texto);
+      if(ok) carregar(); else { btn.disabled=false; btn.textContent='Enviar'; }
+      return;
+    }
+    if(acao === 'reprovado' && !confirm('Reprovar esse conteúdo?')) return;
+    btn.disabled = true;
+    const ok = await enviarAcao(conteudoId, acao);
+    if(ok) carregar(); else btn.disabled = false;
+  });
+
+  async function carregar(){
+    const { data, error } = await sb.rpc('get_conteudos_publicos', { p_token: token });
+    if(error || !data){ mostrarIndisponivel(); return; }
+    const { data: clienteRows } = await sb.rpc('get_cliente_publico', { p_token: token });
+    const cliente = clienteRows && clienteRows[0];
+    const projetos = data.projetos||[];
+    root.innerHTML = `
+      <div class="av-head">
+        <div class="eyebrow">oFruto · Aprovação de conteúdo</div>
+        <h1>${cliente?esc(cliente.nome):'Seus conteúdos'}</h1>
+        <p>Aprove, peça ajuste ou reprove cada item abaixo.</p>
+      </div>
+      ${projetos.length ? projetos.map(projetoHtml).join('') : '<div class="av-empty">Nenhum conteúdo publicado ainda.</div>'}
+    `;
+    loading.style.display = 'none';
+    root.hidden = false;
+  }
+
+  if(!token){ mostrarIndisponivel(); }
+  else { carregar(); }
+})();
+</script>
+</body>
+</html>

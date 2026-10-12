@@ -47,11 +47,18 @@
   const loading = document.getElementById('pvLoading');
   const root = document.getElementById('propView');
   const indisponivel = document.getElementById('pvIndisponivel');
+  /* .pv-loading/.pv-indisponivel têm display:flex explícito na própria classe, que empata em
+     especificidade com a regra [hidden]{display:none} do navegador e vence por vir depois no CSS —
+     o atributo `hidden` sozinho não esconde esses elementos (nem o `hidden` estático que já vem no
+     HTML de pvIndisponivel). Sem essa linha, o aviso "não disponível" ficava visível por baixo mesmo
+     quando a proposta carregava com sucesso. Força via style inline, que tem prioridade sobre a classe.
+     mostrarIndisponivel()/o caminho de sucesso removem o style de quem deve aparecer. */
+  indisponivel.style.display = 'none';
 
   function mostrarIndisponivel(){
-    loading.hidden = true;
+    loading.style.display = 'none';
     root.hidden = true;
-    indisponivel.hidden = false;
+    indisponivel.style.display = '';
   }
 
   const token = new URLSearchParams(location.search).get('id');
@@ -70,7 +77,7 @@
   document.getElementById('pvWelcome').innerHTML = montarBoasVindas(p, logoHtml);
   document.getElementById('pvBody').innerHTML = montarCorpoProposta(p, logoHtml);
 
-  loading.hidden = true;
+  loading.style.display = 'none';
   root.hidden = false;
   root.classList.add('on');
   document.body.style.overflow = 'hidden';
